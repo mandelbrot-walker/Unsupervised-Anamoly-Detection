@@ -1,2 +1,2 @@
 # StatisticalRankTest
-Cse 445/465 Project
+Only Amazon, P2p and Twitch network are available here. 
