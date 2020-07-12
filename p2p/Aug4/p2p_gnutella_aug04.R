@@ -15,7 +15,9 @@ library(gridExtra)
 library(resample)
 library(earth)
 library(CINNA)
-
+library(ClusterR)
+library(mclust)
+library(kohonen)
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("p2p-Gnutella04.txt",header = TRUE, sep = "\t")
 
@@ -274,8 +276,14 @@ plot(tsne_model_5$Y,col=ncen_tr$names, asp=1)
 set.seed(333)  
 tsne_model_6 = Rtsne(pcacen2, check_duplicates=FALSE, pca=TRUE, perplexity=30, theta=0.50, dims=2, max_iter = 1000,
                      verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 6) #lowest error
-
 plot(tsne_model_6$Y,col=ncen_tr$names, asp=1)
+
+
+#tsne model 7
+set.seed(358)  
+tsne_model_7 = Rtsne(ncentrality, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 5000,
+                     verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 7)
+plot(tsne_model_7$Y,col=ncen_tr$names, asp=1)
 
 d_tsne_1 = as.data.frame(tsne_model_5$Y) #list to dataframe
 d_tsne_1_original=d_tsne_1 #keeping the original
@@ -351,3 +359,143 @@ set.seed(123)
 res.db <- dbscan::dbscan(pcacen2, 0.04, 2)
 fviz_cluster(res.db, pcacen2, geom = "point")
 
+#-------------------test---------------------------#
+## keeping original data
+d_tsne_1_original=tsne_model_7
+d_tsne_1 =tsne_model_7
+## Creating k-means clustering model, and assigning the result to the data used to create the tsne
+fit_cluster_kmeans=kmeans(scale(d_tsne_1), 3)
+d_tsne_1_original$cl_kmeans = factor(fit_cluster_kmeans$cluster)
+
+## Creating hierarchical cluster model, and assigning the result to the data used to create the tsne
+fit_cluster_hierarchical=hclust(dist(scale(d_tsne_1)))
+
+## setting 3 clusters as output
+d_tsne_1_original$cl_hierarchical = factor(cutree(fit_cluster_hierarchical, k=3))
+
+plot_cluster=function(data, var_cluster, palette)
+{
+  ggplot(data, aes_string(x="V1", y="V2", color=var_cluster)) +
+    geom_point(size=0.25) +
+    guides(colour=guide_legend(override.aes=list(size=6))) +
+    xlab("") + ylab("") +
+    ggtitle("") +
+    theme_light(base_size=20) +
+    theme(axis.text.x=element_blank(),
+          axis.text.y=element_blank(),
+          legend.direction = "horizontal", 
+          legend.position = "bottom",
+          legend.box = "horizontal") + 
+    scale_colour_brewer(palette = palette) 
+}
+
+
+plot_k=plot_cluster(d_tsne_1_original, "cl_kmeans", "Accent")
+plot_h=plot_cluster(d_tsne_1_original, "cl_hierarchical", "Set1")
+
+## and finally: putting the plots side by side with gridExtra lib...
+library(gridExtra)
+grid.arrange(plot_k, plot_h,  ncol=2)
+#--------------------test--------------------------#
+
+#-------------------test2---------------------------#
+d <- dist(tsne_model_7$Y, method = "euclidean")
+
+# Hierarchical clustering using Complete Linkage
+hc1 <- hclust(d, method = "complete" )
+
+# Plot the obtained dendrogram
+plot(hc1, cex = 0.6, hang = -1)
+
+c1<-kmeans(ncentrality2[,-1], 2, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c2<-kmeans(ncentrality2, 3, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c3<-kmeans(ncentrality2, 4, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c4<-kmeans(ncentrality2, 5, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+c4<-kmeans(pcacen, 6, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+plot(ncentrality2[-1], col = c4$cluster)
+points(c4$centers, col = 1:6, pch = 8)
+
+plot(tsne_model_6$Y, col = c4$cluster)
+points(c4$centers, col = 1:6, pch = 8)
+
+#plot of clusters
+p1 <- fviz_cluster(c1, geom = "point",  data = ncentrality2) + ggtitle("k = 3")
+p2 <- fviz_cluster(c2, geom = "point", data = ncentrality2) + ggtitle("k = 4")
+p3 <- fviz_cluster(c3, geom = "point",  data = ncentrality2) + ggtitle("k = 5")
+p4 <- fviz_cluster(c4, geom = "point",  data = ncentrality2) + ggtitle("k = 6")
+
+#grid arrangement
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+#------------------test2-----------------------------#
+
+#------------------test3-----------------------------#
+
+dat = as.matrix(ncentrality2)
+
+dat = center_scale(dat)
+
+gmm = GMM(dat, 2, "maha_dist", "random_subset", 10, 10)
+
+plot(gmm$Log_likelihood,tsne_model_7$Y, col=c(1,2,3,4,5,6,7,8))
+
+xyMclust <- Mclust(ncentrality2)
+plot(xyMclust)
+summary(xyMclust, parameters = TRUE)
+
+clustgmm <- Mclust(ncentrality2,5)
+
+plot(clustgmm, what=c("classification"))
+plot(clustgmm, "density")
+plot(clustgmm, what=c("BIC"))
+#------------------test3-----------------------------#
+
+#------------------SOM-----------------------------#
+
+data_train_matrix <- as.matrix(scale(ncentrality2))
+
+# Create the SOM Grid - you generally have to specify the size of the 
+# training grid prior to training the SOM. Hexagonal and Circular 
+# topologies are possible
+som_grid <- somgrid(xdim = 20, ydim=20, topo="hexagonal")
+
+# Finally, train the SOM, options for the number of iterations,
+# the learning rates, and the neighbourhood are available
+som_model <- som(data_train_matrix, 
+                       grid = som.grid, 
+                       rlen = 100,
+                       alpha = c(0.05,0.01),
+                       keep.data = FALSE,
+                       n.hood = "circular",
+                       toroidal = T)
+plot(som_model, type="changes")
+plot(som_model, type="count")
+plot(som_model, type="dist.neighbours")
+plot(som_model, type="codes")
+
+plot(som_model, type = "property", property = som_model$codes[,4], main=names(som_model$data)[4], palette.name=coolBlueHotRed)
+
+var <- 2 #define the variable to plot 
+var_unscaled <- aggregate(as.numeric(data_train[,var]), by=list(som_model$unit.classif), FUN=mean, simplify=TRUE)[,2] 
+plot(som_model, type = "property", property=var_unscaled, main=names(data_train)[var], palette.name=coolBlueHotRed)
+
+mydata <- som_model$codes 
+wss <- (nrow(mydata)-1)*sum(apply(mydata,2,var)) 
+for (i in 2:15) {
+  wss[i] <- sum(kmeans(mydata, centers=i)$withinss)
+}
+plot(wss)
+
+## use hierarchical clustering to cluster the codebook vectors
+som_cluster <- cutree(hclust(dist(som_model$codes)), 6)
+# plot these results:
+plot(som_model, type="mapping", bgcol = pretty_palette[som_cluster], main = "Clusters") 
+add.cluster.boundaries(som_model, som_cluster)
+
+#------------------SOM-----------------------------#
