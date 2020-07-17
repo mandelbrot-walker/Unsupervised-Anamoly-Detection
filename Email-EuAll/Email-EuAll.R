@@ -586,34 +586,35 @@ grid.arrange(p5_tsne, p6_tsne, nrow = 1)
 
 #-----------------------------------------------dbscan start-----------------------------------------------------------------#
 
-bmp("dbscan_kneeplot_var6_degree.bmp", width = 1920, height = 1280)
+bmp("dbscan_kneeplot_var6_degree.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var6_degree, k =  2)
-abline(h = 0.009, lty = 2)
+abline(h = 0.01, lty = 2)
 dev.off()
 
-bmp("dbscan_kneeplot_var5.bmp", width = 1920, height = 1280)
+bmp("dbscan_kneeplot_var5.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var5, k =  2)
-abline(h = 0.009, lty = 2)
+abline(h = 0.008, lty = 2)
 dev.off()
 
-bmp("dbscan_kneeplot_var6.bmp", width = 1920, height = 1280)
+bmp("dbscan_kneeplot_var6.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var6, k =  2)
-abline(h = 0.009, lty = 2)
+abline(h = 0.01, lty = 2)
 dev.off()
 
-bmp("dbscan_kneeplot_var7.bmp", width = 1920, height = 1280)
+bmp("dbscan_kneeplot_var7.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var7, k =  2)
-abline(h = 0.009, lty = 2)
+abline(h = 0.01, lty = 2)
 dev.off()
 
-bmp("dbscan_kneeplot_var8.bmp", width = 1920, height = 1280)
+bmp("dbscan_kneeplot_var8.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var8, k =  2)
-abline(h = 0.009, lty = 2)
+abline(h = 0.01, lty = 2)
 dev.off()
 
+ranvar5<-sample_n(var5, 125000, replace = TRUE)
 set.seed(123)
-res.db <- dbscan::dbscan(pcacen2, 0.04, 2)
-fviz_cluster(res.db, pcacen2, geom = "point")
+res.db <- dbscan::dbscan(ranvar5, 0.008, 2)
+fviz_cluster(res.db, ranvar5, geom = "point")
 #-----------------------------------------------dbscan end-----------------------------------------------------------------#
 
 #~~~~~~~~~~~~~check later~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
