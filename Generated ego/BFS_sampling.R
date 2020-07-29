@@ -25,7 +25,7 @@ f1 <- function(graph, data, extra) {
 
 bfs_highest_rowsum_source  <- bfs(g, root=source_node, "all", order=TRUE, callback = f1) #run bfs
 
-sub_highest_rowsum_source <-bfs_highest_rowsum_sourcek$order[1:x] 
+sub_highest_rowsum_source <-bfs_highest_rowsum_source$order[1:x] 
 
 newgraph_highest_rowsum_source = induced.subgraph(g, sub_highest_rowsum_source) #generate igraph of subgraph
 
