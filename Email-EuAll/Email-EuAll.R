@@ -15,6 +15,7 @@ library(CINNA)
 library(ClusterR)
 library(mclust)
 library(kohonen)
+library(kernlab)
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("Email-EuAll.txt",header = TRUE, sep = "\t")
 
@@ -95,7 +96,7 @@ var8<-ncentrality
 var7<-within(ncentrality, rm(degree)) #  without degree total 7 variables
 var6<-within(var7, rm(hubscore)) #  without hubscore total 6 variables
 var5<-within(var6, rm(authorities)) #  without degree, authorities, hubscore total 5 variables
-var6_degree<-within(ncentrality, rm(authorities,hubscore)) #  without authorities, hubscore total 5 variables
+var6_degree<-within(ncentrality, rm(authorities,hubscore)) #  without authorities, hubscore total 6 variables
   
 #------------------------------------------Data loader and centrality calculation End-------------------------------------#
 
@@ -132,8 +133,8 @@ dev.off()
 
 #principal component analysis
 
-res.pca6_degree<-prcomp(scale(var6_degree),center=TRUE) #  with degree 5 variables 
-res.pca5<-prcomp(scale(var5),center=TRUE) #  without degree 5 variables 
+res.pca6_degree<-prcomp(scale(var6_degree),center=TRUE) #  6 variables with degree 
+res.pca5<-prcomp(scale(var5),center=TRUE) #  5 variables 
 res.pca6<-prcomp(scale(var6),center=TRUE) #  6 variables
 res.pca7<-prcomp(scale(var7),center=TRUE) #  7 variables 
 res.pca8<-prcomp(scale(var8),center=TRUE) #  8 variables
@@ -226,30 +227,34 @@ bmp("cos2 contribution.bmp", width = 1920, height = 1080)
 grid.arrange(p1, p2, p3, p4, p5, nrow = 2)
 dev.off()
 
-eig.val6_degree<-get_eigenvalue(res.pca6_degree) 
+eig.val6_degree<-get_eigenvalue(res.pca6_degree)  #  gets eigenvalues 
 eig.val5 <- get_eigenvalue(res.pca5) 
 eig.val6 <- get_eigenvalue(res.pca6) 
 eig.val7 <- get_eigenvalue(res.pca7) 
 eig.val8 <- get_eigenvalue(res.pca8) 
 eig.val6_degree #  shows eigenvalues 
-eig.val5
+eig.val5        
 eig.val6
 eig.val7
 eig.val8
 
 
 #  Results for Variables
-res.var <- get_pca_var(res.pca8)#without degree 8 variables 
-res.var$coord          # Coordinates
-res.var$contrib        # Contributions to the PCs
-res.var$cos2           # Quality of representation 
+res.var <- get_pca_var(res.pca8)#  8 variables 
+res.var$coord          #  Coordinates
+res.var$contrib        #  Contributions to the PCs
+res.var$cos2           #  Quality of representation 
 
 #------------------------------------------PCA end-------------------------------------#
 
+save.image(".Rdata",safe = TRUE)
+
 #------------------------------------------------Custom tsne---------------------------------------------------#
 
-ncen_tr<-transpose(ncentrality) #transpose ncentrality for tsne
+ncen_tr<-transpose(ncentrality) #  transpose ncentrality for tsne colors
 ncen_tr<-data.frame(names = c('degree','eigenvector','closeness','pagerank','crossclique','betweeness','hubscore','authorities'),ncen_tr) #y label
+
+#  color legend
 colors_v8<-c("red","purple","blue","green","black","yellow","orange","magenta")
 #  red = degree , purple = eigenvector, blue = closeness, green = pagerank, black = crossclique 
 #  yellow = betweeness, orange = hubscore, magenta = authorities
@@ -257,7 +262,7 @@ colors_v7<-c("purple","blue","green","black","yellow","orange","magenta")
 colors_v6<-c("purple","blue","green","black","yellow","magenta")
 colors_v5<-c("purple","blue","green","black","yellow")
 colors_v6_degree<-c("red","purple","blue","green","black","yellow","orange","magenta")
-#var6_degree var5 var6 var7 var8    
+#  datasets: var6_degree var5 var6 var7 var8    
 
 #-------------------------------------------------------tsne model 1 start--------------------------------------------#
 set.seed(32)  
@@ -272,6 +277,7 @@ tsne_model_1_var5 = Rtsne(var5, check_duplicates=FALSE, pca=TRUE, perplexity=50,
                      verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 7)
 bmp("tsne_model_1_var5.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_var5$Y,col=colors_v5, asp=1)
+dev.off()
 
 set.seed(32)  
 tsne_model_1_var6 = Rtsne(var6, check_duplicates=FALSE, pca=TRUE, perplexity=50, theta=0.20, dims=2, max_iter = 2000,
@@ -293,8 +299,10 @@ tsne_model_1_var8 = Rtsne(var8, check_duplicates=FALSE, pca=TRUE, perplexity=50,
 bmp("tsne_model_1_var8.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_var8$Y,col=colors_v8, asp=1)
 dev.off()
+
 #-------------------------------------------------------tsne model 1 end--------------------------------------------#
 
+save.image(".Rdata",safe = TRUE)
 
 #-------------------------------------------------------tsne model 2 start--------------------------------------------#
 set.seed(323)  
@@ -333,87 +341,92 @@ plot(tsne_model_2_var8$Y,col=colors_v8, asp=1)
 dev.off()
 #-------------------------------------------------------tsne model 2 end--------------------------------------------#
 
+save.image(".Rdata",safe = TRUE)
 
 #-------------------------------------------------------tsne model 3 start--------------------------------------------#
 set.seed(333)  
 tsne_model_3_var6_degree = Rtsne(var6_degree, check_duplicates=FALSE, pca=TRUE, perplexity=30, theta=0.50, dims=2, max_iter = 1000,
-                     verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 6) #lowest error
+                     verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 10) #lowest error
 bmp("tsne_model_3_var6_degree.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_var6_degree$Y,col=colors_v6_degree, asp=1)
 dev.off()
 
 set.seed(333)  
 tsne_model_3_var5 = Rtsne(var5, check_duplicates=FALSE, pca=TRUE, perplexity=30, theta=0.50, dims=2, max_iter = 1000,
-                     verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 6) #lowest error
+                     verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 10) #lowest error
 bmp("tsne_model_3_var5.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_var5$Y,col=colors_v5, asp=1)
 dev.off()
 
 set.seed(333)  
 tsne_model_3_var6 = Rtsne(var6, check_duplicates=FALSE, pca=TRUE, perplexity=30, theta=0.50, dims=2, max_iter = 1000,
-                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 6) #lowest error
+                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 10) #lowest error
 bmp("tsne_model_3_var6.bmp", width = 1920, height = 1080)
-plot(tsne_model_3_var5$Y,col=colors_v5, asp=1)
+plot(tsne_model_3_var6$Y,col=colors_v6, asp=1)
 dev.off()
 
 set.seed(333)  
 tsne_model_3_var7 = Rtsne(var7, check_duplicates=FALSE, pca=TRUE, perplexity=30, theta=0.50, dims=2, max_iter = 1000,
-                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 6) #lowest error
+                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 10) #lowest error
 bmp("tsne_model_3_var7.bmp", width = 1920, height = 1080)
-plot(tsne_model_3_var7$Y,col=colors_v5, asp=1)
+plot(tsne_model_3_var7$Y,col=colors_v7, asp=1)
 dev.off()
 
 set.seed(333)  
 tsne_model_3_var8 = Rtsne(var8, check_duplicates=FALSE, pca=TRUE, perplexity=30, theta=0.50, dims=2, max_iter = 1000,
-                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 6) #lowest error
+                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 10) #lowest error
 bmp("tsne_model_3_var8.bmp", width = 1920, height = 1080)
-plot(tsne_model_3_var8$Y,col=colors_v5, asp=1)
+plot(tsne_model_3_var8$Y,col=colors_v8, asp=1)
 dev.off()
 #-------------------------------------------------------tsne model 3 end--------------------------------------------#
 
+save.image(".Rdata",safe = TRUE)
 
 #-------------------------------------------------------tsne model 4 start--------------------------------------------#
 set.seed(358)  
-tsne_model_4_var6_degree = Rtsne(var6_degree, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 5000,
+tsne_model_4_var6_degree = Rtsne(var6_degree, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 1500,
                      verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 7)
 bmp("tsne_model_4_var6_degree.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_var6_degree$Y,col=colors_v6_degree, asp=1)
 dev.off()
 
 set.seed(358)  
-tsne_model_4_var5 = Rtsne(var5, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 5000,
+tsne_model_4_var5 = Rtsne(var5, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 1500,
                           verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 7)
 bmp("tsne_model_4_var5.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_var5$Y,col=colors_v5, asp=1)
 dev.off()
 
 set.seed(358)  
-tsne_model_4_var6 = Rtsne(var6, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 5000,
+tsne_model_4_var6 = Rtsne(var6, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 1500,
                           verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 7)
 bmp("tsne_model_4_var6.bmp", width = 1920, height = 1080)
-plot(tsne_model_4_var6$Y,col=colors_v5, asp=1)
+plot(tsne_model_4_var6$Y,col=colors_v6, asp=1)
 dev.off()
 
 set.seed(358)  
-tsne_model_4_var7 = Rtsne(var7, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 5000,
+tsne_model_4_var7 = Rtsne(var7, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 1500,
                           verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 7)
-bmp("tsne_model_7_var5.bmp", width = 1920, height = 1080)
-plot(tsne_model_7_var5$Y,col=colors_v5, asp=1)
+bmp("tsne_model_4_var7.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_var7$Y,col=colors_v7, asp=1)
 dev.off()
 
 set.seed(358)  
-tsne_model_4_var8 = Rtsne(var5, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 5000,
+tsne_model_4_var8 = Rtsne(var5, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 1500,
                           verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 7)
 bmp("tsne_model_4_var8.bmp", width = 1920, height = 1080)
-plot(tsne_model_4_var8$Y,col=colors_v5, asp=1)
+plot(tsne_model_4_var8$Y,col=colors_v8, asp=1)
 dev.off()
+
 #-------------------------------------------------------tsne model 4 end--------------------------------------------#
 
+save.image(".Rdata",safe = TRUE)
 d_tsne_1 = as.data.frame(tsne_model_2_8var$Y) #list to dataframe
 d_tsne_1_original=d_tsne_1 #keeping the original
 
 #---------------------------------------------------------------------------------------------------------------------------#
 
+save.image("backup.Rdata",safe = TRUE)
 
 #---------------------------------------------kmeans start------------------------------------------------------#
 
@@ -550,7 +563,7 @@ dev.off()
 c_ncentrality<-kmeans(ncentrality, 2, iter.max = 20, nstart = 25,
            algorithm = c("Hartigan-Wong"), trace=FALSE)
 
-bmp("kmeans_pca_ncentrality_k2.bmp", width = 1920, height = 1280)
+bmp("kmeans_ncentrality_k2.bmp", width = 1920, height = 1280)
 plot(ncentrality, col = c_ncentrality$cluster)
 points(c_ncentrality$centers, col = 1:6, pch = 8)
 dev.off()
@@ -558,34 +571,186 @@ dev.off()
 c_ncentrality<-kmeans(ncentrality, 3, iter.max = 20, nstart = 25,
                       algorithm = c("Hartigan-Wong"), trace=FALSE)
 
-bmp("kmeans_pca_ncentrality_k3.bmp", width = 1920, height = 1280)
+bmp("kmeans_ncentrality_k3.bmp", width = 1920, height = 1280)
 plot(ncentrality, col = c_ncentrality$cluster)
 points(c_ncentrality$centers, col = 1:6, pch = 8)
 dev.off()
 
-#-------------check later--------------------------------------#
-#~~~~~~~~~~~~~check later~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-plot(tsne_model_3$Y, col = c4$cluster)
-points(c4$centers, col = 1:6, pch = 8)
+rm(p1,p2,p3,p4,p5)
+
+#-------------TSNE data frames for kmeans start--------------------------------------#
+#~~~~~~~~~~~~~tsne model 1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+d_tsne_1_var6_degree = as.data.frame(tsne_model_1_var6_degree$Y) #list to dataframe var6 degree
+d_tsne_1_var5 = as.data.frame(tsne_model_1_var5$Y) #list to dataframe var 5
+d_tsne_1_var6 = as.data.frame(tsne_model_1_var6$Y) #list to dataframe var 6
+d_tsne_1_var7 = as.data.frame(tsne_model_1_var7$Y) #list to dataframe var 7
+d_tsne_1_var8 = as.data.frame(tsne_model_1_var8$Y) #list to dataframe var 8
 
 
-#clustering for tsne model
-c5<-kmeans(d_tsne_1, 4, iter.max = 20, nstart = 25,
+#~~~~~~~~~~~~~tsne model 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+d_tsne_2_var6_degree = as.data.frame(tsne_model_2_var6_degree$Y) #list to dataframe var6 degree
+d_tsne_2_var5 = as.data.frame(tsne_model_2_var5$Y) #list to dataframe var 5
+d_tsne_2_var6 = as.data.frame(tsne_model_2_var6$Y) #list to dataframe var 6
+d_tsne_2_var7 = as.data.frame(tsne_model_2_var7$Y) #list to dataframe var 7
+d_tsne_2_var8 = as.data.frame(tsne_model_2_var8$Y) #list to dataframe var 8
+
+#~~~~~~~~~~~~~tsne model 3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+d_tsne_3_var6_degree = as.data.frame(tsne_model_3_var6_degree$Y) #list to dataframe var6 degree
+d_tsne_3_var5 = as.data.frame(tsne_model_3_var5$Y) #list to dataframe var 5
+d_tsne_3_var6 = as.data.frame(tsne_model_3_var6$Y) #list to dataframe var 6
+d_tsne_3_var7 = as.data.frame(tsne_model_3_var7$Y) #list to dataframe var 7
+d_tsne_3_var8 = as.data.frame(tsne_model_3_var8$Y) #list to dataframe var 8
+
+#~~~~~~~~~~~~~tsne model 4~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+d_tsne_4_var6_degree = as.data.frame(tsne_model_4_var6_degree$Y) #list to dataframe var6 degree
+d_tsne_4_var5 = as.data.frame(tsne_model_4_var5$Y) #list to dataframe var 5
+d_tsne_4_var6 = as.data.frame(tsne_model_4_var6$Y) #list to dataframe var 6
+d_tsne_4_var7 = as.data.frame(tsne_model_4_var7$Y) #list to dataframe var 7
+d_tsne_4_var8 = as.data.frame(tsne_model_4_var8$Y) #list to dataframe var 8
+
+#-------------TSNE data frames for kmeans end--------------------------------------#
+
+#-------------kmeans on dataset and cluster onto TSNE start-------------------------------------------------#
+
+#----------------------kmenas k=2------------------------------------#
+
+c1<-kmeans(var6_degree, 2, iter.max = 20, nstart = 25,
            algorithm = c("Hartigan-Wong"), trace=FALSE)
-c6<-kmeans(d_tsne_1, 5, iter.max = 20, nstart = 25,
+c2<-kmeans(var5, 2, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c3<-kmeans(var6, 2, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c4<-kmeans(var7, 2, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c5<-kmeans(var8, 2, iter.max = 20, nstart = 25,
            algorithm = c("Hartigan-Wong"), trace=FALSE)
 
-p5_tsne <- fviz_cluster(c5, geom = "point",  data = d_tsne_1) + ggtitle("k = 4")
-p6_tsne <- fviz_cluster(c6, geom = "point",  data = d_tsne_1) + ggtitle("k = 5")
+#----------------------kmenas k=3------------------------------------#
 
-grid.arrange(p5_tsne, p6_tsne, nrow = 1)
-#~~~~~~~~~~~~~check later~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#-------------check later--------------------------------------#
+c6<-kmeans(var6_degree, 3, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c7<-kmeans(var5, 3, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c8<-kmeans(var6, 3, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c9<-kmeans(var7, 3, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+c10<-kmeans(var8, 3, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
 
-#---------------------------------------------kmeans end------------------------------------------------------#
+#Kmeans for tsne model 1
 
-#-----------------------------------------------dbscan start-----------------------------------------------------------------#
+p1 <- fviz_cluster(c1, geom = "point",  data = d_tsne_1_var6_degree) + ggtitle("k = 2 var6 degree")
+p2 <- fviz_cluster(c2, geom = "point",  data = d_tsne_1_var5) + ggtitle("k = 2 var5")
+p3 <- fviz_cluster(c3, geom = "point",  data = d_tsne_1_var6) + ggtitle("k = 2 var6")
+p4 <- fviz_cluster(c4, geom = "point",  data = d_tsne_1_var7) + ggtitle("k = 2 var7")
+p5 <- fviz_cluster(c5, geom = "point",  data = d_tsne_1_var8) + ggtitle("k = 2 var8")
 
+
+bmp("tsne_model1_kmeans_k2.bmp", width = 2560, height = 1280)
+grid.arrange(p1, p2, p3,p4,p5, ncol = 5, nrow = 1)
+dev.off()
+
+p1 <- fviz_cluster(c6, geom = "point",  data = d_tsne_1_var6_degree) + ggtitle("k = 3 var6 degree")
+p2 <- fviz_cluster(c7, geom = "point",  data = d_tsne_1_var5) + ggtitle("k = 3 var5")
+p3 <- fviz_cluster(c8, geom = "point",  data = d_tsne_1_var6) + ggtitle("k = 3 var6")
+p4 <- fviz_cluster(c9, geom = "point",  data = d_tsne_1_var7) + ggtitle("k = 3 var7")
+p5 <- fviz_cluster(c10, geom = "point",  data = d_tsne_1_var8) + ggtitle("k = 3 var8")
+
+
+bmp("tsne_model1_kmeans_k3.bmp", width = 2560, height = 1280)
+grid.arrange(p1, p2, p3,p4,p5, ncol = 5, nrow = 1)
+dev.off()
+
+#Kmeans for tsne model 2
+
+p1 <- fviz_cluster(c1, geom = "point",  data = d_tsne_2_var6_degree) + ggtitle("k = 2 var6 degree")
+p2 <- fviz_cluster(c2, geom = "point",  data = d_tsne_2_var5) + ggtitle("k = 2 var5")
+p3 <- fviz_cluster(c3, geom = "point",  data = d_tsne_2_var6) + ggtitle("k = 2 var6")
+p4 <- fviz_cluster(c4, geom = "point",  data = d_tsne_2_var7) + ggtitle("k = 2 var7")
+p5 <- fviz_cluster(c5, geom = "point",  data = d_tsne_2_var8) + ggtitle("k = 2 var8")
+
+
+bmp("tsne_model2_kmeans_k2.bmp", width = 2560, height = 1280)
+grid.arrange(p1, p2, p3,p4,p5, ncol = 5, nrow = 1)
+dev.off()
+
+p1 <- fviz_cluster(c6, geom = "point",  data = d_tsne_2_var6_degree) + ggtitle("k = 3 var6 degree")
+p2 <- fviz_cluster(c7, geom = "point",  data = d_tsne_2_var5) + ggtitle("k = 3 var5")
+p3 <- fviz_cluster(c8, geom = "point",  data = d_tsne_2_var6) + ggtitle("k = 3 var6")
+p4 <- fviz_cluster(c9, geom = "point",  data = d_tsne_2_var7) + ggtitle("k = 3 var7")
+p5 <- fviz_cluster(c10, geom = "point",  data = d_tsne_2_var8) + ggtitle("k = 3 var8")
+
+
+bmp("tsne_model2_kmeans_k3.bmp", width = 2560, height = 1280)
+grid.arrange(p1, p2, p3,p4,p5, ncol = 5, nrow = 1)
+dev.off()
+
+#Kmeans for tsne model 3
+
+p1 <- fviz_cluster(c1, geom = "point",  data = d_tsne_3_var6_degree) + ggtitle("k = 2 var6 degree")
+p2 <- fviz_cluster(c2, geom = "point",  data = d_tsne_3_var5) + ggtitle("k = 2 var5")
+p3 <- fviz_cluster(c3, geom = "point",  data = d_tsne_3_var6) + ggtitle("k = 2 var6")
+p4 <- fviz_cluster(c4, geom = "point",  data = d_tsne_3_var7) + ggtitle("k = 2 var7")
+p5 <- fviz_cluster(c5, geom = "point",  data = d_tsne_3_var8) + ggtitle("k = 2 var8")
+
+
+bmp("tsne_model3_kmeans_k2.bmp", width = 2560, height = 1280)
+grid.arrange(p1, p2, p3,p4,p5, ncol = 5, nrow = 1)
+dev.off()
+
+p1 <- fviz_cluster(c6, geom = "point",  data = d_tsne_3_var6_degree) + ggtitle("k = 3 var6 degree")
+p2 <- fviz_cluster(c7, geom = "point",  data = d_tsne_3_var5) + ggtitle("k = 3 var5")
+p3 <- fviz_cluster(c8, geom = "point",  data = d_tsne_3_var6) + ggtitle("k = 3 var6")
+p4 <- fviz_cluster(c9, geom = "point",  data = d_tsne_3_var7) + ggtitle("k = 3 var7")
+p5 <- fviz_cluster(c10, geom = "point",  data = d_tsne_3_var8) + ggtitle("k = 3 var8")
+
+
+bmp("tsne_model3_kmeans_k3.bmp", width = 2560, height = 1280)
+grid.arrange(p1, p2, p3,p4,p5, ncol = 5, nrow = 1)
+dev.off()
+
+#Kmeans for tsne model 4
+
+p1 <- fviz_cluster(c1, geom = "point",  data = d_tsne_4_var6_degree) + ggtitle("k = 2 var6 degree")
+p2 <- fviz_cluster(c2, geom = "point",  data = d_tsne_4_var5) + ggtitle("k = 2 var5")
+p3 <- fviz_cluster(c3, geom = "point",  data = d_tsne_4_var6) + ggtitle("k = 2 var6")
+p4 <- fviz_cluster(c4, geom = "point",  data = d_tsne_4_var7) + ggtitle("k = 2 var7")
+p5 <- fviz_cluster(c5, geom = "point",  data = d_tsne_4_var8) + ggtitle("k = 2 var8")
+
+
+bmp("tsne_model4_kmeans_k2.bmp", width = 2560, height = 1280)
+grid.arrange(p1, p2, p3,p4,p5, ncol = 5, nrow = 1)
+dev.off()
+
+p1 <- fviz_cluster(c6, geom = "point",  data = d_tsne_4_var6_degree) + ggtitle("k = 3 var6 degree")
+p2 <- fviz_cluster(c7, geom = "point",  data = d_tsne_4_var5) + ggtitle("k = 3 var5")
+p3 <- fviz_cluster(c8, geom = "point",  data = d_tsne_4_var6) + ggtitle("k = 3 var6")
+p4 <- fviz_cluster(c9, geom = "point",  data = d_tsne_4_var7) + ggtitle("k = 3 var7")
+p5 <- fviz_cluster(c10, geom = "point",  data = d_tsne_4_var8) + ggtitle("k = 3 var8")
+
+
+bmp("tsne_model4_kmeans_k3.bmp", width = 2560, height = 1280)
+grid.arrange(p1, p2, p3,p4,p5, ncol = 5, nrow = 1)
+dev.off()
+
+rm(c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,p1,p2,p3,p4,p5)
+rm(d_tsne_1_var6_degree,d_tsne_1_var5,d_tsne_1_var6, d_tsne_1_var7, d_tsne_1_var8)
+rm(d_tsne_2_var6_degree,d_tsne_2_var5,d_tsne_2_var6, d_tsne_2_var7, d_tsne_2_var8)
+rm(d_tsne_3_var6_degree,d_tsne_3_var5,d_tsne_3_var6, d_tsne_3_var7, d_tsne_3_var8)
+rm(d_tsne_4_var6_degree,d_tsne_4_var5,d_tsne_4_var6, d_tsne_4_var7, d_tsne_4_var8)
+
+#-----------------------kmeans on dataset and cluster onto TSNE end------------------------------------------------------#
+
+save.image(".Rdata",safe = TRUE)
+
+#-------------------------------------------dbscan start-----------------------------------------------------------------#
+
+#---------------------------------------calculating h start------------------------------------------#
 bmp("dbscan_kneeplot_var6_degree.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var6_degree, k =  2)
 abline(h = 0.01, lty = 2)
@@ -610,47 +775,60 @@ bmp("dbscan_kneeplot_var8.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var8, k =  2)
 abline(h = 0.01, lty = 2)
 dev.off()
+#---------------------------------------calculating h end------------------------------------------#
 
-ranvar5<-sample_n(var5, 125000, replace = TRUE)
+#---------------------------------------plotting dbscan start--------------------------------------------------#
+ranvar<-sample_n(var6_degree, 100000, replace = TRUE)
 set.seed(123)
-res.db <- dbscan::dbscan(ranvar5, 0.008, 2)
-fviz_cluster(res.db, ranvar5, geom = "point")
+res.db <- dbscan::dbscan(ranvar, 0.01, 2)
+gc()
+bmp("dbscan_var6_degree.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, ranvar, geom = "point")
+dev.off()
+
+gc()
+ranvar<-sample_n(var5, 100000, replace = TRUE)
+set.seed(123)
+res.db <- dbscan::dbscan(ranvar, 0.008, 2)
+gc()
+bmp("dbscan_var5.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, ranvar, geom = "point")
+dev.off()
+
+gc()
+ranvar<-sample_n(var6, 100000, replace = TRUE)
+set.seed(123)
+res.db <- dbscan::dbscan(ranvar, 0.01, 2)
+gc()
+bmp("dbscan_var6.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, ranvar, geom = "point")
+dev.off()
+
+gc()
+ranvar<-sample_n(var7, 100000, replace = TRUE)
+set.seed(123)
+res.db <- dbscan::dbscan(ranvar, 0.01, 2)
+gc()
+bmp("dbscan_var7.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, ranvar, geom = "point")
+dev.off()
+
+gc()
+ranvar<-sample_n(var8, 100000, replace = TRUE)
+set.seed(123)
+res.db <- dbscan::dbscan(ranvar, 0.01, 2)
+gc()
+bmp("dbscan_var8.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, ranvar, geom = "point")
+dev.off()
+
+#---------------------------------------plotting dbscan end--------------------------------------------------#
+
 #-----------------------------------------------dbscan end-----------------------------------------------------------------#
 
 #~~~~~~~~~~~~~check later~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #-------------check later--------------------------------------#
-#-------------------TSNE_kmeans_hierarchihcal---------------------------#
-## keeping original data
-d_tsne_1_original=as.data.frame(tsne_model_4$Y)
-d_tsne_1 =tsne_model_4
-
-# function to compute total within-cluster sum of square 
-wss <- function(k) {
-  kmeans(var8, k, nstart = 10 )$tot.withinss
-}
-
-# Compute and plot wss for k = 1 to k = 15
-k.values <- 1:15
-
-# extract wss for 2-15 clusters
-wss_values <- map_dbl(k.values, wss)
-
-bmp("kmeans_kneeplot_var8.bmp", width = 1280, height = 720)
-plot(k.values, wss_values,
-     type="b", pch = 19, frame = FALSE, 
-     xlab="Number of clusters K",
-     ylab="Total within-clusters sum of squares") #kneeplot
-dev.off()
-
-## Creating k-means clustering model, and assigning the result to the data used to create the tsne
-fit_cluster_kmeans=kmeans(scale(d_tsne_1), 3)
-d_tsne_1_original$cl_kmeans = factor(fit_cluster_kmeans$cluster)
-
-## Creating hierarchical cluster model, and assigning the result to the data used to create the tsne
-fit_cluster_hierarchical=hclust(dist(scale(d_tsne_1)))
-
-## setting 3 clusters as output
-d_tsne_1_original$cl_hierarchical = factor(cutree(fit_cluster_hierarchical, k=3))
+#-------------------TSNE_kmeans_without_convex_hull_start---------------------------#if necessary later
 
 plot_cluster=function(data, var_cluster, palette)
 {
@@ -667,18 +845,20 @@ plot_cluster=function(data, var_cluster, palette)
           legend.box = "horizontal") + 
     scale_colour_brewer(palette = palette) 
 }
+c5<-kmeans(var8, 2, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
 
-
-plot_k=plot_cluster(d_tsne_1_original, "cl_kmeans", "Accent")
-plot_h=plot_cluster(d_tsne_1_original, "cl_hierarchical", "Set1")
+plot_k=plot_cluster(as.data.frame(tsne_model_1_var8$Y), factor(c5$cluster), "Accent")
 
 ## and finally: putting the plots side by side with gridExtra lib...
 
-grid.arrange(plot_k, plot_h,  ncol=2)
-#--------------------TSNE_kmeans_hierarchihcal--------------------------#
+#grid.arrange(plot_k, plot_h,  ncol=2)
+grid.arrange(plot_k, nrow=1)
 
-#-------------------TSNE_dendogram---------------------------#
-d <- dist(tsne_model_4$Y, method = "euclidean")
+#--------------------TSNE_kmeans_without_convex_hull_end--------------------------#
+
+#-------------------Dataset and TSNE dendogram---------------------------#Error: cannot allocate vector of size 262.0 Gb
+d <- dist(tsne_model_1_var8$Y, method = "euclidean")
 
 # Hierarchical clustering using Complete Linkage
 hc1 <- hclust(d, method = "complete" )
@@ -686,19 +866,44 @@ hc1 <- hclust(d, method = "complete" )
 # Plot the obtained dendrogram
 plot(hc1, cex = 0.6, hang = -1)
 
-#------------------TSNE_dendogram-----------------------------#
-#~~~~~~~~~~~~~check later~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#-------------check later--------------------------------------#
+#------------------Dataset and TSNE dendogram-----------------------------#Not possible
+
+#----------------------test----------#
+library(dimRed)
+
+setClass("test", slots = c(eigenvector="numeric", closeness="numeric",
+                           pagerank="numeric", crossclique="numeric",betweenness="numeric", data = "data.frame"))
+tt <- new("test", eigenvector = var5$eigenvector, closeness = var5$closeness,pagerank = var5$pagerank, 
+          crossclique = var5$crossclique,betweenness = var5$betweenness, data = var5)
+str(tt)
+
+
+t<-as.dimRedData(eigenvector~eigenvector+closeness+pagerank+crossclique+betweenness,var5)
+
+hlle <- HLLE()
+emb <- hlle@fun(tt, hlle@stdpars)
+
+## using embed():
+emb2 <- embed(dat, "HLLE", knn = 45)
+
+plot(emb, type = "2vars")
+plot(emb2, type = "2vars")
+
+#----------------test-------------#
+
+
 
 #------------------GMM-----------------------------#
 
-dat = as.matrix(ncentrality2)
+dat = as.matrix(var8)
 
 dat = center_scale(dat)
 
 gmm = GMM(dat, 2, "maha_dist", "random_subset", 10, 10)
 
 plot(gmm$Log_likelihood,tsne_model_4$Y, col=c(1,2,3,4,5,6,7,8))
+
+plot(as.data.frame(tsne_model_1_var8$Y), col=factor(gmm$centroids))
 
 xyMclust <- Mclust(ncentrality2)
 plot(xyMclust)
@@ -710,6 +915,33 @@ plot(clustgmm, what=c("classification"))
 plot(clustgmm, "density")
 plot(clustgmm, what=c("BIC"))
 #------------------GMM-----------------------------#
+
+#------------------KPCA---------------------------#
+testmat<-as.matrix(var8)
+
+kpc <- kha(testmat,kernel="rbfdot",
+           kpar=list(sigma=0.2), eta=0.005, th = 0.001, maxiter=30, verbose = TRUE)
+
+#print the principal component vectors
+pcv(kpc)
+
+#plot the data projection on the components
+plot(var8,col=colors_v8,
+     xlab="1st Principal Component",ylab="2nd Principal Component")
+
+sc <- specc(as.matrix(ncen_tr), centers = 2, kernel = "rbfdot", kpar = "automatic", nystrom.red = TRUE, nystrom.sample = 30000,
+            iterations = 100, mod.sample = 0.5)
+
+sc
+centers(sc)
+size(sc)
+withinss(sc)
+
+plot(spirals, col=sc)
+
+#------------------KPCA---------------------------#
+
+
 
 #------------------SOM-----------------------------#
 
