@@ -28,10 +28,10 @@ cent<-proper_centralities(g)
 #calculate_centralities(g, include = cent[1:50])%>%
 #  pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
 
-dg<-degree(g) #  Calculation of Degre centrality
+dg<-degree(g) #  Calculation of Degree centrality
 write.csv(dg, "dg_Email_EuAll.csv")
 
-btn<-betweenness(g) #  Calculation of Betweeness centrality
+btn<-betweenness(g) #  Calculation of Betweenness centrality
 write.csv(btn, "btn_Email_EuAll.csv")
 
 eig<-evcent(g)$vector #  Calculation of Eigenvector centrality
@@ -826,8 +826,6 @@ dev.off()
 
 #-----------------------------------------------dbscan end-----------------------------------------------------------------#
 
-#~~~~~~~~~~~~~check later~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#-------------check later--------------------------------------#
 #-------------------TSNE_kmeans_without_convex_hull_start---------------------------#if necessary later
 
 plot_cluster=function(data, var_cluster, palette)
