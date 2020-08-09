@@ -19,6 +19,7 @@ library(kernlab)
 library(Rdimtools)
 library(scatterplot3d)
 library(rgl)
+library(fpc)
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("p2p-Gnutella04.txt",header = TRUE, sep = "\t")
@@ -119,29 +120,6 @@ write.csv(ncentrality,"NCentrality_p2p_Gnutella04.csv")
 
 #------------------------------------------Write data end-------------------------------------#
 
-#------------------------------------------Boxplot start-------------------------------------#
-M <- cor(ncentrality)
-
-#plot correlation matrix
-bmp("corrplot.bmp", width = 1280, height = 720)
-c<-corrplot(M, method = "circle") # correlation matrix 
-dev.off()
-
-#plot boxplot
-bmp("boxplot.bmp", width = 1280, height = 720)
-boxplot(ndegree, neigenvector, ncloseness, npagerank,ncrossclique,nbetweenness,nhubscore,nauthorities,
-        main = "Multiple boxplots for comparision",
-        at = c(1,2,3,4,5,6,7,8),
-        names = c("degree", "eigenvector", "closeness", "pagerank","crossclique","betweenness","hubscore","authorities"),
-        las = 2,
-        col = c("orange","red"),
-        border = "brown",
-        horizontal = TRUE,
-        notch = FALSE
-) #multiple boxplot 
-dev.off()
-#------------------------------------------Boxplot end-------------------------------------#
-
 #------------------------------------------Boxplot and corelation matrix start-------------------------------------#
 M <- cor(ncentrality)
 
@@ -182,11 +160,12 @@ print(res.pca6)
 print(res.pca7)
 print(res.pca8)
 
-p1<-fviz_eig(res.pca6_degree,addlabels = TRUE)#Scree plot 5 var
-p2<-fviz_eig(res.pca5,addlabels = TRUE)#Scree plot 5 var
-p3<-fviz_eig(res.pca6,addlabels = TRUE) #Scree plot 6 var
-p4<-fviz_eig(res.pca7,addlabels = TRUE)#Scree plot 7 var
-p5<-fviz_eig(res.pca8,addlabels = TRUE)#Scree plot 8 var
+
+p1<-fviz_eig(res.pca6_degree$Y,addlabels = TRUE)#Scree plot 5 var
+p2<-fviz_eig(as.data.frame(res.pca5$Y),addlabels = TRUE)#Scree plot 5 var
+p3<-fviz_eig(as.data.frame(res.pca6$Y),addlabels = TRUE) #Scree plot 6 var
+p4<-fviz_eig(as.data.frame(res.pca7$Y),addlabels = TRUE)#Scree plot 7 var
+p5<-fviz_eig(as.data.frame(res.pca8$Y),addlabels = TRUE)#Scree plot 8 var
 
 #plot screeplot
 bmp("screeplot.bmp", width = 1920, height = 1080)
@@ -518,6 +497,7 @@ c3<-kmeans(var6_degree, 4, iter.max = 20, nstart = 25,
            algorithm = c("Hartigan-Wong"), trace=FALSE)
 c4<-kmeans(var6_degree, 5, iter.max = 20, nstart = 25,
            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
 #plot of clusters
 p1 <- fviz_cluster(c1, geom = "point",  data = var6_degree) + ggtitle("k = 2")
 p2 <- fviz_cluster(c2, geom = "point", data = var6_degree) + ggtitle("k = 3")
@@ -609,7 +589,7 @@ c_ncentrality<-kmeans(ncentrality, 2, iter.max = 20, nstart = 25,
 
 bmp("kmeans_ncentrality_k2.bmp", width = 1920, height = 1280)
 plot(ncentrality, col = c_ncentrality$cluster)
-points(c_ncentrality$centers, col = 1:6, pch = 8)
+points(c_ncentrality$centers, col = 1:8, pch = 8)
 dev.off()
 
 c_ncentrality<-kmeans(ncentrality, 3, iter.max = 20, nstart = 25,
@@ -617,10 +597,15 @@ c_ncentrality<-kmeans(ncentrality, 3, iter.max = 20, nstart = 25,
 
 bmp("kmeans_ncentrality_k3.bmp", width = 1920, height = 1280)
 plot(ncentrality, col = c_ncentrality$cluster)
-points(c_ncentrality$centers, col = 1:6, pch = 8)
+points(c_ncentrality$centers, col = 1:8, pch = 8)
 dev.off()
 
 rm(p1,p2,p3,p4,p5)
+
+round(calinhara(var8,c1$cluster),digits=2) #  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(var8,c2$cluster),digits=3)
+round(calinhara(var8,c3$cluster),digits=4)
+round(calinhara(var8,c4$cluster),digits=5)
 
 #-------------TSNE data frames for kmeans start--------------------------------------#
 #~~~~~~~~~~~~~tsne model 1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -672,6 +657,23 @@ c4<-kmeans(var7, 2, iter.max = 20, nstart = 25,
            algorithm = c("Hartigan-Wong"), trace=FALSE)
 c5<-kmeans(var8, 2, iter.max = 20, nstart = 25,
            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+c1<-kGmedian(var6_degree, ncenters=2, gamma=1.05, alpha=0.75, nstart = 25, nstartkmeans = 10, 
+             iter.max = 20)
+c2<-kGmedian(var5, ncenters=2, gamma=1.05, alpha=0.75, nstart = 25, nstartkmeans = 10, 
+             iter.max = 20)
+c3<-kGmedian(var6, ncenters=2, gamma=1.05, alpha=0.75, nstart = 25, nstartkmeans = 10, 
+             iter.max = 20)
+c4<-kGmedian(var7, ncenters=2, gamma=1.05, alpha=0.75, nstart = 25, nstartkmeans = 10, 
+             iter.max = 20)
+c5<-kGmedian(var8, ncenters=2, gamma=1.05, alpha=0.75, nstart = 25, nstartkmeans = 10, 
+               iter.max = 20)
+
+plot(d_tsne_1_var6_degree, col = c1$cluster)
+plot(d_tsne_1_var5, col = c2$cluster)
+plot(d_tsne_1_var6, col = c3$cluster)
+plot(d_tsne_1_var7, col = c4$cluster)
+plot(d_tsne_1_var8, col = c5$cluster)
 
 #----------------------kmenas k=3------------------------------------#
 
@@ -782,6 +784,9 @@ bmp("tsne_model4_kmeans_k3.bmp", width = 2560, height = 1280)
 grid.arrange(p1, p2, p3,p4,p5, ncol = 5, nrow = 1)
 dev.off()
 
+round(calinhara(tsne_model_1_var8$Y,c5$cluster),digits=2)
+round(calinhara(tsne_model_1_var8$Y,c10$cluster),digits=3)
+
 rm(c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,p1,p2,p3,p4,p5)
 rm(d_tsne_1_var6_degree,d_tsne_1_var5,d_tsne_1_var6, d_tsne_1_var7, d_tsne_1_var8)
 rm(d_tsne_2_var6_degree,d_tsne_2_var5,d_tsne_2_var6, d_tsne_2_var7, d_tsne_2_var8)
@@ -797,73 +802,73 @@ save.image(".Rdata",safe = TRUE)
 #---------------------------------------calculating h start------------------------------------------#
 bmp("dbscan_kneeplot_var6_degree.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var6_degree, k =  2)
-abline(h = 0.01, lty = 2)
+abline(h = 0.067, lty = 2)
 dev.off()
 
 bmp("dbscan_kneeplot_var5.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var5, k =  2)
-abline(h = 0.008, lty = 2)
+abline(h = 0.06, lty = 2)
 dev.off()
 
 bmp("dbscan_kneeplot_var6.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var6, k =  2)
-abline(h = 0.01, lty = 2)
+abline(h = 0.06, lty = 2)
 dev.off()
 
 bmp("dbscan_kneeplot_var7.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var7, k =  2)
-abline(h = 0.01, lty = 2)
+abline(h = 0.068, lty = 2)
 dev.off()
 
 bmp("dbscan_kneeplot_var8.bmp", width = 841, height = 477)
 dbscan::kNNdistplot(var8, k =  2)
-abline(h = 0.01, lty = 2)
+abline(h = 0.068, lty = 2)
 dev.off()
 #---------------------------------------calculating h end------------------------------------------#
 
 #---------------------------------------plotting dbscan start--------------------------------------------------#
-ranvar<-sample_n(var6_degree, 100000, replace = TRUE)
-set.seed(123)
-res.db <- dbscan::dbscan(ranvar, 0.01, 2)
+#ranvar<-sample_n(var6_degree, 100000, replace = TRUE)
+#set.seed(123)
+res.db <- dbscan::dbscan(var6_degree, 0.067, 2)
 gc()
 bmp("dbscan_var6_degree.bmp", width = 1980, height = 1280)
-fviz_cluster(res.db, ranvar, geom = "point")
+fviz_cluster(res.db, var6_degree, geom = "point")
 dev.off()
 
 gc()
-ranvar<-sample_n(var5, 100000, replace = TRUE)
-set.seed(123)
-res.db <- dbscan::dbscan(ranvar, 0.008, 2)
+#ranvar<-sample_n(var5, 100000, replace = TRUE)
+#set.seed(123)
+res.db <- dbscan::dbscan(var5, 0.06, 2)
 gc()
 bmp("dbscan_var5.bmp", width = 1980, height = 1280)
-fviz_cluster(res.db, ranvar, geom = "point")
+fviz_cluster(res.db, var5, geom = "point")
 dev.off()
 
 gc()
-ranvar<-sample_n(var6, 100000, replace = TRUE)
-set.seed(123)
-res.db <- dbscan::dbscan(ranvar, 0.01, 2)
+#ranvar<-sample_n(var6, 100000, replace = TRUE)
+#set.seed(123)
+res.db <- dbscan::dbscan(var6, 0.06, 2)
 gc()
 bmp("dbscan_var6.bmp", width = 1980, height = 1280)
-fviz_cluster(res.db, ranvar, geom = "point")
+fviz_cluster(res.db, var6, geom = "point")
 dev.off()
 
 gc()
-ranvar<-sample_n(var7, 100000, replace = TRUE)
-set.seed(123)
-res.db <- dbscan::dbscan(ranvar, 0.01, 2)
+#ranvar<-sample_n(var7, 100000, replace = TRUE)
+#set.seed(123)
+res.db <- dbscan::dbscan(var7, 0.068, 2)
 gc()
 bmp("dbscan_var7.bmp", width = 1980, height = 1280)
-fviz_cluster(res.db, ranvar, geom = "point")
+fviz_cluster(res.db, var7, geom = "point")
 dev.off()
 
 gc()
-ranvar<-sample_n(var8, 100000, replace = TRUE)
-set.seed(123)
-res.db <- dbscan::dbscan(ranvar, 0.01, 2)
+#ranvar<-sample_n(var8, 100000, replace = TRUE)
+#set.seed(123)
+res.db <- dbscan::dbscan(var8, 0.068, 2)
 gc()
 bmp("dbscan_var8.bmp", width = 1980, height = 1280)
-fviz_cluster(res.db, ranvar, geom = "point")
+fviz_cluster(res.db, var8, geom = "point")
 dev.off()
 
 #---------------------------------------plotting dbscan end--------------------------------------------------#
@@ -897,37 +902,45 @@ dev.off()
 #--------------------TSNE_kmeans_without_convex_hull_end--------------------------#
 
 #-------------------Dataset and TSNE dendogram---------------------------#
-d <- dist(var8, method = "euclidean")
+#d <- dist(var8, method = "euclidean")
 
 # Hierarchical clustering using Complete Linkage
-hc1 <- hclust(d, method = "complete" )
+#hc1 <- hclust(d, method = "complete" )
 
 # Plot the obtained dendrogram
-plot(hc1, cex = 0.6, hang = -1)
+#plot(hc1, cex = 0.6, hang = -1)
 
 #------------------Dataset and TSNE dendogram-----------------------------#
 
 #------------------GMM-----------------------------#
 
-dat = as.matrix(var5)
+# dat = as.matrix(var5)
+# 
+# dat = center_scale(dat)
+# 
+# gmm = GMM(dat, 2, "maha_dist", "random_subset", 10, 10)
+# 
+# plot(gmm$Log_likelihood,tsne_model_4$Y, col=c(1,2,3,4,5,6,7,8))
+# 
+# plot(as.data.frame(tsne_model_1_var8$Y), col=factor(gmm$centroids))
 
-dat = center_scale(dat)
-
-gmm = GMM(dat, 2, "maha_dist", "random_subset", 10, 10)
-
-plot(gmm$Log_likelihood,tsne_model_4$Y, col=c(1,2,3,4,5,6,7,8))
-
-plot(as.data.frame(tsne_model_1_var8$Y), col=factor(gmm$centroids))
-
-xyMclust <- Mclust(ncentrality2)
+xyMclust <- Mclust(as.matrix(var8), prior = priorControl(), 
+                   control = emControl(), 
+                   warn = mclust.options("warn"),
+                   verbose = TRUE)
 plot(xyMclust)
+
 summary(xyMclust, parameters = TRUE)
 
-clustgmm <- Mclust(ncentrality2,5)
+plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
+plot(mclustBIC(faithful))
+plot(mclustBIC(var8))
+
+clustgmm <- Mclust(var8, G=3)
 
 plot(clustgmm, what=c("classification"))
 plot(clustgmm, "density")
-plot(clustgmm, what=c("BIC"))
+
 #------------------GMM-----------------------------#
 
 save.image(".Rdata",safe = TRUE)
@@ -988,88 +1001,70 @@ fviz_cluster(c22, geom = "point",  data = phate_ranvar5) + ggtitle("k = 3 var6 d
 
 #------------Sammon's map----------------#
 
-set.seed(123)
-ranvar<-sample_n(var6_degree, 30000, replace = FALSE) #var6_degree
-x<-as.matrix(ranvar)
-sammon = do.sammon(x, ndim=2, initialize = "pca")
+x<-as.matrix(var6_degree) #var6_degree
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
 bmp("sammon_var6_degree.bmp", width = 1280, height = 720)
 opar <- par(no.readonly=TRUE)
 par(mfrow=c(1,2))
-plot(sammon$Y, pch=19, col=colors_v6_degree, main="30k sample w/o rplc var6_degree")
-plot(sammon$Y, pch=19, col=c1$cluster, main="30k sample w/o rplc var6_degree with k=2")
+plot(sammon$Y, pch=19, col=colors_v6_degree, main="var6_degree")
+plot(sammon$Y, pch=19, col=c1$cluster, main="var6_degree with k=2")
 par(opar)
 dev.off()
 
-rm(ranvar,x)
-
-set.seed(123)
-ranvar<-sample_n(var5, 30000, replace = FALSE) #var5
-x<-as.matrix(ranvar)
-sammon = do.sammon(x, ndim=2, initialize = "pca")
+x<-as.matrix(var5) #var5
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
 bmp("sammon_var5.bmp", width = 1280, height = 720)
 opar <- par(no.readonly=TRUE)
 par(mfrow=c(1,2))
-plot(sammon$Y, pch=19, col=colors_v5, main="30k sample w/o rplc var5")
-plot(sammon$Y, pch=19, col=c2$cluster, main="30k sample w/o rplc var5")
+plot(sammon$Y, pch=19, col=colors_v5, main="var5")
+plot(sammon$Y, pch=19, col=c2$cluster, main="var5 k=2")
 par(opar)
 dev.off()
 
-rm(ranvar,x)
-
-set.seed(123)
-ranvar<-sample_n(var6, 30000, replace = FALSE) #var6
-x<-as.matrix(ranvar)
-sammon = do.sammon(x, ndim=2, initialize = "pca")
+x<-as.matrix(var6) #var6
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
 bmp("sammon_var6.bmp", width = 1280, height = 720)
 opar <- par(no.readonly=TRUE)
 par(mfrow=c(1,2))
-plot(sammon$Y, pch=19, col=colors_v6, main="30k sample w/o rplc var6")
-plot(sammon$Y, pch=19, col=c3$cluster, main="30k sample w/o rplc var6")
+plot(sammon$Y, pch=19, col=colors_v6, main="var6")
+plot(sammon$Y, pch=19, col=c3$cluster, main="var6 k=2")
 par(opar)
 dev.off()
 
-rm(ranvar,x)
-
-set.seed(123)
-ranvar<-sample_n(var7, 30000, replace = FALSE) #var7
-x<-as.matrix(ranvar)
-sammon = do.sammon(x, ndim=2, initialize = "pca")
+x<-as.matrix(var7) #var7
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
 bmp("sammon_var7.bmp", width = 1280, height = 720)
 opar <- par(no.readonly=TRUE)
 par(mfrow=c(1,2))
-plot(sammon$Y, pch=19, col=colors_v7, main="30k sample w/o rplc var7")
-plot(sammon$Y, pch=19, col=c4$cluster, main="30k sample w/o rplc var7")
+plot(sammon$Y, pch=19, col=colors_v7, main="var7")
+plot(sammon$Y, pch=19, col=c4$cluster, main="var7 k=2")
 par(opar)
 dev.off()
 
-rm(ranvar,x)
-
-set.seed(123)
-ranvar<-sample_n(var8, 29000, replace = FALSE) #var8
-x<-as.matrix(ranvar)
-sammon = do.sammon(x, ndim=2, initialize = "pca")
+x<-as.matrix(var8) #var8
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
 bmp("sammon_var8.bmp", width = 1280, height = 720)
 opar <- par(no.readonly=TRUE)
 par(mfrow=c(1,2))
-plot(sammon$Y, pch=19, col=colors_v8, main="30k sample w/o rplc var8")
-plot(sammon$Y, pch=19, col=c5$cluster, main="30k sample w/o rplc var8")
+plot(sammon$Y, pch=19, col=colors_v8, main="var8")
+plot(sammon$Y, pch=19, col=c5$cluster, main="var8 k=2")
 par(opar)
 dev.off()
 
-rm(ranvar,x,opar)
+rm(x,opar)
 
 #------------Sammon's map----------------#
 
 #------------NeRV----------------#
 library(ProjectionBasedClustering)
 
-set.seed(100)
-ranvar<-sample_n(var5, 15000, replace = FALSE) #var5
+#set.seed(100)
+#ranvar<-sample_n(var5, 15000, replace = FALSE) #var5
 
-projectionpoints=NeRV(as.matrix(ranvar))
+projectionpoints=NeRV(as.matrix(var8), neighbors = 90, randominit = T)
 #Computation of Generalized Umatrix
 library(GeneralizedUmatrix)
-visualization=GeneralizedUmatrix(Data = as.matrix(ranvar),projectionpoints)
+visualization=GeneralizedUmatrix(Data = as.matrix(var8),projectionpoints)
 TopviewTopographicMap(visualization$Umatrix,visualization$Bestmatches)
 #or in 3D if rgl package exists
 library(rgl)
@@ -1087,7 +1082,7 @@ Imx = ProjectionBasedClustering::interactiveGeneralizedUmatrixIsland(visualizati
 # Automatic Clustering
 LC=c(visualization$Lines,visualization$Columns)
 # number of Cluster from dendrogram or visualization (PlotIt=TRUE)
-Cls=ProjectionBasedClustering(k=2, as.matrix(ranvar),visualization$Bestmatches, LC,PlotIt=TRUE)
+Cls=ProjectionBasedClustering(k=2, as.matrix(var8),visualization$Bestmatches, LC,PlotIt=TRUE)
 # Verification
 TopviewTopographicMap(visualization$Umatrix,visualization$Bestmatches,Cls)
 #or in 3D if rgl package exists
@@ -1148,6 +1143,22 @@ cluster_assignment <- som_cluster[som_model$unit.classif]
 # for each of analysis, add the assignment as a column in the original data:
 var5_n$cluster <- cluster_assignment
 #------------------SOM-----------------------------#
+
+#robust median pca
+# res.pca6_degree<-do.rpcag(var6_degree,ndim = 2,k=10,preprocess = c("scale")) #  6 variables with degree 
+# res.pca5<-do.rpcag(var5,ndim  = 2,k=10,preprocess = c("scale")) #  5 variables 
+# res.pca6<-do.rpcag(var6,ndim  = 2,k=10,preprocess = c("scale")) #  6 variables
+# res.pca7<-do.rpcag(var7,ndim  = 2,k=10,preprocess = c("scale")) #  7 variables 
+# res.pca8<-do.rpcag(var8,ndim  = 2,k=10,preprocess = c("scale")) #  8 variables
+# 
+# opar <- par(no.readonly=TRUE)
+# par(mfrow=c(2,3))
+# plot(res.pca6_degree$Y, col=colors_v6_degree, main="RPCAG::k=5")
+# plot(res.pca5$Y, col=colors_v5, main="RPCAG::k=5")
+# plot(res.pca6$Y, col=colors_v6, main="RPCAG::k=5")
+# plot(res.pca7$Y, col=colors_v7, main="RPCAG::k=5")
+# plot(res.pca8$Y, col=colors_v8, main="RPCAG::k=5")
+# par(opar)
 
 
 #  remove old variables
