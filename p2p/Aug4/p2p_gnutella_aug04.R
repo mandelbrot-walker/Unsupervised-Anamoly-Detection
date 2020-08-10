@@ -20,7 +20,7 @@ library(Rdimtools)
 library(scatterplot3d)
 library(rgl)
 library(fpc)
-
+load(".Rdata")
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("p2p-Gnutella04.txt",header = TRUE, sep = "\t")
 
@@ -948,26 +948,76 @@ save.image("backup.Rdata",safe = TRUE)
 
 #----------------UMAP----------------------------#
 library(uwot)
-umap_calc <- umap(ranvar,
-                  n_neighbors = 90,
-                  min_dist = 10, spread = 50
+
+umap_calc <- umap(var6_degree, n_neighbors = 90, n_components = 2,metric = "cosine",
+                  learning_rate = 1.1, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = 10, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_var6_degree <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
 )
 
-umap_ranvar <- data.frame(
-  UMAP1 = umap_calc[, 1],
-  UMAP2 = umap_calc[, 2]
-  #classification = c("eigenvector","closeness","pagerank","crossclique","betweenness")
+umap_calc <- umap(var5, n_neighbors = 90, n_components = 2,metric = "cosine",
+                  learning_rate = 1.1, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = 10, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_var5 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+umap_calc <- umap(var6, n_neighbors = 90, n_components = 2,metric = "cosine",
+                  learning_rate = 1.1, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = 10, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_var6 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+umap_calc <- umap(var7, n_neighbors = 90, n_components = 2,metric = "cosine",
+                  learning_rate = 1.1, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = 10, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_var7 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+umap_calc <- umap(var8, n_neighbors = 90, n_components = 2,metric = "cosine",
+                  learning_rate = 1.1, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = 10, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_var8 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
 )
 
 ggplot(umap_ranvar, aes(
   x = UMAP1, y = UMAP2,
-  col = classification
+  col = UMAP1
 )) +
   geom_point()# +
 #ggrepel::geom_text_repel(cex = 2.5)
 
-plot(umap_ranvar$UMAP1,umap_ranvar$UMAP2, col=c22$cluster)
-fviz_cluster(c22, geom = "point",  data = umap_ranvar) + ggtitle("k = 2 var5")
+plot(umap_ranvar$UMAP1,umap_ranvar$UMAP2, col=c_ncentrality$cluster)
+fviz_cluster(c_ncentrality, geom = "point",  data = umap_ranvar) + ggtitle("k = 2 var5")
 #----------------Umap---------------------------#
 
 #--------------phate---------------------#
@@ -1075,7 +1125,7 @@ plotTopographicMap(visualization$Umatrix,visualization$Bestmatches)
 ## Not run: 
 Imx = ProjectionBasedClustering::interactiveGeneralizedUmatrixIsland(visualization$Umatrix,
                                                                      visualization$Bestmatches)
-#plotTopographicMap(visualization$Umatrix,visualization$Bestmatches, Imx = Imx)
+plotTopographicMap(visualization$Umatrix,visualization$Bestmatches, Imx = Imx)
 
 ## End(Not run)
 
