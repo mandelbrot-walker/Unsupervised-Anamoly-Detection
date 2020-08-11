@@ -59,8 +59,9 @@ dg<-decompose.graph(g)
 dg<-dg[[1]]
 
 library(gRbase)
-gt<-triangulate(dg, method="mcwh", 
-               nLevels = rep(1,length(nodes(dg))))
+gt<-triangulate(dg, method="mcwh")
+c<-igraph.to.graphNEL(as.undirected(dg))
+mdg<-minimalTriang(c,gt, details = 0)
 
 transitivity(gt)
 transitivity(g)

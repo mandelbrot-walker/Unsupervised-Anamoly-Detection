@@ -20,7 +20,8 @@ library(Rdimtools)
 library(scatterplot3d)
 library(rgl)
 library(fpc)
-
+library(gRbase)
+#ulimit::memory_limit(51200)
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("CA-GrQc.txt",header = TRUE, sep = "\t")
 
@@ -53,6 +54,23 @@ write.csv(pgr, "pgr_gqrc.csv")
 
 crsc<-crossclique(g) # Calculation of Cross-Clique centrality
 write.csv(crsc, "crsc_gqrc.csv")
+c<-igraph.to.graphNEL(dg)
+clq<-getCliques(c)
+
+cn<-clique_num(g) 
+clq<-cliques(dg, min = 5, max = 44)
+dg<-as.undirected(g, mode = c("collapse"))
+
+dg<-decompose.graph(g)
+dg<-dg[[1]]
+dg<-as.undirected(dg)
+gt<-triangulate(dg, method="mcwh")
+
+gt<-is_chordal(g, fillin = F,
+               newgraph = F)
+
+gr<-igraph.to.graphNEL(g)
+gt<-minimalTriang(g, TuG = triangulate(g, method = "mcwh"), details = 0)
 
 frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
 
