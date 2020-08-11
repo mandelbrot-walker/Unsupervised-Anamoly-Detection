@@ -52,8 +52,28 @@ write.csv(pgr, "pgr_Email-Enron.csv")
 
 #katz<-katzcent(g) # Error in alpha >= maxEigenvalue : invalid comparison with complex values
 
-crsc<-crossclique(g) # Calculation of Cross-Clique centrality
+crsc<-crossclique(dg[[1]]) # Calculation of Cross-Clique centrality
 write.csv(crsc, "crsc_Email-Enron.csv")
+
+dg<-decompose.graph(g)
+dg<-dg[[1]]
+
+library(gRbase)
+gt<-triangulate(dg, method="mcwh", 
+               nLevels = rep(1,length(nodes(dg))))
+
+transitivity(gt)
+transitivity(g)
+edge_connectivity(gt)
+components(gt)
+
+crsc<-crossclique(gt)
+
+gt<-is_chordal(g, fillin = F,
+               newgraph = F)
+gr<-gt[[3]]
+
+transitivity(gr)
 
 frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
 
