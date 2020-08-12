@@ -50,5 +50,5 @@ write.csv(crsc, "crsc_ego_facebook.csv")
 frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
 
 edge_connectivity(g) # Outputs 0
-
+        
 
