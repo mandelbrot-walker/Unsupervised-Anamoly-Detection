@@ -27,6 +27,13 @@ edges<-read.delim("facebook_combined.txt",header = TRUE, sep = " ")
 
 g<-graph.data.frame(edges) #graph data frame for igraph
 
+transitivity(g)
+clique_num(g)
+library(gRbase)
+tg<-igraph.to.graphNEL(g)
+gc()
+gclq<-getCliques(tg)
+
 dg<-degree(g) # Calculation of Degre centrality
 write.csv(dg, "dg_ego_facebook.csv")
 
