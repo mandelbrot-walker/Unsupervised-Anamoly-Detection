@@ -486,7 +486,7 @@ dev.off()
 
 #Kmeans for tsne model 4
 
-p1 <- fviz_cluster(c1, geom = "point",  data = d_tsne_4_var8) + ggtitle("k = 2 var8")
+p1 <- fviz_cluster(c1, geom = "point",ellipse.type = "convex", data = d_tsne_4_var8) + ggtitle("k = 2 var8")
 
 bmp("tsne_model4_kmeans_k2.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -561,6 +561,11 @@ clustgmm <- Mclust(var8, G=2)
 plot(clustgmm, what=c("classification"))
 plot(clustgmm, "density")
 plot(clustgmm, what=c("uncertainty"))
+
+c1$cluster<-xyMclust$classification
+c1$cluster<-clustgmm$classification
+
+fviz_cluster(c1, geom = "point",  data = var8) + ggtitle("k = 9 var8")
 #------------------GMM-----------------------------#
 
 #----------------UMAP----------------------------#
@@ -586,12 +591,19 @@ ggplot(umap_ranvar, aes(
 #ggrepel::geom_text_repel(cex = 2.5)
 
 plot(umap_var8$UMAP1,umap_var8$UMAP2, col=factor(umap_var8$UMAP1))
-fviz_cluster(c1, geom = "point",  data = umap_var8) + ggtitle("k = 2 var8")
+fviz_cluster(c1, geom = "point",  data = umap_var8) + ggtitle("k = 9 var8")
 
-df_melt <- reshape2::melt(var8, id.var = 'eigenvector')
+n<-centrality[,-13]
+n$rnames<-row.names(centrality)
 
-ggplot(df_melt, aes(x = factor(eigenvector), y = value, colour = variable)) + 
-  geom_point() + xlab('eigenvector')
+df_melt <- reshape2::melt(n, id.var ='rnames')
+
+ggplot(df_melt, aes(x = factor(rnames), y = value, colour = variable)) + 
+  geom_point() + xlab('nodes')
+fviz_mclust(xyMclust,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+fviz_mclust(xyMclust,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+fviz_mclust(clustgmm,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+fviz_mclust(clustgmm,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
 #----------------Umap---------------------------#
 
 #------------Sammon's map----------------#
@@ -601,7 +613,7 @@ sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
 bmp("sammon_var8.bmp", width = 1280, height = 720)
 opar <- par(no.readonly=TRUE)
 par(mfrow=c(1,2))
-plot(sammon$Y, pch=19, col=colors_v8, main="var8")
+plot(sammon$Y, pch=19, col=factor(c), main="var8")
 plot(sammon$Y, pch=19, col=c1$cluster, main="var8 k=2")
 par(opar)
 dev.off()
