@@ -98,6 +98,16 @@ edge_connectivity(g) # Outputs 0
 
 clstrnk[is.na(clstrnk)] <- 0
 
+cmp<-decompose.graph(g)
+gkp<-c(0)
+
+for (i in 1:length(cmp)) {
+  t<-cmp[[i]]
+  tmp<-radiality(t)
+  gkp[(length(gkp) + 1):(length(gkp) + length(tmp))]<-tmp
+}
+gkp<-gkp[-1]
+
 gr<-g # temporary variable gr
 
 V(gr)$degree <- dg                               #  Degree centrality

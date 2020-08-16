@@ -64,12 +64,19 @@ library(sna)
 cmp<-decompose.graph(g)
 str<-c(0)
 
+t<-cmp[[1]]
+tmp<-calculate_centralities(as.directed(t), include = "Information Centrality")
+str[(length(str) + 1):(length(str) + length(unlist(tmp)))]<-unlist(tmp)
+
+str2<-str[-1]
+
 for (i in 1:length(cmp)) {
         t<-cmp[[i]]
         tmp<-calculate_centralities(as.directed(t), include = "Information Centrality")
-        str[(length(str) + 1):(length(str) + length(unlist(tmp)))]<-unlist(tmp)
+        str2[(length(str2) + 1):(length(str2) + length(unlist(tmp)))]<-unlist(tmp)
 }
-str[-1]
+#str<-str[-1]
+
 
 str<-calculate_centralities(as.directed(g), include = "Stress Centrality") #  takes a lot of memory 
 infc<-calculate_centralities(as.directed(g), include = "Information Centrality") #  takes a long time
