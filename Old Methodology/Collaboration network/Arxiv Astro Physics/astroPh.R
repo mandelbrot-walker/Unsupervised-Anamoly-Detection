@@ -70,12 +70,29 @@ str[(length(str) + 1):(length(str) + length(unlist(tmp)))]<-unlist(tmp)
 
 str2<-str[-1]
 
-for (i in 1:length(cmp)) {
-        t<-cmp[[i]]
-        tmp<-calculate_centralities(as.directed(t), include = "Information Centrality")
-        str2[(length(str2) + 1):(length(str2) + length(unlist(tmp)))]<-unlist(tmp)
+for (i in 2:length(cmp)) {
+        if(toString(which_loop(cmp[[i]])) == "TRUE"){
+                print(i)
+                tmp <- 0
+                str2[(length(str2) + 1):(length(str2) + length(tmp))]<-tmp
+                i = i+1
+                print(i)
+        } else{
+                t<-cmp[[i]]
+                tmp<-calculate_centralities(as.directed(t), include = "Information Centrality")
+                str2[(length(str2) + 1):(length(str2) + length(unlist(tmp)))]<-unlist(tmp)
+        }
 }
-#str<-str[-1]
+str<-str[-1]
+
+for (j in 1:length(cmp)) {
+        result<-which_loop(cmp[[j]])
+        # if (result[i]) {
+        #         print(j)
+        # } else{
+        #         which_loop(cmp[[j]])
+        # }
+}
 
 
 str<-calculate_centralities(as.directed(g), include = "Stress Centrality") #  takes a lot of memory 
