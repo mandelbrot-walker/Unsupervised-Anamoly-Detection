@@ -31,3 +31,6 @@ model 6- without localbridge
 
 (optional) model 7- closeness/ authorities
 
+why do ablation-
+to find out if our results are equally reliable using fewer centralities
+
