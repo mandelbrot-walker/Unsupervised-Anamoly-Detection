@@ -85,6 +85,8 @@ mkc<-markovcent(g) #  takes a lot of memory and time therefore stopped
 entc<-entropy(g) #  takes too long therefore stopped
 lbc<-local_bridging_centrality(g)
 
+load<- calculate_centralities(g, include = "Load Centrality") #  takes a lot of memory 
+
 frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
 
 edge_connectivity(g) # Outputs 0
