@@ -101,9 +101,13 @@ clstrnk[is.na(clstrnk)] <- 0
 cmp<-decompose.graph(g)
 gkp<-c(0)
 
-for (i in 1:length(cmp)) {
+t<-cmp[[1]]
+tmp<-geokpath(t, weights = NULL, mode = c("out"))
+gkp[(length(gkp) + 1):(length(gkp) + length(tmp))]<-tmp
+
+for (i in 2:length(cmp)) {
   t<-cmp[[i]]
-  tmp<-radiality(t)
+  tmp<-geokpath(t)
   gkp[(length(gkp) + 1):(length(gkp) + length(tmp))]<-tmp
 }
 gkp<-gkp[-1]
