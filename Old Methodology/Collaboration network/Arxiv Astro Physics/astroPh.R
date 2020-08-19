@@ -100,6 +100,7 @@ infc<-calculate_centralities(as.directed(g), include = "Information Centrality")
 #mkc<-markovcent(g) #  takes a lot of memory and time therefore stopped
 #entc<-entropy(g) #  takes too long therefore stopped
 lbc<-local_bridging_centrality(g)
+diffdg<-diffusion.degree(g)
 
 frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
 
@@ -129,7 +130,7 @@ V(gr)$gdkpath<-gkp
 #V(gr)$stress<-unlist(str)
 #V(gr)$informationcent<-unlist(infc)
 V(gr)$localbrigdecent<-lbc
-
+V(gr)$diffusioncent<-diffdg
 
 centrality <- data.frame(row.names   = V(gr)$name,
                          degree      = V(gr)$degree,
@@ -150,7 +151,8 @@ centrality <- data.frame(row.names   = V(gr)$name,
                          geodkpath   = V(gr)$gdkpath,
                          #stress      = V(gr)$stress,
                          #informationcent = V(gr)$informationcent,
-                         localbridge = V(gr)$localbrigdecent
+                         localbridge = V(gr)$localbrigdecent,
+                         diffusion   = V(gr)$diffusioncent<-diffdg
 ) #  Non-normalized centrality values
 
 centrality <- centrality[order(row.names(centrality)),] #  These values are not normalized
@@ -178,7 +180,7 @@ ngeodkpath   = normalize(gkp)
 #nstress      = normalize(unlist(str))
 #ninformationcent = normalize(unlist(infc))
 nlocalbridge = normalize(lbc)
-
+ndiffusion   = normalize(diffdg)
 
 ncentrality  <- data.frame(degree      = ndegree,
                            eigenvector = neigenvector,
@@ -199,7 +201,8 @@ ncentrality  <- data.frame(degree      = ndegree,
                            geodkpath   = ngeodkpath,
                            #stress      = nstress,
                            #informationcent = ninformationcent,
-                           localbridge = nlocalbridge
+                           localbridge = nlocalbridge,
+                           diffusion   = ndiffusion
 ) #  normalized values 8 variables
 
 rm(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities,nradiality,nclusterrank,ndmnc,
@@ -228,12 +231,12 @@ dev.off()
 #plot boxplot
 bmp("boxplot.bmp", width = 1280, height = 720)
 boxplot(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities,ndmnc,
-        nlobby,nleverage,neccentricity,ngeodkpath,nlocalbridge,
+        nlobby,nleverage,neccentricity,ngeodkpath,nlocalbridge,ndiffusion,
         main = "Multiple boxplots for comparision",
-        at = c(1,2,3,4,5,6,7,8,9,10,11,12,13),
+        at = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14),
         names = c("degree", "eigenvector", "closeness", "pagerank","betweenness","hubscore","authorities",
                   "dmnc","lobby","leverage","eccentricity",
-                  "geodkpath","localbridge"),
+                  "geodkpath","localbridge","ndiffusion"),
         las = 2,
         col = c("orange","black"),
         border = "brown",
