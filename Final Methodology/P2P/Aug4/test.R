@@ -28,75 +28,58 @@ g<-graph.data.frame(edges) #graph data frame for igraph
 
 transitivity(g) #  Check for cross clique calculation
 
-cent<-proper_centralities(g)
+dg<-degree(g) # Calculation of Degree centrality
+btn<-betweenness(g) # Calculation of Betweenness centrality
+eig<-evcent(g)$vector # Calculation of Eigenvector centrality
+clsn<-closeness.latora(g) # Calculation of Closeness centrality
+pgr<-page_rank(g)$vector #  Calculation of Page Rank centrality
+auth<-authority.score(g)$vector 
+hubs<-hub.score(g)$vector              #  Hub centrality
+denmnc<-dmnc(g)
+lby<-lobby(g)
+lvg<-leverage(g)
+ecc<-eccentricity(g)
+infc<-calculate_centralities(g, include = "Information Centrality") #  takes a long time
+lbc<-local_bridging_centrality(g)
+
+#cent<-proper_centralities(g)
 # 
 # calculate_centralities(g, include = cent[1:50])%>%
 #   pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
 
-c<-c("Page Rank","Closeness centrality (Latora)","Degree Centrality","eigenvector centralities",
-     "Kleinberg's authority centrality scores", "Kleinberg's hub centrality scores","Shortest-Paths Betweenness Centrality", 
-     "Centroid value", "Radiality Centrality", "ClusterRank", "DMNC - Density of Maximum Neighborhood Component",
-     "clustering coefficient", "Lobby Index (Centrality)", "Community Centrality", "Leverage Centrality",
-     "Load Centrality", "subgraph centrality scores", "Topological Coefficient", "Diffusion Degree",
-     "Eccentricity Centrality", "Geodesic K-Path Centrality", "Stress Centrality", "Information Centrality", 
-     "Markov Centrality", "Entropy Centrality", "Local Bridging Centrality")
+#c<-c("Page Rank","Closeness centrality (Latora)","Degree Centrality","eigenvector centralities",
+# "Kleinberg's authority centrality scores", "Kleinberg's hub centrality scores","Shortest-Paths Betweenness Centrality", 
+# "DMNC - Density of Maximum Neighborhood Component","Lobby Index (Centrality)", "Leverage Centrality",
+# "Eccentricity Centrality", "Information Centrality","Local Bridging Centrality")
 #cent[3,29,11,16,20,21,27,7,26,9,24,31,36,43,12,14,18,42,45,25,33,49])
 
-calculate_centralities(g, include = c)%>%
-  pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
-
-
-dg<-degree(g) # Calculation of Degree centrality
-write.csv(dg, "dg_p2p_Gnutella04.csv")
-
-btn<-betweenness(g) # Calculation of Betweenness centrality
-write.csv(btn, "btn_p2p_Gnutella04.csv")
-
-eig<-evcent(g)$vector # Calculation of Eigenvector centrality
-write.csv(eig, "eig_p2p_Gnutella04.csv")
-
-clsn<-closeness.latora(g) # Calculation of Closeness centrality
-write.csv(clsn, "clsn_p2p_Gnutella04.csv")
-
-pgr<-page_rank(g)$vector #Calculation of Page Rank centrality
-write.csv(pgr, "pgr_p2p_Gnutella04.csv")
+#calculate_centralities(g, include = c)%>%
+#  pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
 
 #katz<-katzcent(g) # Error in alpha >= maxEigenvalue : invalid comparison with complex values
-
 #crsc<-crossclique(g) # Calculation of Cross-Clique centrality
+#cntr<-centroid(g) #  Error: Graph is not strongly connected.
+#radial<-radiality(g) #  takes awhile
+#clstrnk<-clusterrank(g)
+#library(linkcomm)
+#comm<-communitycent(g) #  takes too long therefore stopped
+#subg<-subgraph.centrality(g) #  takes a long time
+#topol<-topocoefficient(as.undirected(g))
+#gkp<-geokpath(g)
+#library(sna)
+#str<-calculate_centralities(g, include = "Stress Centrality") #  takes a lot of memory 
+#mkc<-markovcent(g) #  takes a lot of memory and time therefore stopped
+#entc<-entropy(g) #  takes too long therefore stopped
+#frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
+#write.csv(dg, "dg_p2p_Gnutella04.csv")
+#write.csv(btn, "btn_p2p_Gnutella04.csv")
+#write.csv(eig, "eig_p2p_Gnutella04.csv")
+#write.csv(clsn, "clsn_p2p_Gnutella04.csv")
+#write.csv(pgr, "pgr_p2p_Gnutella04.csv")
 #write.csv(crsc, "crsc_p2p_Gnutella04.csv")
 
-cntr<-centroid(g) #  Error: Graph is not strongly connected.
-radial<-radiality(g) #  takes awhile
-clstrnk<-clusterrank(g)
-denmnc<-dmnc(g)
-lby<-lobby(g)
-library(linkcomm)
-comm<-communitycent(g) #  takes too long therefore stopped
-lvg<-leverage(g)
-subg<-subgraph.centrality(g) #  takes a long time
-topol<-topocoefficient(as.undirected(g))
-ecc<-eccentricity(g)
-gkp<-geokpath(g)
-library(sna)
-str<-calculate_centralities(g, include = "Stress Centrality") #  takes a lot of memory 
-infc<-calculate_centralities(g, include = "Information Centrality") #  takes a long time
-mkc<-markovcent(g) #  takes a lot of memory and time therefore stopped
-entc<-entropy(g) #  takes too long therefore stopped
-lbc<-local_bridging_centrality(g)
-
-# adjg<-as_adjacency_matrix(g,attr = NULL, edges = FALSE, names = TRUE,
-#                     sparse = igraph_opt("sparsematrices"))
-# 
-# gadj<-graph_from_adjacency_matrix(adjg, mode = c("directed"), weighted = NULL,
-#                             diag = TRUE, add.colnames = NULL, add.rownames = NA)
-# gkp2<-geokpath(gadj)
-
-frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
-
-edge_connectivity(g) # Outputs 0
-
-clstrnk[is.na(clstrnk)] <- 0
+#edge_connectivity(g) # Outputs 0
+#clstrnk[is.na(clstrnk)] <- 0
 
 gr<-g # temporary variable gr
 
