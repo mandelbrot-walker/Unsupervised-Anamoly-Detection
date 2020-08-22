@@ -165,32 +165,32 @@ nleverage    = normalize(lvg)
 nlocalbridge = normalize(lbc)
 
 
-ncentrality  <- data.frame(degree      = ndegree,
-                           eigenvector = neigenvector,
-                           pagerank    = npagerank,
-                           authorities = nauthorities,
-                           hubscore    = nhubscore,
-                           betweenness = nbetweenness,
-                           closeness   = ncloseness,
-                           informationcent = ninformationcent,
-                           eccentricity = neccentricity,
-                           dmnc        = ndmnc,
-                           lobby       = nlobby,
-                           leverage    = nleverage,
-                           localbridge = nlocalbridge
+ncentrality  <- data.frame(degree      = ndegree,              #  1
+                           eigenvector = neigenvector,         #  2
+                           pagerank    = npagerank,            #  3
+                           authorities = nauthorities,         #  4
+                           hubscore    = nhubscore,            #  5
+                           betweenness = nbetweenness,         #  6
+                           closeness   = ncloseness,           #  7
+                           informationcent = ninformationcent, #  8
+                           eccentricity = neccentricity,       #  9
+                           dmnc        = ndmnc,                #  10
+                           lobby       = nlobby,               #  11
+                           leverage    = nleverage,            #  12
+                           localbridge = nlocalbridge          #  13
 ) #  normalized values 8 variables
 
 #------------------------------------------Datasets-----------------------------------------------------------------------#
 
 m1_all_var13<-ncentrality
-m2_without_comm_var7<-ncentrality[,-c(8,9,10,11,12,13)]
-m3_without_nodes_var6
-m4_without_ranks_var9
-m5_without_dist_var9
-m6_mix_match1_var6
-m7_mix_match2_var6
-m8_mix_match2_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage,informationcent))
-m9_without_dg_var12<-within(ncentrality, rm(degree))
+m2_without_dg_var12<-within(ncentrality, rm(degree))
+m3_without_comm_var7<-within(ncentrality, rm(informationcent,eccentricity,dmnc,lobby,leverage,localbridge))
+m4_without_nodes_var6<-within(ncentrality, rm(degree,eigenvector,pagerank,authorities,hubscore,betweenness,closeness))
+m5_without_ranks_var9<-within(ncentrality, rm(eigenvector,pagerank,authorities,hubscore))
+m6_without_dist_var9<-within(ncentrality, rm(betweenness,closeness,informationcent,eccentricity))
+m7_mix_match1_var6<-within(ncentrality, rm(eigenvector,closeness,informationcent,dmnc,lobby,leverage,localbridge))
+m8_mix_match2_var6<-within(ncentrality, rm(degree,authorities,hubscore,betweenness,informationcent,eccentricity,leverage))
+m9_mix_match3_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage,informationcent))
 
 #------------------------------------------Data loader and centrality calculation End-------------------------------------#
 
@@ -224,14 +224,13 @@ boxplot(ndegree,neigenvector,npagerank,nauthorities,nhubscore,nbetweenness,nclos
 ) #multiple boxplot 
 dev.off()
 
-rm(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities,nradiality,nclusterrank,ndmnc,
-   nlobby,nleverage,nsubgraph,ntopologicalcoeff,neccentricity,ngeodkpath,nstress,ninformationcent,nlocalbridge)
+rm(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities,ndmnc,
+   nlobby,nleverage,neccentricity,ninformationcent,nlocalbridge)
 #------------------------------------------Boxplot and corelation matrix end-------------------------------------#
 
 #------------------------------------------PCA start-------------------------------------#
 
 #principal component analysis
-
 res.pca8<-prcomp(scale(var8),center=TRUE) #  8 variables
 
 #show pca values
