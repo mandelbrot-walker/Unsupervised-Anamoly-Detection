@@ -81,49 +81,67 @@ lbc<-local_bridging_centrality(g)
 #edge_connectivity(g) # Outputs 0
 #clstrnk[is.na(clstrnk)] <- 0
 
+#V(gr)$crossclique <- crsc                       #  Crossclique centrality
+#V(gr)$radial<-radial
+#V(gr)$clusterrank<-clstrnk
+#V(gr)$subgraph<-subg
+#V(gr)$topologicalcoeff<-topol
+#V(gr)$gdkpath<-gkp
+#V(gr)$stress<-unlist(str)
+
+#radiality   = V(gr)$radial,
+#clusterrank = V(gr)$clusterrank,
+#subgraph    = V(gr)$subgraph,
+#topologicalcoeff = V(gr)$topologicalcoeff,
+#geodkpath   = V(gr)$gdkpath,
+#stress      = V(gr)$stress,
+
+#ncrossclique = normalize(crsc)
+#nradiality   = normalize(radial)
+#nclusterrank = normalize(clstrnk)
+#nsubgraph    = normalize(abs(subg))
+#ntopologicalcoeff = normalize(topol)
+#ngeodkpath   = normalize(gkp)
+#nstress      = normalize(unlist(str))
+
+#crossclique = ncrossclique,
+#radiality   = nradiality,
+#clusterrank = nclusterrank,
+#subgraph    = nsubgraph,
+#topologicalcoeff = ntopologicalcoeff,
+#geodkpath   = ngeodkpath,
+#stress      = nstress,
+
 gr<-g # temporary variable gr
 
 V(gr)$degree <- dg                               #  Degree centrality
 V(gr)$eig <- eig                                 #  Eigenvector centrality
-V(gr)$closeness <- clsn                          #  Closeness centrality
 V(gr)$pagerank <- pgr                            #  Pagerank centrality
+V(gr)$authorities <- auth                        #  Authority centrality
+V(gr)$hubs <- hubs                               #  Hub centrality
 V(gr)$betweenness <- btn                         #  Vertex betweenness centrality
-#V(gr)$crossclique <- crsc                        #  Crossclique centrality
-V(gr)$hubs <- hub.score(g)$vector                #  Hub centrality
-V(gr)$authorities <- authority.score(g)$vector   #  Authority centrality
-V(gr)$radial<-radial
-V(gr)$clusterrank<-clstrnk
+V(gr)$closeness <- clsn                          #  Closeness centrality
+V(gr)$informationcent<-unlist(infc)
+V(gr)$eccentricity<-ecc
 V(gr)$dmnc<-denmnc
 V(gr)$lobby<-lby
 V(gr)$leverage<-lvg
-V(gr)$subgraph<-subg
-V(gr)$topologicalcoeff<-topol
-V(gr)$eccentricity<-ecc
-V(gr)$gdkpath<-gkp
-V(gr)$stress<-unlist(str)
-V(gr)$informationcent<-unlist(infc)
 V(gr)$localbrigdecent<-lbc
 
 
 centrality <- data.frame(row.names   = V(gr)$name,
                          degree      = V(gr)$degree,
                          eigenvector = V(gr)$eig,
-                         closeness   = V(gr)$closeness,
                          pagerank    = V(gr)$pagerank,
-                         betweenness = V(gr)$betweenness,
-                         hubscore    = V(gr)$hubs,
                          authorities = V(gr)$authorities,
-                         radiality   = V(gr)$radial,
-                         clusterrank = V(gr)$clusterrank,
+                         hubscore    = V(gr)$hubs,
+                         betweenness = V(gr)$betweenness,
+                         closeness   = V(gr)$closeness,
+                         informationcent = V(gr)$informationcent,
+                         eccentricity = V(gr)$eccentricity,
                          densitymnc  = V(gr)$dmnc,
                          lobby       = V(gr)$lobby,
                          leverage    = V(gr)$leverage,
-                         #subgraph    = V(gr)$subgraph,
-                         topologicalcoeff = V(gr)$topologicalcoeff,
-                         eccentricity = V(gr)$eccentricity,
-                         geodkpath   = V(gr)$gdkpath,
-                         stress      = V(gr)$stress,
-                         informationcent = V(gr)$informationcent,
                          localbridge = V(gr)$localbrigdecent
 ) #  Non-normalized centrality values
 
@@ -134,54 +152,45 @@ head(centrality) #  check centrality variables
 
 ndegree      = normalize(dg) 
 neigenvector = normalize(eig) 
-ncloseness   = normalize(clsn)
 npagerank    = normalize(pgr)
-#ncrossclique = normalize(crsc)
+nauthorities = normalize(auth)
+nhubscore    = normalize(hubs)
 nbetweenness = normalize(btn)
-nhubscore    = normalize(V(gr)$hubs)
-nauthorities = normalize(V(gr)$authorities)
-nradiality   = normalize(radial)
-nclusterrank = normalize(clstrnk)
+ncloseness   = normalize(clsn)
+ninformationcent = normalize(unlist(infc))
+neccentricity = normalize(ecc)
 ndmnc        = normalize(denmnc)
 nlobby       = normalize(lby)
 nleverage    = normalize(lvg)
-nsubgraph    = normalize(abs(subg))
-ntopologicalcoeff = normalize(topol)
-neccentricity = normalize(ecc)
-ngeodkpath   = normalize(gkp)
-nstress      = normalize(unlist(str))
-ninformationcent = normalize(unlist(infc))
 nlocalbridge = normalize(lbc)
 
 
 ncentrality  <- data.frame(degree      = ndegree,
                            eigenvector = neigenvector,
-                           closeness   = ncloseness,
                            pagerank    = npagerank,
-                           #crossclique = ncrossclique,
-                           betweenness = nbetweenness,
-                           hubscore    = nhubscore,
                            authorities = nauthorities,
-                           radiality   = nradiality,
-                           clusterrank = nclusterrank,
+                           hubscore    = nhubscore,
+                           betweenness = nbetweenness,
+                           closeness   = ncloseness,
+                           informationcent = ninformationcent,
+                           eccentricity = neccentricity,
                            dmnc        = ndmnc,
                            lobby       = nlobby,
                            leverage    = nleverage,
-                           #subgraph    = nsubgraph,
-                           topologicalcoeff = ntopologicalcoeff,
-                           eccentricity = neccentricity,
-                           geodkpath   = ngeodkpath,
-                           stress      = nstress,
-                           informationcent = ninformationcent,
                            localbridge = nlocalbridge
 ) #  normalized values 8 variables
 
-rm(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities,nradiality,nclusterrank,ndmnc,
-   nlobby,nleverage,nsubgraph,ntopologicalcoeff,neccentricity,ngeodkpath,nstress,ninformationcent,nlocalbridge)
+#------------------------------------------Datasets-----------------------------------------------------------------------#
 
-#------------------------------------------Data loader and centrality calculation End-------------------------------------#
-
-var8<-ncentrality
+m1_all_var13<-ncentrality
+m2_without_comm_var7<-ncentrality[,-c(8,9,10,11,12,13)]
+m3_without_nodes_var6
+m4_without_ranks_var9
+m5_without_dist_var9
+m6_mix_match1_var6
+m7_mix_match2_var6
+m8_mix_match2_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage,informationcent))
+m9_without_dg_var12<-within(ncentrality, rm(degree))
 
 #------------------------------------------Data loader and centrality calculation End-------------------------------------#
 
@@ -201,13 +210,12 @@ dev.off()
 
 #plot boxplot
 bmp("boxplot.bmp", width = 1280, height = 720)
-boxplot(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities,nradiality,nclusterrank,ndmnc,
-        nlobby,nleverage,nsubgraph,ntopologicalcoeff,neccentricity,ngeodkpath,nstress,ninformationcent,nlocalbridge,
+boxplot(ndegree,neigenvector,npagerank,nauthorities,nhubscore,nbetweenness,ncloseness,ninformationcent,neccentricity,
+        ndmnc,nlobby,nleverage,nlocalbridge,
         main = "Multiple boxplots for comparision",
-        at = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19),
-        names = c("degree", "eigenvector", "closeness", "pagerank","betweenness","hubscore","authorities",
-                  "radiality","clusterrank","dmnc","lobby","leverage","subgraph","topologicalcoeff","eccentricity",
-                  "geodkpath","stress","informationcent","localbridge"),
+        at = c(1,2,3,4,5,6,7,8,9,10,11,12,13),
+        names = c("degree","eigenvector","pagerank","authorities","hubscore","betweenness","closeness","informationcent",
+                  "eccentricity","dmnc","lobby","leverage","localbridge"),
         las = 2,
         col = c("orange","black"),
         border = "brown",
@@ -215,6 +223,9 @@ boxplot(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthor
         notch = FALSE
 ) #multiple boxplot 
 dev.off()
+
+rm(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities,nradiality,nclusterrank,ndmnc,
+   nlobby,nleverage,nsubgraph,ntopologicalcoeff,neccentricity,ngeodkpath,nstress,ninformationcent,nlocalbridge)
 #------------------------------------------Boxplot and corelation matrix end-------------------------------------#
 
 #------------------------------------------PCA start-------------------------------------#
