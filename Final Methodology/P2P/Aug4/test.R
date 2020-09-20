@@ -20,6 +20,7 @@ library(Rdimtools)
 library(scatterplot3d)
 library(rgl)
 library(fpc)
+library(uwot)
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("p2p-Gnutella04.txt",header = TRUE, sep = "\t")
@@ -192,6 +193,18 @@ m7_mix_match1_var6<-within(ncentrality, rm(eigenvector,closeness,informationcent
 m8_mix_match2_var6<-within(ncentrality, rm(degree,authorities,hubscore,betweenness,informationcent,eccentricity,leverage))
 m9_mix_match3_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage,informationcent))
 
+m1<-m1_all_var13
+m2<-m2_without_dg_var12
+m3<-m3_without_comm_var7
+m4<-m4_without_nodes_var6
+m5<-m5_without_ranks_var9
+m6<-m6_without_dist_var9
+m7<-m7_mix_match1_var6
+m8<-m8_mix_match2_var6
+m9<-m9_mix_match3_var6
+
+rm(m1_all_var13,m2_without_dg_var12,m3_without_comm_var7,m4_without_nodes_var6,m5_without_ranks_var9,m6_without_dist_var9,
+   m7_mix_match1_var6,m8_mix_match2_var6,m9_mix_match3_var6)
 #------------------------------------------Data loader and centrality calculation End-------------------------------------#
 
 #------------------------------------------Write data start-------------------------------------#
@@ -231,77 +244,267 @@ rm(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities
 #------------------------------------------PCA start-------------------------------------#
 
 #principal component analysis
-res.pca8<-prcomp(scale(var8),center=TRUE) #  8 variables
+
+res.m1<-prcomp(scale(m1_all_var13),center=TRUE) 
+res.m2<-prcomp(scale(m2_without_dg_var12),center=TRUE) 
+res.m3<-prcomp(scale(m3_without_comm_var7),center=TRUE) 
+res.m4<-prcomp(scale(m4_without_nodes_var6),center=TRUE) 
+res.m5<-prcomp(scale(m5_without_ranks_var9),center=TRUE) 
+res.m6<-prcomp(scale(m6_without_dist_var9),center=TRUE) 
+res.m7<-prcomp(scale(m7_mix_match1_var6),center=TRUE) 
+res.m8<-prcomp(scale(m8_mix_match2_var6),center=TRUE) 
+res.m9<-prcomp(scale(m9_mix_match3_var6),center=TRUE) 
 
 #show pca values
-print(res.pca8)
+print(res.m1)
+print(res.m2)
+print(res.m3)
+print(res.m4)
+print(res.m5)
+print(res.m6)
+print(res.m7)
+print(res.m8)
+print(res.m9)
 
-p1<-fviz_eig(res.pca8,addlabels = TRUE)#Scree plot 8 var
+#  screeplot
+p1<-fviz_eig(res.m1,addlabels = TRUE)
+p2<-fviz_eig(res.m2,addlabels = TRUE)
+p3<-fviz_eig(res.m3,addlabels = TRUE)
+p4<-fviz_eig(res.m4,addlabels = TRUE)
+p5<-fviz_eig(res.m5,addlabels = TRUE)
+p6<-fviz_eig(res.m6,addlabels = TRUE)
+p7<-fviz_eig(res.m7,addlabels = TRUE)
+p8<-fviz_eig(res.m8,addlabels = TRUE)
+p9<-fviz_eig(res.m9,addlabels = TRUE)
 
-#plot screeplot
+#  plot screeplot
 bmp("screeplot.bmp", width = 1920, height = 1080)
-grid.arrange(p1, nrow = 1)
+grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9, nrow = 3, ncol=3)
 dev.off()
 
-p1<-fviz_pca_biplot(res.pca8, label ="var")#biplot 8 var
+#  biplot
+p1<-fviz_pca_biplot(res.m1, label ="var")
+p2<-fviz_pca_biplot(res.m2, label ="var")
+p3<-fviz_pca_biplot(res.m3, label ="var")
+p4<-fviz_pca_biplot(res.m4, label ="var")
+p5<-fviz_pca_biplot(res.m5, label ="var")
+p6<-fviz_pca_biplot(res.m6, label ="var")
+p7<-fviz_pca_biplot(res.m7, label ="var")
+p8<-fviz_pca_biplot(res.m8, label ="var")
+p9<-fviz_pca_biplot(res.m9, label ="var")
 
 #plot biplot
 bmp("biplot.bmp", width = 1920, height = 1080)
-grid.arrange(p1, nrow = 1)
+grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9, nrow = 3, ncol=3)
 dev.off()
-
 
 #plot contribution to dimensions
-p5d1<-fviz_contrib(res.pca8, choice = "var", axes = 1)
-p5d2<-fviz_contrib(res.pca8, choice = "var", axes = 2)
+
+p1d1<-fviz_contrib(res.m1, choice = "var", axes = 1)
+p1d2<-fviz_contrib(res.m1, choice = "var", axes = 2)
+p2d1<-fviz_contrib(res.m2, choice = "var", axes = 1)
+p2d2<-fviz_contrib(res.m2, choice = "var", axes = 2)
+p3d1<-fviz_contrib(res.m3, choice = "var", axes = 1)
+p3d2<-fviz_contrib(res.m3, choice = "var", axes = 2)
+p4d1<-fviz_contrib(res.m4, choice = "var", axes = 1)
+p4d2<-fviz_contrib(res.m4, choice = "var", axes = 2)
+p5d1<-fviz_contrib(res.m5, choice = "var", axes = 1)
+p5d2<-fviz_contrib(res.m5, choice = "var", axes = 2)
+p6d1<-fviz_contrib(res.m6, choice = "var", axes = 1)
+p6d2<-fviz_contrib(res.m6, choice = "var", axes = 2)
+p7d1<-fviz_contrib(res.m7, choice = "var", axes = 1)
+p7d2<-fviz_contrib(res.m7, choice = "var", axes = 2)
+p8d1<-fviz_contrib(res.m8, choice = "var", axes = 1)
+p8d2<-fviz_contrib(res.m8, choice = "var", axes = 2)
+p9d1<-fviz_contrib(res.m9, choice = "var", axes = 1)
+p9d2<-fviz_contrib(res.m9, choice = "var", axes = 2)
+
 
 bmp("dimension contribution.bmp", width = 1920, height = 1080)
-grid.arrange(p5d1,p5d2, nrow = 1, ncol = 2)
+grid.arrange(p1d1,p1d2,p2d1,p2d2,p3d1,p3d2,p4d1,p4d2,p5d1,p5d2,p6d1,p6d2,p7d1,p7d2,p8d1,p8d2,p9d1,p9d2, nrow = 5, ncol=4)
 dev.off()
 
-rm(p5d1,p5d2) #  remove contribution plot variables
+rm(p1d1,p1d2,p2d1,p2d2,p3d1,p3d2,p4d1,p4d2,p5d1,p5d2,p6d1,p6d2,p7d1,p7d2,p8d1,p8d2,p9d1,p9d2) #  remove contribution plot variables
 
 
 # Color by contributions to the PC uses cos^2 value
 
-p1<-fviz_pca_var(res.pca8,
+p1<-fviz_pca_var(res.m1,
                  col.var = "contrib", # Color by contributions to the PC
                  gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
                  repel = TRUE     # Avoid text overlapping
-) #  8 variables
+)
+
+p2<-fviz_pca_var(res.m2,
+                 col.var = "contrib", # Color by contributions to the PC
+                 gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                 repel = TRUE     # Avoid text overlapping
+)
+
+p3<-fviz_pca_var(res.m3,
+                 col.var = "contrib", # Color by contributions to the PC
+                 gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                 repel = TRUE     # Avoid text overlapping
+)
+
+p4<-fviz_pca_var(res.m4,
+                 col.var = "contrib", # Color by contributions to the PC
+                 gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                 repel = TRUE     # Avoid text overlapping
+)
+
+p5<-fviz_pca_var(res.m5,
+                 col.var = "contrib", # Color by contributions to the PC
+                 gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                 repel = TRUE     # Avoid text overlapping
+)
+
+p6<-fviz_pca_var(res.m6,
+                 col.var = "contrib", # Color by contributions to the PC
+                 gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                 repel = TRUE     # Avoid text overlapping
+)
+
+p7<-fviz_pca_var(res.m7,
+                 col.var = "contrib", # Color by contributions to the PC
+                 gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                 repel = TRUE     # Avoid text overlapping
+)
+
+p8<-fviz_pca_var(res.m8,
+                 col.var = "contrib", # Color by contributions to the PC
+                 gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                 repel = TRUE     # Avoid text overlapping
+)
+
+p9<-fviz_pca_var(res.m9,
+                 col.var = "contrib", # Color by contributions to the PC
+                 gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                 repel = TRUE     # Avoid text overlapping
+)
 
 #plot contribution wise pca
-#plot biplot
 bmp("cos2 contribution.bmp", width = 1920, height = 1080)
-grid.arrange(p1, nrow = 1)
+grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9, nrow = 3, ncol=3)
 dev.off()
 
-eig.val8 <- get_eigenvalue(res.pca8) 
-eig.val8
+eig.m1 <- get_eigenvalue(res.m1) 
+eig.m1
+eig.m2 <- get_eigenvalue(res.m2) 
+eig.m2
+eig.m3 <- get_eigenvalue(res.m3) 
+eig.m3
+eig.m4 <- get_eigenvalue(res.m4) 
+eig.m4
+eig.m5 <- get_eigenvalue(res.m5) 
+eig.m5
+eig.m6 <- get_eigenvalue(res.m6) 
+eig.m6
+eig.m7 <- get_eigenvalue(res.m7) 
+eig.m7
+eig.m8 <- get_eigenvalue(res.m8) 
+eig.m8
+eig.m9 <- get_eigenvalue(res.m9) 
+eig.m9
 
+rm(eig.m1,eig.m2,eig.m3,eig.m4,eig.m5,eig.m6,eig.m7,eig.m8,eig.m9)
 
 #  Results for Variables
-res.var <- get_pca_var(res.pca8)#  8 variables 
+res.var <- get_pca_var(res.m1)#  8 variables 
 res.var$coord          #  Coordinates
 res.var$contrib        #  Contributions to the PCs
 res.var$cos2           #  Quality of representation 
+
+rm(p1,p2,p3,p4,p5,p6,p7,p8,p9)
+rm(res.m1,res.m2,res.m3,res.m4,res.m5,res.m6,res.m7,res.m8,res.m9)
 
 #------------------------------------------PCA end-------------------------------------#
 
 #------------------------------------------------Custom tsne---------------------------------------------------#
 
 ncen_tr<-transpose(ncentrality) #  transpose ncentrality for tsne colors
-ncen_tr<-data.frame(names = c("degree", "eigenvector", "closeness", "pagerank","betweenness","hubscore","authorities",
-                              "radiality","clusterrank","dmnc","lobby","leverage","subgraph","topologicalcoeff","eccentricity",
-                              "geodkpath","stress","informationcent","localbridge"),ncen_tr) #y label
+ncen_tr<-data.frame(names = c("degree", "eigenvector","pagerank","authorities","hubscore","betweenness","closeness",
+                              "informationcent","eccentricity","dmnc","lobby","leverage","localbridge"),ncen_tr) #y label
+
+#-------------------------------tsne parameters----------------------------#
+
+prx1<-50
+prx2<-100
+prx3<-30
+prx4<-43
+th1<-0.20
+th2<-0.10
+th3<-0.50
+th4<-0.10
+mit1<-2000
+mit2<-1500
+mit3<-1000
+mit4<-1500
+nthr<-7
 
 #-------------------------------------------------------tsne model 1 start--------------------------------------------#
 
 set.seed(32)  
-tsne_model_1_var8 = Rtsne(var8, check_duplicates=FALSE, pca=TRUE, perplexity=50, theta=0.20, dims=2, max_iter = 2000,
-                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 8)
-bmp("tsne_model_1_var8.bmp", width = 1920, height = 1080)
-plot(tsne_model_1_var8$Y,col=1:19, asp=1)
+tsne_model_1_m1 = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_1_m1.bmp", width = 1920, height = 1080)
+plot(tsne_model_1_m1$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(32)  
+tsne_model_1_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_1_m2.bmp", width = 1920, height = 1080)
+plot(tsne_model_1_m2$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(32)  
+tsne_model_1_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_1_m3.bmp", width = 1920, height = 1080)
+plot(tsne_model_1_m3$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(32)  
+tsne_model_1_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_1_m4.bmp", width = 1920, height = 1080)
+plot(tsne_model_1_m4$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(32)  
+tsne_model_1_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_1_m5.bmp", width = 1920, height = 1080)
+plot(tsne_model_1_m5$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(32)  
+tsne_model_1_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_1_m6.bmp", width = 1920, height = 1080)
+plot(tsne_model_1_m6$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(32)  
+tsne_model_1_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_1_m7.bmp", width = 1920, height = 1080)
+plot(tsne_model_1_m7$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(32)  
+tsne_model_1_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_1_m8.bmp", width = 1920, height = 1080)
+plot(tsne_model_1_m8$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(32)  
+tsne_model_1_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_1_m9.bmp", width = 1920, height = 1080)
+plot(tsne_model_1_m9$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
 #-------------------------------------------------------tsne model 1 end--------------------------------------------#
@@ -310,44 +513,217 @@ save.image(".Rdata",safe = TRUE)
 
 #-------------------------------------------------------tsne model 2 start--------------------------------------------#
 
-set.seed(323)  
-tsne_model_2_var8 = Rtsne(var8, check_duplicates=FALSE, pca=TRUE, perplexity=100, theta=0.10, dims=2, max_iter = 1500,
-                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 8) #lowest error
-bmp("tsne_model_2_var8.bmp", width = 1920, height = 1080)
-plot(tsne_model_2_var8$Y,col=1:19, asp=1)
+set.seed(31)  
+tsne_model_2_m1 = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_2_m1.bmp", width = 1920, height = 1080)
+plot(tsne_model_2_m1$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
+
+set.seed(31)  
+tsne_model_2_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_2_m2.bmp", width = 1920, height = 1080)
+plot(tsne_model_2_m2$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(31)  
+tsne_model_2_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_2_m3.bmp", width = 1920, height = 1080)
+plot(tsne_model_2_m3$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(31)  
+tsne_model_2_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_2_m4.bmp", width = 1920, height = 1080)
+plot(tsne_model_2_m4$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(31)  
+tsne_model_2_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_2_m5.bmp", width = 1920, height = 1080)
+plot(tsne_model_2_m5$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(31)  
+tsne_model_2_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_2_m6.bmp", width = 1920, height = 1080)
+plot(tsne_model_2_m6$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(31)  
+tsne_model_2_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_2_m7.bmp", width = 1920, height = 1080)
+plot(tsne_model_2_m7$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(31)  
+tsne_model_2_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_2_m8.bmp", width = 1920, height = 1080)
+plot(tsne_model_2_m8$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(31)  
+tsne_model_2_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_2_m9.bmp", width = 1920, height = 1080)
+plot(tsne_model_2_m9$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
 #-------------------------------------------------------tsne model 2 end--------------------------------------------#
 
 save.image(".Rdata",safe = TRUE)
 
 #-------------------------------------------------------tsne model 3 start--------------------------------------------#
 
-set.seed(333)  
-tsne_model_3_var8 = Rtsne(var8, check_duplicates=FALSE, pca=TRUE, perplexity=30, theta=0.50, dims=2, max_iter = 1000,
-                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 8) #lowest error
-bmp("tsne_model_3_var8.bmp", width = 1920, height = 1080)
-plot(tsne_model_3_var8$Y,col=1:19, asp=1)
+set.seed(30)  
+tsne_model_3_m1 = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_3_m1.bmp", width = 1920, height = 1080)
+plot(tsne_model_3_m1$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
+
+set.seed(30)  
+tsne_model_3_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_3_m2.bmp", width = 1920, height = 1080)
+plot(tsne_model_3_m2$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(30)  
+tsne_model_3_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_3_m3.bmp", width = 1920, height = 1080)
+plot(tsne_model_3_m3$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(30)  
+tsne_model_3_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_3_m4.bmp", width = 1920, height = 1080)
+plot(tsne_model_3_m4$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(30)  
+tsne_model_3_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_3_m5.bmp", width = 1920, height = 1080)
+plot(tsne_model_3_m5$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(30)  
+tsne_model_3_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_3_m6.bmp", width = 1920, height = 1080)
+plot(tsne_model_3_m6$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(30)  
+tsne_model_3_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_3_m7.bmp", width = 1920, height = 1080)
+plot(tsne_model_3_m7$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(30)  
+tsne_model_3_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_3_m8.bmp", width = 1920, height = 1080)
+plot(tsne_model_3_m8$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(30)  
+tsne_model_3_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_3_m9.bmp", width = 1920, height = 1080)
+plot(tsne_model_3_m9$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
 #-------------------------------------------------------tsne model 3 end--------------------------------------------#
 
 save.image(".Rdata",safe = TRUE)
 
 #-------------------------------------------------------tsne model 4 start--------------------------------------------#
 
-set.seed(358)  
-tsne_model_4_var8 = Rtsne(var8, check_duplicates=FALSE, pca=TRUE, perplexity=43, theta=0.10, dims=2, max_iter = 1500,
-                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = 8)
-bmp("tsne_model_4_var8.bmp", width = 1920, height = 1080)
-plot(tsne_model_4_var8$Y,col=1:19, asp=1)
+set.seed(29)  
+tsne_model_4_m1 = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_4_m1.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_m1$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(29)  
+tsne_model_4_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_4_m2.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_m2$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(29)  
+tsne_model_4_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_4_m3.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_m3$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(29)  
+tsne_model_4_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_4_m4.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_m4$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(29)  
+tsne_model_4_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_4_m5.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_m5$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(29)  
+tsne_model_4_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_4_m6.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_m6$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(29)  
+tsne_model_4_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_4_m7.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_m7$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(29)  
+tsne_model_4_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_4_m8.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_m8$Y,col=factor(ncen_tr$names), asp=1)
+dev.off()
+
+set.seed(29)  
+tsne_model_4_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+bmp("tsne_model_4_m9.bmp", width = 1920, height = 1080)
+plot(tsne_model_4_m9$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
 #-------------------------------------------------------tsne model 4 end--------------------------------------------#
 
 #---------------------------------------------kmeans start------------------------------------------------------#
 
+#---------------------------------------------kneeplot----------------------------------------------------------#
+
+##  m1
 # function to compute total within-cluster sum of square 
 wss <- function(k) {
-  kmeans(var8, k, nstart = 10 )$tot.withinss
+  kmeans(m1, k, nstart = 10 )$tot.withinss
 }
 
 # Compute and plot wss for k = 1 to k = 15
@@ -356,156 +732,838 @@ k.values <- 1:15
 # extract wss for 2-15 clusters
 wss_values <- map_dbl(k.values, wss)
 
-bmp("kmeans_kneeplot_var8.bmp", width = 1280, height = 720)
+bmp("kmeans_kneeplot_m1.bmp", width = 1280, height = 720)
 plot(k.values, wss_values,
      type="b", pch = 19, frame = FALSE, 
      xlab="Number of clusters K",
      ylab="Total within-clusters sum of squares") #kneeplot
 dev.off()
 
-#clusters using different k values var8
-c1<-kmeans(var8, 2, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
-c2<-kmeans(var8, 3, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
-c3<-kmeans(var8, 4, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
-c4<-kmeans(var8, 5, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
-c1<-kmeans(var8, 6, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
-#plot of clusters
-p1 <- fviz_cluster(c1, geom = "point",  data = var8) + ggtitle("k = 2")
-p2 <- fviz_cluster(c2, geom = "point", data = var8) + ggtitle("k = 3")
-p3 <- fviz_cluster(c3, geom = "point",  data = var8) + ggtitle("k = 4")
-p4 <- fviz_cluster(c4, geom = "point",  data = var8) + ggtitle("k = 5")
+##  m2
+# function to compute total within-cluster sum of square 
+wss <- function(k) {
+  kmeans(m2, k, nstart = 10 )$tot.withinss
+}
 
-bmp("kmeans_pca_var8.bmp", width = 1920, height = 1280)
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+bmp("kmeans_kneeplot_m2.bmp", width = 1280, height = 720)
+plot(k.values, wss_values,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares") #kneeplot
+dev.off()
+
+##  m3
+# function to compute total within-cluster sum of square 
+wss <- function(k) {
+  kmeans(m3, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+bmp("kmeans_kneeplot_m3.bmp", width = 1280, height = 720)
+plot(k.values, wss_values,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares") #kneeplot
+dev.off()
+
+##  m4
+# function to compute total within-cluster sum of square 
+wss <- function(k) {
+  kmeans(m4, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+bmp("kmeans_kneeplot_m4.bmp", width = 1280, height = 720)
+plot(k.values, wss_values,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares") #kneeplot
+dev.off()
+
+##  m5
+# function to compute total within-cluster sum of square 
+wss <- function(k) {
+  kmeans(m5, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+bmp("kmeans_kneeplot_m5.bmp", width = 1280, height = 720)
+plot(k.values, wss_values,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares") #kneeplot
+dev.off()
+
+##  m6
+# function to compute total within-cluster sum of square 
+wss <- function(k) {
+  kmeans(m6, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+bmp("kmeans_kneeplot_m6.bmp", width = 1280, height = 720)
+plot(k.values, wss_values,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares") #kneeplot
+dev.off()
+
+##  m7
+# function to compute total within-cluster sum of square 
+wss <- function(k) {
+  kmeans(m7, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+bmp("kmeans_kneeplot_m7.bmp", width = 1280, height = 720)
+plot(k.values, wss_values,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares") #kneeplot
+dev.off()
+
+##  m8
+# function to compute total within-cluster sum of square 
+wss <- function(k) {
+  kmeans(m8, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+bmp("kmeans_kneeplot_m8.bmp", width = 1280, height = 720)
+plot(k.values, wss_values,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares") #kneeplot
+dev.off()
+
+##  m9
+# function to compute total within-cluster sum of square 
+wss <- function(k) {
+  kmeans(m9, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+bmp("kmeans_kneeplot_m9.bmp", width = 1280, height = 720)
+plot(k.values, wss_values,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares") #kneeplot
+dev.off()
+
+#---------------------------------------------------------clusters--------------------------------------
+#--------------clusters using different k values m1
+ck1<-kmeans(m1, 3, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-kmeans(m1, 4, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck3<-kmeans(m1, 5, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck4<-kmeans(m1, 6, iter.max = 20, nstart = 25,
+           algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m1,ck1$cluster),digits=3) #  7733.985
+round(calinhara(m1,ck2$cluster),digits=4) #  7985.291 highest
+round(calinhara(m1,ck3$cluster),digits=5) #  6959.628
+round(calinhara(m1,ck4$cluster),digits=6) #  6348.964
+
+
+#plot of clusters
+p1 <- fviz_cluster(ck1, geom = "point", data = m1) + ggtitle("k = 3")
+p2 <- fviz_cluster(ck2, geom = "point", data = m1) + ggtitle("k = 4")
+p3 <- fviz_cluster(ck3, geom = "point", data = m1) + ggtitle("k = 5")
+p4 <- fviz_cluster(ck4, geom = "point", data = m1) + ggtitle("k = 6")
+
+bmp("kmeans_pca_m1.bmp", width = 1920, height = 1280)
 grid.arrange(p1, p2, p3, p4, nrow = 2)
 dev.off()
 
-c_ncentrality<-kmeans(ncentrality, 2, iter.max = 20, nstart = 25,
-                      algorithm = c("Hartigan-Wong"), trace=FALSE)
+#--------------clusters using different k values m2
+ck1<-kmeans(m2, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-kmeans(m2, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck3<-kmeans(m2, 5, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck4<-kmeans(m2, 6, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
 
-bmp("kmeans_ncentrality_k2.bmp", width = 1920, height = 1280)
-plot(ncentrality, col = c_ncentrality$cluster)
-points(c_ncentrality$centers, col = 1:8, pch = 8)
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m2,ck1$cluster),digits=3) #  7703.294
+round(calinhara(m2,ck2$cluster),digits=4) #  8037.741 highest
+round(calinhara(m2,ck3$cluster),digits=5) #  7001.544
+round(calinhara(m2,ck4$cluster),digits=6) #  6370.787
+
+
+#plot of clusters
+p1 <- fviz_cluster(ck1, geom = "point", data = m2) + ggtitle("k = 3")
+p2 <- fviz_cluster(ck2, geom = "point", data = m2) + ggtitle("k = 4")
+p3 <- fviz_cluster(ck3, geom = "point", data = m2) + ggtitle("k = 5")
+p4 <- fviz_cluster(ck4, geom = "point", data = m2) + ggtitle("k = 6")
+
+bmp("kmeans_pca_m2.bmp", width = 1920, height = 1280)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
 dev.off()
 
-c_ncentrality<-kmeans(ncentrality, 3, iter.max = 20, nstart = 25,
-                      algorithm = c("Hartigan-Wong"), trace=FALSE)
+#--------------clusters using different k values m3
+ck1<-kmeans(m3, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-kmeans(m3, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck3<-kmeans(m3, 5, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck4<-kmeans(m3, 6, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
 
-bmp("kmeans_ncentrality_k3.bmp", width = 1920, height = 1280)
-plot(ncentrality, col = c_ncentrality$cluster)
-points(c_ncentrality$centers, col = 1:8, pch = 8)
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m3,ck1$cluster),digits=3) #  7649.803
+round(calinhara(m3,ck2$cluster),digits=4) #  7698.748 
+round(calinhara(m3,ck3$cluster),digits=5) #  7738.866
+round(calinhara(m3,ck4$cluster),digits=6) #  7787.33 highest
+
+
+#plot of clusters
+p1 <- fviz_cluster(ck1, geom = "point", data = m3) + ggtitle("k = 3")
+p2 <- fviz_cluster(ck2, geom = "point", data = m3) + ggtitle("k = 4")
+p3 <- fviz_cluster(ck3, geom = "point", data = m3) + ggtitle("k = 5")
+p4 <- fviz_cluster(ck4, geom = "point", data = m3) + ggtitle("k = 6")
+
+bmp("kmeans_pca_m3.bmp", width = 1920, height = 1280)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
 dev.off()
 
-rm(p1,p2,p3,p4,p5)
+#--------------clusters using different k values m4
+ck1<-kmeans(m4, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-kmeans(m4, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck3<-kmeans(m4, 5, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck4<-kmeans(m4, 6, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
 
-round(calinhara(var8,c1$cluster),digits=2) #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(var8,c2$cluster),digits=3)
-round(calinhara(var8,c3$cluster),digits=4)
-round(calinhara(var8,c4$cluster),digits=5)
-round(calinhara(var8,c4$cluster),digits=6)
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m4,ck1$cluster),digits=3) #  9030.761
+round(calinhara(m4,ck2$cluster),digits=4) #  10646.54 highest
+round(calinhara(m4,ck3$cluster),digits=5) #  9468.393
+round(calinhara(m4,ck4$cluster),digits=6) #  8854.677
 
-#-------------TSNE data frames for kmeans start--------------------------------------#
-#~~~~~~~~~~~~~tsne model 1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-d_tsne_1_var8 = as.data.frame(tsne_model_1_var8$Y) #list to dataframe var 8
+#plot of clusters
+p1 <- fviz_cluster(ck1, geom = "point", data = m4) + ggtitle("k = 3")
+p2 <- fviz_cluster(ck2, geom = "point", data = m4) + ggtitle("k = 4")
+p3 <- fviz_cluster(ck3, geom = "point", data = m4) + ggtitle("k = 5")
+p4 <- fviz_cluster(ck4, geom = "point", data = m4) + ggtitle("k = 6")
 
-#~~~~~~~~~~~~~tsne model 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+bmp("kmeans_pca_m4.bmp", width = 1920, height = 1280)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+dev.off()
 
-d_tsne_2_var8 = as.data.frame(tsne_model_2_var8$Y) #list to dataframe var 8
+#--------------clusters using different k values m5
+ck1<-kmeans(m5, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-kmeans(m5, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck3<-kmeans(m5, 5, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck4<-kmeans(m5, 6, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
 
-#~~~~~~~~~~~~~tsne model 3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m5,ck1$cluster),digits=3) #  8841.458
+round(calinhara(m5,ck2$cluster),digits=4) #  9615.578 highest
+round(calinhara(m5,ck3$cluster),digits=5) #  8563.109
+round(calinhara(m5,ck4$cluster),digits=6) #  7967.682
 
-d_tsne_3_var8 = as.data.frame(tsne_model_3_var8$Y) #list to dataframe var 8
 
-#~~~~~~~~~~~~~tsne model 4~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#plot of clusters
+p1 <- fviz_cluster(ck1, geom = "point", data = m5) + ggtitle("k = 3")
+p2 <- fviz_cluster(ck2, geom = "point", data = m5) + ggtitle("k = 4")
+p3 <- fviz_cluster(ck3, geom = "point", data = m5) + ggtitle("k = 5")
+p4 <- fviz_cluster(ck4, geom = "point", data = m5) + ggtitle("k = 6")
 
-d_tsne_4_var8 = as.data.frame(tsne_model_4_var8$Y) #list to dataframe var 8
+bmp("kmeans_pca_m5.bmp", width = 1920, height = 1280)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+dev.off()
 
-#-------------TSNE data frames for kmeans end--------------------------------------#
+#--------------clusters using different k values m6
+ck1<-kmeans(m6, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-kmeans(m6, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck3<-kmeans(m6, 5, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck4<-kmeans(m6, 6, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m6,ck1$cluster),digits=3) #  16450.43 highest
+round(calinhara(m6,ck2$cluster),digits=4) #  14770.27 
+round(calinhara(m6,ck3$cluster),digits=5) #  14848.32
+round(calinhara(m6,ck4$cluster),digits=6) #  14466.01
+
+
+#plot of clusters
+p1 <- fviz_cluster(ck1, geom = "point", data = m6) + ggtitle("k = 3")
+p2 <- fviz_cluster(ck2, geom = "point", data = m6) + ggtitle("k = 4")
+p3 <- fviz_cluster(ck3, geom = "point", data = m6) + ggtitle("k = 5")
+p4 <- fviz_cluster(ck4, geom = "point", data = m6) + ggtitle("k = 6")
+
+bmp("kmeans_pca_m6.bmp", width = 1920, height = 1280)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+dev.off()
+
+#--------------clusters using different k values m7
+ck1<-kmeans(m7, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-kmeans(m7, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck3<-kmeans(m7, 5, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck4<-kmeans(m7, 6, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m7,ck1$cluster),digits=3) #  8412.904 
+round(calinhara(m7,ck2$cluster),digits=4) #  8478.609 highest
+round(calinhara(m7,ck3$cluster),digits=5) #  7935.222
+round(calinhara(m7,ck4$cluster),digits=6) #  8114.244
+
+
+#plot of clusters
+p1 <- fviz_cluster(ck1, geom = "point", data = m7) + ggtitle("k = 3")
+p2 <- fviz_cluster(ck2, geom = "point", data = m7) + ggtitle("k = 4")
+p3 <- fviz_cluster(ck3, geom = "point", data = m7) + ggtitle("k = 5")
+p4 <- fviz_cluster(ck4, geom = "point", data = m7) + ggtitle("k = 6")
+
+bmp("kmeans_pca_m7.bmp", width = 1920, height = 1280)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+dev.off()
+
+#--------------clusters using different k values m8
+ck1<-kmeans(m8, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-kmeans(m8, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck3<-kmeans(m8, 5, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck4<-kmeans(m8, 6, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m8,ck1$cluster),digits=3) #  18717.68 highest
+round(calinhara(m8,ck2$cluster),digits=4) #  17385.23 
+round(calinhara(m8,ck3$cluster),digits=5) #  16981.55
+round(calinhara(m8,ck4$cluster),digits=6) #  16352.07
+
+
+#plot of clusters
+p1 <- fviz_cluster(ck1, geom = "point", data = m8) + ggtitle("k = 3")
+p2 <- fviz_cluster(ck2, geom = "point", data = m8) + ggtitle("k = 4")
+p3 <- fviz_cluster(ck3, geom = "point", data = m8) + ggtitle("k = 5")
+p4 <- fviz_cluster(ck4, geom = "point", data = m8) + ggtitle("k = 6")
+
+bmp("kmeans_pca_m8.bmp", width = 1920, height = 1280)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+dev.off()
+
+#--------------clusters using different k values m9
+ck1<-kmeans(m9, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-kmeans(m9, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck3<-kmeans(m9, 5, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck4<-kmeans(m9, 6, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m9,ck1$cluster),digits=3) #  14642.38 highest
+round(calinhara(m9,ck2$cluster),digits=4) #  12906.56 
+round(calinhara(m9,ck3$cluster),digits=5) #  11824.88
+round(calinhara(m9,ck4$cluster),digits=6) #  11635.55
+
+
+#plot of clusters
+p1 <- fviz_cluster(ck1, geom = "point", data = m9) + ggtitle("k = 3")
+p2 <- fviz_cluster(ck2, geom = "point", data = m9) + ggtitle("k = 4")
+p3 <- fviz_cluster(ck3, geom = "point", data = m9) + ggtitle("k = 5")
+p4 <- fviz_cluster(ck4, geom = "point", data = m9) + ggtitle("k = 6")
+
+bmp("kmeans_pca_m9.bmp", width = 1920, height = 1280)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+dev.off()
+
+#  Full dataset
+c_ncentrality<-kmeans(ncentrality, 4, iter.max = 20, nstart = 25,
+                      algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+bmp("kmeans_ncentrality_k4.bmp", width = 1920, height = 1280)
+
+rm(ck1,ck2,ck3,ck4,p1,p2,p3,p4)
+
+ckm1<-kmeans(m1, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ckm2<-kmeans(m2, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ckm3<-kmeans(m3, 6, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ckm4<-kmeans(m4, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ckm5<-kmeans(m5, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ckm6<-kmeans(m6, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ckm7<-kmeans(m7, 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ckm8<-kmeans(m8, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+ckm9<-kmeans(m9, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #-------------kmeans on dataset and cluster onto TSNE start-------------------------------------------------#
 
-#----------------------kmenas k=2------------------------------------#
-
-c1<-kmeans(var8, 2, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
-
-plot(d_tsne_1_var8, col = c1$cluster)
-
-#----------------------kmenas k=3------------------------------------#
-
-c2<-kmeans(var8, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-
 #Kmeans for tsne model 1
 
-p1 <- fviz_cluster(c1, geom = "point",  data = d_tsne_1_var8) + ggtitle("k = 2 var8")
+#  m1
+bmp("tsne_model1_m1_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m1$Y), col = ckm1$cluster)
+dev.off()
 
+p1 <- fviz_cluster(ckm1, geom = "point",  data = as.data.frame(tsne_model_1_m1$Y)) + ggtitle("k = 4 m1")
 
-bmp("tsne_model1_kmeans_k2.bmp", width = 1980, height = 1280)
+bmp("tsne_model1_m1_kmeans_k4_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
-p1 <- fviz_cluster(c2, geom = "point",  data = d_tsne_1_var8) + ggtitle("k = 3 var8")
+#  m2
+bmp("tsne_model1_m2_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m2$Y), col = ckm2$cluster)
+dev.off()
 
-bmp("tsne_model1_kmeans_k3.bmp", width = 1980, height = 1280)
+p1 <- fviz_cluster(ckm2, geom = "point",  data = as.data.frame(tsne_model_1_m2$Y)) + ggtitle("k = 4 m2")
+
+bmp("tsne_model1_m2_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m3
+bmp("tsne_model1_m3_kmeans_k6.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m3$Y), col = ckm3$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm3, geom = "point",  data = as.data.frame(tsne_model_1_m3$Y)) + ggtitle("k = 6 m3")
+
+bmp("tsne_model1_m3_kmeans_k6_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m4
+bmp("tsne_model1_m4_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m4$Y), col = ckm4$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm4, geom = "point",  data = as.data.frame(tsne_model_1_m4$Y)) + ggtitle("k = 4 m4")
+
+bmp("tsne_model1_m4_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m5
+bmp("tsne_model1_m5_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m5$Y), col = ckm5$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm5, geom = "point",  data = as.data.frame(tsne_model_1_m5$Y)) + ggtitle("k = 4 m5")
+
+bmp("tsne_model1_m5_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m6
+bmp("tsne_model1_m6_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m6$Y), col = ckm6$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm6, geom = "point",  data = as.data.frame(tsne_model_1_m6$Y)) + ggtitle("k = 3 m6")
+
+bmp("tsne_model1_m6_kmeans_k3_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m7
+bmp("tsne_model1_m7_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m7$Y), col = ckm7$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm7, geom = "point",  data = as.data.frame(tsne_model_1_m7$Y)) + ggtitle("k = 4 m7")
+
+bmp("tsne_model1_m7_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m8
+bmp("tsne_model1_m8_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m8$Y), col = ckm8$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm8, geom = "point",  data = as.data.frame(tsne_model_1_m8$Y)) + ggtitle("k = 3 m8")
+
+bmp("tsne_model1_m8_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m9
+bmp("tsne_model1_m9_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m9$Y), col = ckm9$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm9, geom = "point",  data = as.data.frame(tsne_model_1_m9$Y)) + ggtitle("k = 3 m9")
+
+bmp("tsne_model1_m9_kmeans_k3_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
 #Kmeans for tsne model 2
 
-p1 <- fviz_cluster(c1, geom = "point",  data = d_tsne_2_var8) + ggtitle("k = 2 var8")
+bmp("tsne_model2_m1_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m1$Y), col = ckm1$cluster)
+dev.off()
 
-bmp("tsne_model2_kmeans_k2.bmp", width = 1980, height = 1280)
+p1 <- fviz_cluster(ckm1, geom = "point",  data = as.data.frame(tsne_model_2_m1$Y)) + ggtitle("k = 4 m1")
+
+bmp("tsne_model2_m1_kmeans_k4_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
-p1 <- fviz_cluster(c2, geom = "point",  data = d_tsne_2_var8) + ggtitle("k = 3 var8")
+#  m2
+bmp("tsne_model2_m2_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m2$Y), col = ckm2$cluster)
+dev.off()
 
-bmp("tsne_model2_kmeans_k3.bmp", width = 1980, height = 1280)
+p1 <- fviz_cluster(ckm2, geom = "point",  data = as.data.frame(tsne_model_2_m2$Y)) + ggtitle("k = 4 m2")
+
+bmp("tsne_model2_m2_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m3
+bmp("tsne_model2_m3_kmeans_k6.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m3$Y), col = ckm3$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm3, geom = "point",  data = as.data.frame(tsne_model_2_m3$Y)) + ggtitle("k = 6 m3")
+
+bmp("tsne_model2_m3_kmeans_k6_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m4
+bmp("tsne_model2_m4_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m4$Y), col = ckm4$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm4, geom = "point",  data = as.data.frame(tsne_model_2_m4$Y)) + ggtitle("k = 4 m4")
+
+bmp("tsne_model2_m4_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m5
+bmp("tsne_model2_m5_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m5$Y), col = ckm5$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm5, geom = "point",  data = as.data.frame(tsne_model_2_m5$Y)) + ggtitle("k = 4 m5")
+
+bmp("tsne_model2_m5_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m6
+bmp("tsne_model2_m6_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m6$Y), col = ckm6$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm6, geom = "point",  data = as.data.frame(tsne_model_2_m6$Y)) + ggtitle("k = 3 m6")
+
+bmp("tsne_model2_m6_kmeans_k3_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m7
+bmp("tsne_model2_m7_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m7$Y), col = ckm7$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm7, geom = "point",  data = as.data.frame(tsne_model_2_m7$Y)) + ggtitle("k = 4 m7")
+
+bmp("tsne_model2_m7_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m8
+bmp("tsne_model2_m8_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m8$Y), col = ckm8$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm8, geom = "point",  data = as.data.frame(tsne_model_2_m8$Y)) + ggtitle("k = 3 m8")
+
+bmp("tsne_model2_m8_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m9
+bmp("tsne_model2_m9_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m9$Y), col = ckm9$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm9, geom = "point",  data = as.data.frame(tsne_model_2_m9$Y)) + ggtitle("k = 3 m9")
+
+bmp("tsne_model2_m9_kmeans_k3_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
 #Kmeans for tsne model 3
 
-p1 <- fviz_cluster(c1, geom = "point",  data = d_tsne_3_var8) + ggtitle("k = 2 var8")
+bmp("tsne_model3_m1_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m1$Y), col = ckm1$cluster)
+dev.off()
 
-bmp("tsne_model3_kmeans_k2.bmp", width = 1980, height = 1280)
+p1 <- fviz_cluster(ckm1, geom = "point",  data = as.data.frame(tsne_model_3_m1$Y)) + ggtitle("k = 4 m1")
+
+bmp("tsne_model3_m1_kmeans_k4_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
-p1 <- fviz_cluster(c2, geom = "point",  data = d_tsne_3_var8) + ggtitle("k = 3 var8")
+#  m2
+bmp("tsne_model3_m2_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m2$Y), col = ckm2$cluster)
+dev.off()
 
-bmp("tsne_model3_kmeans_k3.bmp", width = 1980, height = 1280)
+p1 <- fviz_cluster(ckm2, geom = "point",  data = as.data.frame(tsne_model_3_m2$Y)) + ggtitle("k = 4 m2")
+
+bmp("tsne_model3_m2_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m3
+bmp("tsne_model3_m3_kmeans_k6.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m3$Y), col = ckm3$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm3, geom = "point",  data = as.data.frame(tsne_model_3_m3$Y)) + ggtitle("k = 6 m3")
+
+bmp("tsne_model3_m3_kmeans_k6_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m4
+bmp("tsne_model3_m4_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m4$Y), col = ckm4$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm4, geom = "point",  data = as.data.frame(tsne_model_3_m4$Y)) + ggtitle("k = 4 m4")
+
+bmp("tsne_model3_m4_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m5
+bmp("tsne_model3_m5_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m5$Y), col = ckm5$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm5, geom = "point",  data = as.data.frame(tsne_model_3_m5$Y)) + ggtitle("k = 4 m5")
+
+bmp("tsne_model3_m5_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m6
+bmp("tsne_model3_m6_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m6$Y), col = ckm6$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm6, geom = "point",  data = as.data.frame(tsne_model_3_m6$Y)) + ggtitle("k = 3 m6")
+
+bmp("tsne_model3_m6_kmeans_k3_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m7
+bmp("tsne_model3_m7_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m7$Y), col = ckm7$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm7, geom = "point",  data = as.data.frame(tsne_model_3_m7$Y)) + ggtitle("k = 4 m7")
+
+bmp("tsne_model3_m7_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m8
+bmp("tsne_model3_m8_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m8$Y), col = ckm8$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm8, geom = "point",  data = as.data.frame(tsne_model_3_m8$Y)) + ggtitle("k = 3 m8")
+
+bmp("tsne_model3_m8_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m9
+bmp("tsne_model3_m9_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m9$Y), col = ckm9$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm9, geom = "point",  data = as.data.frame(tsne_model_3_m9$Y)) + ggtitle("k = 3 m9")
+
+bmp("tsne_model3_m9_kmeans_k3_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
 #Kmeans for tsne model 4
 
-p1 <- fviz_cluster(c1, geom = "point",ellipse.type = "convex", data = d_tsne_4_var8) + ggtitle("k = 2 var8")
+bmp("tsne_model4_m1_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m1$Y), col = ckm1$cluster)
+dev.off()
 
-bmp("tsne_model4_kmeans_k2.bmp", width = 1980, height = 1280)
+p1 <- fviz_cluster(ckm1, geom = "point",  data = as.data.frame(tsne_model_4_m1$Y)) + ggtitle("k = 4 m1")
+
+bmp("tsne_model4_m1_kmeans_k4_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
-p1 <- fviz_cluster(c2, geom = "point",  data = d_tsne_4_var8) + ggtitle("k = 3 var8")
+#  m2
+bmp("tsne_model4_m2_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m2$Y), col = ckm2$cluster)
+dev.off()
 
-bmp("tsne_model4_kmeans_k3.bmp", width = 1980, height = 1280)
+p1 <- fviz_cluster(ckm2, geom = "point",  data = as.data.frame(tsne_model_4_m2$Y)) + ggtitle("k = 4 m2")
+
+bmp("tsne_model4_m2_kmeans_k4_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
-round(calinhara(tsne_model_1_var8$Y,c1$cluster),digits=2)
-round(calinhara(tsne_model_1_var8$Y,c2$cluster),digits=3)
+#  m3
+bmp("tsne_model4_m3_kmeans_k6.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m3$Y), col = ckm3$cluster)
+dev.off()
 
-rm(c1,c2,c3,c4,c1,c6,c7,c8,c9,c2,p1,p2,p3,p4,p5)
-rm(d_tsne_1_var6_degree,d_tsne_1_var5,d_tsne_1_var6, d_tsne_1_var7, d_tsne_1_var8)
-rm(d_tsne_2_var6_degree,d_tsne_2_var5,d_tsne_2_var6, d_tsne_2_var7, d_tsne_2_var8)
-rm(d_tsne_3_var6_degree,d_tsne_3_var5,d_tsne_3_var6, d_tsne_3_var7, d_tsne_3_var8)
-rm(d_tsne_4_var6_degree,d_tsne_4_var5,d_tsne_4_var6, d_tsne_4_var7, d_tsne_4_var8)
+p1 <- fviz_cluster(ckm3, geom = "point",  data = as.data.frame(tsne_model_4_m3$Y)) + ggtitle("k = 6 m3")
+
+bmp("tsne_model4_m3_kmeans_k6_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m4
+bmp("tsne_model4_m4_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m4$Y), col = ckm4$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm4, geom = "point",  data = as.data.frame(tsne_model_4_m4$Y)) + ggtitle("k = 4 m4")
+
+bmp("tsne_model4_m4_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m5
+bmp("tsne_model4_m5_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m5$Y), col = ckm5$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm5, geom = "point",  data = as.data.frame(tsne_model_4_m5$Y)) + ggtitle("k = 4 m5")
+
+bmp("tsne_model4_m5_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m6
+bmp("tsne_model4_m6_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m6$Y), col = ckm6$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm6, geom = "point",  data = as.data.frame(tsne_model_4_m6$Y)) + ggtitle("k = 3 m6")
+
+bmp("tsne_model4_m6_kmeans_k3_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m7
+bmp("tsne_model4_m7_kmeans_k4.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m7$Y), col = ckm7$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm7, geom = "point",  data = as.data.frame(tsne_model_4_m7$Y)) + ggtitle("k = 4 m7")
+
+bmp("tsne_model4_m7_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m8
+bmp("tsne_model4_m8_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m8$Y), col = ckm8$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm8, geom = "point",  data = as.data.frame(tsne_model_4_m8$Y)) + ggtitle("k = 3 m8")
+
+bmp("tsne_model4_m8_kmeans_k4_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m9
+bmp("tsne_model4_m9_kmeans_k3.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m9$Y), col = ckm9$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ckm9, geom = "point",  data = as.data.frame(tsne_model_4_m9$Y)) + ggtitle("k = 3 m9")
+
+bmp("tsne_model4_m9_kmeans_k3_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
 
 #-----------------------kmeans on dataset and cluster onto TSNE end------------------------------------------------------#
 
@@ -513,20 +1571,109 @@ rm(d_tsne_4_var6_degree,d_tsne_4_var5,d_tsne_4_var6, d_tsne_4_var7, d_tsne_4_var
 
 #---------------------------------------calculating h start------------------------------------------#
 
-bmp("dbscan_kneeplot_var8.bmp", width = 841, height = 477)
-dbscan::kNNdistplot(var8, k =  2)
-abline(h = 0.21, lty = 2)
+bmp("dbscan_kneeplot_m1.bmp", width = 841, height = 477)
+dbscan::kNNdistplot(m1, k =  2)
+abline(h = 0.165, lty = 2)
+dev.off()
+
+bmp("dbscan_kneeplot_m2.bmp", width = 841, height = 477)
+dbscan::kNNdistplot(m2, k =  2)
+abline(h = 0.165, lty = 2)
+dev.off()
+
+bmp("dbscan_kneeplot_m2.bmp", width = 841, height = 477)
+dbscan::kNNdistplot(m3, k =  2)
+abline(h = 0.07, lty = 2)
+dev.off()
+
+bmp("dbscan_kneeplot_m4.bmp", width = 841, height = 477)
+dbscan::kNNdistplot(m4, k =  2)
+abline(h = 0.075, lty = 2)
+dev.off()
+
+bmp("dbscan_kneeplot_m5.bmp", width = 841, height = 477)
+dbscan::kNNdistplot(m5, k =  2)
+abline(h = 0.12, lty = 2)
+dev.off()
+
+bmp("dbscan_kneeplot_m6.bmp", width = 841, height = 477)
+dbscan::kNNdistplot(m6, k =  2)
+abline(h = 0.08, lty = 2)
+dev.off()
+
+bmp("dbscan_kneeplot_m7.bmp", width = 841, height = 477)
+dbscan::kNNdistplot(m7, k =  2)
+abline(h = 0.06, lty = 2)
+dev.off()
+
+bmp("dbscan_kneeplot_m8.bmp", width = 841, height = 477)
+dbscan::kNNdistplot(m8, k =  2)
+abline(h = 0.05, lty = 2)
+dev.off()
+
+bmp("dbscan_kneeplot_m9.bmp", width = 841, height = 477)
+dbscan::kNNdistplot(m9, k =  2)
+abline(h = 0.045, lty = 2)
 dev.off()
 #---------------------------------------calculating h end------------------------------------------#
 
 #---------------------------------------plotting dbscan start--------------------------------------------------#
-#ranvar<-sample_n(var8, 100000, replace = TRUE)
-#set.seed(123)
-res.db <- dbscan::dbscan(var8, 0.068, 2)
+
+res.db <- dbscan::dbscan(m1, 0.165, 2)
 gc()
-bmp("dbscan_var8.bmp", width = 1980, height = 1280)
-fviz_cluster(res.db, var8, geom = "point")
+bmp("dbscan_m1.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, m1, geom = "point")
 dev.off()
+
+res.db <- dbscan::dbscan(m2, 0.165, 2)
+gc()
+bmp("dbscan_m2.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, m2, geom = "point")
+dev.off()
+
+res.db <- dbscan::dbscan(m3, 0.07, 2)
+gc()
+bmp("dbscan_m3.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, m3, geom = "point")
+dev.off()
+
+res.db <- dbscan::dbscan(m4, 0.075, 2)
+gc()
+bmp("dbscan_m4.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, m4, geom = "point")
+dev.off()
+
+res.db <- dbscan::dbscan(m5, 0.12, 2)
+gc()
+bmp("dbscan_m5.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, m5, geom = "point")
+dev.off()
+
+res.db <- dbscan::dbscan(m6, 0.08, 2)
+gc()
+bmp("dbscan_m6.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, m6, geom = "point")
+dev.off()
+
+res.db <- dbscan::dbscan(m7, 0.06, 2)
+gc()
+bmp("dbscan_m7.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, m7, geom = "point")
+dev.off()
+
+res.db <- dbscan::dbscan(m8, 0.05, 2)
+gc()
+bmp("dbscan_m8.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, m8, geom = "point")
+dev.off()
+
+res.db <- dbscan::dbscan(m9, 0.045, 2)
+gc()
+bmp("dbscan_m9.bmp", width = 1980, height = 1280)
+fviz_cluster(res.db, m9, geom = "point")
+dev.off()
+
+rm(res.db)
 
 #---------------------------------------plotting dbscan end--------------------------------------------------#
 
@@ -534,87 +1681,540 @@ dev.off()
 
 #------------------GMM-----------------------------#
 
-# dat = as.matrix(var5)
-# 
-# dat = center_scale(dat)
-# 
-# gmm = GMM(dat, 2, "maha_dist", "random_subset", 10, 10)
-# 
-# plot(gmm$Log_likelihood,tsne_model_4$Y, col=c(1,2,3,4,5,6,7,8))
-# 
-# plot(as.data.frame(tsne_model_1_var8$Y), col=factor(gmm$centroids))
-
-xyMclust <- Mclust(as.matrix(var8), prior = priorControl(), 
+##  m1
+xyMclust1 <- Mclust(as.matrix(m1), prior = priorControl(), 
                    control = emControl(), 
                    warn = mclust.options("warn"),
                    verbose = TRUE)
-plot(xyMclust)
 
-summary(xyMclust, parameters = TRUE)
+summary(xyMclust1, parameters = TRUE)
 
 plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
 plot(mclustBIC(faithful))
-plot(mclustBIC(var8))
+plot(mclustBIC(m1))
 
-clustgmm <- Mclust(var8, G=2)
+plot(xyMclust1, what=c("classification"))
+plot(xyMclust1, "density")
+plot(xyMclust1, what=c("uncertainty"))
 
-plot(clustgmm, what=c("classification"))
-plot(clustgmm, "density")
-plot(clustgmm, what=c("uncertainty"))
+c1<-ckm1
+c1$cluster<-xyMclust1$classification
 
-c1$cluster<-xyMclust$classification
-c1$cluster<-clustgmm$classification
+p1<-fviz_mclust(xyMclust1,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+p2<-fviz_mclust(xyMclust1,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
 
-fviz_cluster(c1, geom = "point",  data = var8) + ggtitle("k = 9 var8")
+bmp("GMM_fit.bmp", width = 1440, height = 620)
+grid.arrange(p1,p2, nrow = 1)
+dev.off()
+
+##  m2
+xyMclust2 <- Mclust(as.matrix(m1), prior = priorControl(), 
+                    control = emControl(), 
+                    warn = mclust.options("warn"),
+                    verbose = TRUE)
+
+summary(xyMclust2, parameters = TRUE)
+
+plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
+plot(mclustBIC(faithful))
+plot(mclustBIC(m1))
+
+plot(xyMclust2, what=c("classification"))
+plot(xyMclust2, "density")
+plot(xyMclust2, what=c("uncertainty"))
+
+c1<-ckm1
+c1$cluster<-xyMclust2$classification
+
+p1<-fviz_mclust(xyMclust2,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+p2<-fviz_mclust(xyMclust2,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+
+bmp("GMM_fit.bmp", width = 1440, height = 620)
+grid.arrange(p1,p2, nrow = 1)
+dev.off()
+
+##  m3
+xyMclust3 <- Mclust(as.matrix(m1), prior = priorControl(), 
+                    control = emControl(), 
+                    warn = mclust.options("warn"),
+                    verbose = TRUE)
+
+summary(xyMclust3, parameters = TRUE)
+
+plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
+plot(mclustBIC(faithful))
+plot(mclustBIC(m1))
+
+plot(xyMclust3, what=c("classification"))
+plot(xyMclust3, "density")
+plot(xyMclust3, what=c("uncertainty"))
+
+c1<-ckm1
+c1$cluster<-xyMclust3$classification
+
+p1<-fviz_mclust(xyMclust3,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+p2<-fviz_mclust(xyMclust3,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+
+bmp("GMM_fit.bmp", width = 1440, height = 620)
+grid.arrange(p1,p2, nrow = 1)
+dev.off()
+
+##  m4
+xyMclust4 <- Mclust(as.matrix(m1), prior = priorControl(), 
+                    control = emControl(), 
+                    warn = mclust.options("warn"),
+                    verbose = TRUE)
+
+summary(xyMclust4, parameters = TRUE)
+
+plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
+plot(mclustBIC(faithful))
+plot(mclustBIC(m1))
+
+plot(xyMclust4, what=c("classification"))
+plot(xyMclust4, "density")
+plot(xyMclust4, what=c("uncertainty"))
+
+c1<-ckm1
+c1$cluster<-xyMclust4$classification
+
+p1<-fviz_mclust(xyMclust4,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+p2<-fviz_mclust(xyMclust4,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+
+bmp("GMM_fit.bmp", width = 1440, height = 620)
+grid.arrange(p1,p2, nrow = 1)
+dev.off()
+
+##  m5
+xyMclust5 <- Mclust(as.matrix(m1), prior = priorControl(), 
+                    control = emControl(), 
+                    warn = mclust.options("warn"),
+                    verbose = TRUE)
+
+summary(xyMclust5, parameters = TRUE)
+
+plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
+plot(mclustBIC(faithful))
+plot(mclustBIC(m1))
+
+plot(xyMclust5, what=c("classification"))
+plot(xyMclust5, "density")
+plot(xyMclust5, what=c("uncertainty"))
+
+c1<-ckm1
+c1$cluster<-xyMclust5$classification
+
+p1<-fviz_mclust(xyMclust5,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+p2<-fviz_mclust(xyMclust5,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+
+bmp("GMM_fit.bmp", width = 1440, height = 620)
+grid.arrange(p1,p2, nrow = 1)
+dev.off()
+
+##  m6
+xyMclust6 <- Mclust(as.matrix(m1), prior = priorControl(), 
+                    control = emControl(), 
+                    warn = mclust.options("warn"),
+                    verbose = TRUE)
+
+summary(xyMclust6, parameters = TRUE)
+
+plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
+plot(mclustBIC(faithful))
+plot(mclustBIC(m1))
+
+plot(xyMclust6, what=c("classification"))
+plot(xyMclust6, "density")
+plot(xyMclust6, what=c("uncertainty"))
+
+c1<-ckm1
+c1$cluster<-xyMclust6$classification
+
+p1<-fviz_mclust(xyMclust6,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+p2<-fviz_mclust(xyMclust6,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+
+bmp("GMM_fit.bmp", width = 1440, height = 620)
+grid.arrange(p1,p2, nrow = 1)
+dev.off()
+
+##  m7
+xyMclust7 <- Mclust(as.matrix(m1), prior = priorControl(), 
+                    control = emControl(), 
+                    warn = mclust.options("warn"),
+                    verbose = TRUE)
+
+summary(xyMclust7, parameters = TRUE)
+
+plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
+plot(mclustBIC(faithful))
+plot(mclustBIC(m1))
+
+plot(xyMclust7, what=c("classification"))
+plot(xyMclust7, "density")
+plot(xyMclust7, what=c("uncertainty"))
+
+c1<-ckm1
+c1$cluster<-xyMclust7$classification
+
+p1<-fviz_mclust(xyMclust7,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+p2<-fviz_mclust(xyMclust7,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+
+bmp("GMM_fit.bmp", width = 1440, height = 620)
+grid.arrange(p1,p2, nrow = 1)
+dev.off()
+
+##  m8
+xyMclust8 <- Mclust(as.matrix(m1), prior = priorControl(), 
+                    control = emControl(), 
+                    warn = mclust.options("warn"),
+                    verbose = TRUE)
+
+summary(xyMclust8, parameters = TRUE)
+
+plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
+plot(mclustBIC(faithful))
+plot(mclustBIC(m1))
+
+plot(xyMclust8, what=c("classification"))
+plot(xyMclust8, "density")
+plot(xyMclust8, what=c("uncertainty"))
+
+c1<-ckm1
+c1$cluster<-xyMclust8$classification
+
+p1<-fviz_mclust(xyMclust8,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+p2<-fviz_mclust(xyMclust8,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+
+bmp("GMM_fit.bmp", width = 1440, height = 620)
+grid.arrange(p1,p2, nrow = 1)
+dev.off()
+
+##  m9
+xyMclust9 <- Mclust(as.matrix(m1), prior = priorControl(), 
+                    control = emControl(), 
+                    warn = mclust.options("warn"),
+                    verbose = TRUE)
+
+summary(xyMclust9, parameters = TRUE)
+
+plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
+plot(mclustBIC(faithful))
+plot(mclustBIC(m1))
+
+plot(xyMclust9, what=c("classification"))
+plot(xyMclust9, "density")
+plot(xyMclust9, what=c("uncertainty"))
+
+c1<-ckm1
+c1$cluster<-xyMclust9$classification
+
+p1<-fviz_mclust(xyMclust9,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+p2<-fviz_mclust(xyMclust9,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+
+bmp("GMM_fit.bmp", width = 1440, height = 620)
+grid.arrange(p1,p2, nrow = 1)
+dev.off()
+
+
+p1<-fviz_cluster(c1, geom = "point",  data = m1) + ggtitle("k = 9 m1")
 #------------------GMM-----------------------------#
 
 #----------------UMAP----------------------------#
-library(uwot)
 
-umap_calc <- umap(var8, n_neighbors = 90, n_components = 2,metric = "cosine",
-                  learning_rate = 1.1, scale = T, init = "spectral",
+#  parameters
+
+ngb<-90
+lr<-1.1
+
+#  Umap m1
+umap_calc <- umap(m1, n_neighbors = ngb, n_components = 2,metric = "cosine",
+                  learning_rate = lr, scale = T, init = "spectral",
                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = 7, verbose = getOption("verbose",TRUE),
+                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
                   grain_size = 5,  min_dist = 10, spread = 50 )
 
-umap_var8 <- data.frame(
+umap_m1 <- data.frame(
   UMAP1 = umap_calc$embedding[, 1],
   UMAP2 = umap_calc$embedding[, 2]
 )
 
-ggplot(umap_ranvar, aes(
+#  Umap plot
+
+ggplot(umap_m1, aes(
   x = UMAP1, y = UMAP2,
   col = UMAP1
 )) +
-  geom_point()# +
-#ggrepel::geom_text_repel(cex = 2.5)
+  geom_point()
 
-plot(umap_var8$UMAP1,umap_var8$UMAP2, col=factor(umap_var8$UMAP1))
-fviz_cluster(c1, geom = "point",  data = umap_var8) + ggtitle("k = 9 var8")
+bmp("umap_m1.bmp", width = 1920, height = 1280)
+plot(umap_m1$UMAP1,umap_m1$UMAP2, col=factor(umap_m1$UMAP1))
+dev.off()
 
-n<-centrality[,-13]
-n$rnames<-row.names(centrality)
+bmp("umap_m1_k4.bmp", width = 1920, height = 1280)
+fviz_cluster(ckm1, geom = "point",  data = umap_m1) + ggtitle("k = 4 m1")
+dev.off()
 
-df_melt <- reshape2::melt(n, id.var ='rnames')
+#  Umap m2
+umap_calc <- umap(m2, n_neighbors = ngb, n_components = 2,metric = "cosine",
+                  learning_rate = lr, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
 
-ggplot(df_melt, aes(x = factor(rnames), y = value, colour = variable)) + 
-  geom_point() + xlab('nodes')
-fviz_mclust(xyMclust,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-fviz_mclust(xyMclust,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-fviz_mclust(clustgmm,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-fviz_mclust(clustgmm,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+umap_m2 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+bmp("umap_m2.bmp", width = 1920, height = 1280)
+plot(umap_m2$UMAP1,umap_m2$UMAP2, col=factor(umap_m2$UMAP1))
+dev.off()
+
+bmp("umap_m2_k4.bmp", width = 1920, height = 1280)
+fviz_cluster(ckm2, geom = "point",  data = umap_m2) + ggtitle("k = 4 m2")
+dev.off()
+
+#  Umap m3
+umap_calc <- umap(m3, n_neighbors = ngb, n_components = 2,metric = "cosine",
+                  learning_rate = lr, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_m3 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+bmp("umap_m3.bmp", width = 1920, height = 1280)
+plot(umap_m3$UMAP1,umap_m3$UMAP2, col=factor(umap_m3$UMAP1))
+dev.off()
+
+bmp("umap_m3_k6.bmp", width = 1920, height = 1280)
+fviz_cluster(ckm3, geom = "point",  data = umap_m3) + ggtitle("k = 6 m3")
+dev.off()
+
+#  Umap m4
+umap_calc <- umap(m4, n_neighbors = ngb, n_components = 2,metric = "cosine",
+                  learning_rate = lr, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_m4 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+bmp("umap_m4.bmp", width = 1920, height = 1280)
+plot(umap_m4$UMAP1,umap_m4$UMAP2, col=factor(umap_m4$UMAP1))
+dev.off()
+
+bmp("umap_m4_k4.bmp", width = 1920, height = 1280)
+fviz_cluster(ckm4, geom = "point",  data = umap_m4) + ggtitle("k = 4 m4")
+dev.off()
+
+#  Umap m5
+umap_calc <- umap(m5, n_neighbors = ngb, n_components = 2,metric = "cosine",
+                  learning_rate = lr, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_m5 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+bmp("umap_m5.bmp", width = 1920, height = 1280)
+plot(umap_m5$UMAP1,umap_m5$UMAP2, col=factor(umap_m5$UMAP1))
+dev.off()
+
+bmp("umap_m5_k4.bmp", width = 1920, height = 1280)
+fviz_cluster(ckm5, geom = "point",  data = umap_m5) + ggtitle("k = 4 m5")
+dev.off()
+
+#  Umap m6
+umap_calc <- umap(m6, n_neighbors = ngb, n_components = 2,metric = "cosine",
+                  learning_rate = lr, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_m6 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+bmp("umap_m6.bmp", width = 1920, height = 1280)
+plot(umap_m6$UMAP1,umap_m6$UMAP2, col=factor(umap_m6$UMAP1))
+dev.off()
+
+bmp("umap_m6_k3.bmp", width = 1920, height = 1280)
+fviz_cluster(ckm6, geom = "point",  data = umap_m6) + ggtitle("k = 3 m6")
+dev.off()
+
+#  Umap m7
+umap_calc <- umap(m7, n_neighbors = ngb, n_components = 2,metric = "cosine",
+                  learning_rate = lr, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_m7 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+bmp("umap_m7.bmp", width = 1920, height = 1280)
+plot(umap_m7$UMAP1,umap_m7$UMAP2, col=factor(umap_m7$UMAP1))
+dev.off()
+
+bmp("umap_m7_k4.bmp", width = 1920, height = 1280)
+fviz_cluster(ckm7, geom = "point",  data = umap_m7) + ggtitle("k = 4 m7")
+dev.off()
+
+#  Umap m8
+umap_calc <- umap(m8, n_neighbors = ngb, n_components = 2,metric = "cosine",
+                  learning_rate = lr, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_m8 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+bmp("umap_m8.bmp", width = 1920, height = 1280)
+plot(umap_m8$UMAP1,umap_m8$UMAP2, col=factor(umap_m8$UMAP1))
+dev.off()
+
+bmp("umap_m8_k3.bmp", width = 1920, height = 1280)
+fviz_cluster(ckm8, geom = "point",  data = umap_m8) + ggtitle("k = 3 m8")
+dev.off()
+
+#  Umap m9
+umap_calc <- umap(m9, n_neighbors = ngb, n_components = 2,metric = "cosine",
+                  learning_rate = lr, scale = T, init = "spectral",
+                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+                  grain_size = 5,  min_dist = 10, spread = 50 )
+
+umap_m9 <- data.frame(
+  UMAP1 = umap_calc$embedding[, 1],
+  UMAP2 = umap_calc$embedding[, 2]
+)
+
+bmp("umap_m9.bmp", width = 1920, height = 1280)
+plot(umap_m9$UMAP1,umap_m9$UMAP2, col=factor(umap_m9$UMAP1))
+dev.off()
+
+bmp("umap_m9_k3.bmp", width = 1920, height = 1280)
+fviz_cluster(ckm9, geom = "point",  data = umap_m9) + ggtitle("k = 3 m9")
+dev.off()
+
+rm(umap_calc)
 #----------------Umap---------------------------#
 
 #------------Sammon's map----------------#
 
-x<-as.matrix(var8) #var8
+x<-as.matrix(m1) 
 sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
-bmp("sammon_var8.bmp", width = 1280, height = 720)
+bmp("sammon_m1.bmp", width = 1280, height = 720)
 opar <- par(no.readonly=TRUE)
 par(mfrow=c(1,2))
-plot(sammon$Y, pch=19, col=factor(c), main="var8")
-plot(sammon$Y, pch=19, col=c1$cluster, main="var8 k=2")
+plot(sammon$Y, pch=19, col=factor(ncen_tr$names), main="m1")
+plot(sammon$Y, pch=19, col=ckm1$cluster, main="m1 k=4")
+par(opar)
+dev.off()
+
+x<-as.matrix(m2) 
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
+bmp("sammon_m2.bmp", width = 1280, height = 720)
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(1,2))
+plot(sammon$Y, pch=19, col=1:12, main="m1")
+plot(sammon$Y, pch=19, col=ckm2$cluster, main="m1 k=4")
+par(opar)
+dev.off()
+
+x<-as.matrix(m3) 
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
+bmp("sammon_m3.bmp", width = 1280, height = 720)
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(1,2))
+plot(sammon$Y, pch=19, col=1:7, main="m1")
+plot(sammon$Y, pch=19, col=ckm3$cluster, main="m1 k=6")
+par(opar)
+dev.off()
+
+x<-as.matrix(m4) 
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
+bmp("sammon_m4.bmp", width = 1280, height = 720)
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(1,2))
+plot(sammon$Y, pch=19, col=1:6, main="m1")
+plot(sammon$Y, pch=19, col=ckm4$cluster, main="m1 k=4")
+par(opar)
+dev.off()
+
+x<-as.matrix(m5) 
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
+bmp("sammon_m5.bmp", width = 1280, height = 720)
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(1,2))
+plot(sammon$Y, pch=19, col=1:9, main="m1")
+plot(sammon$Y, pch=19, col=ckm5$cluster, main="m1 k=4")
+par(opar)
+dev.off()
+
+x<-as.matrix(m6) 
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
+bmp("sammon_m6.bmp", width = 1280, height = 720)
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(1,2))
+plot(sammon$Y, pch=19, col=1:9, main="m1")
+plot(sammon$Y, pch=19, col=ckm6$cluster, main="m1 k=3")
+par(opar)
+dev.off()
+
+x<-as.matrix(m7) 
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
+bmp("sammon_m7.bmp", width = 1280, height = 720)
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(1,2))
+plot(sammon$Y, pch=19, col=1:6, main="m1")
+plot(sammon$Y, pch=19, col=ckm7$cluster, main="m1 k=4")
+par(opar)
+dev.off()
+
+x<-as.matrix(m8) 
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
+bmp("sammon_m8.bmp", width = 1280, height = 720)
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(1,2))
+plot(sammon$Y, pch=19, col=1:6, main="m1")
+plot(sammon$Y, pch=19, col=ckm8$cluster, main="m1 k=3")
+par(opar)
+dev.off()
+
+x<-as.matrix(m9) 
+sammon = do.sammon(x, ndim=2, preprocess = c("center"), initialize = "pca")
+bmp("sammon_m9.bmp", width = 1280, height = 720)
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(1,2))
+plot(sammon$Y, pch=19, col=1:6, main="m1")
+plot(sammon$Y, pch=19, col=ckm9$cluster, main="m1 k=3")
 par(opar)
 dev.off()
 
