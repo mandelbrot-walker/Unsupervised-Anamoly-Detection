@@ -1140,6 +1140,9 @@ c_ncentrality<-kmeans(ncentrality, 4, iter.max = 20, nstart = 25,
                       algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 bmp("kmeans_ncentrality_k4.bmp", width = 1920, height = 1280)
+plot(ncentrality, col = c_ncentrality$cluster)
+points(c_ncentrality$centers, col = 1:8, pch = 8)
+dev.off()
 
 rm(ck1,ck2,ck3,ck4,p1,p2,p3,p4)
 

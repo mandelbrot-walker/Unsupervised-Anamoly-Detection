@@ -741,7 +741,7 @@ dev.off()
 ##  m1
 # function to compute total within-cluster sum of square 
 wss <- function(k) {
-  kmeans(m1, k, nstart = 10 )$tot.withinss
+  kmeans(m1, k, nstart = 10)$tot.withinss
 }
 
 # Compute and plot wss for k = 1 to k = 15
@@ -921,10 +921,10 @@ ck4<-kmeans(m1, 6, iter.max = 20, nstart = 25,
            algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m1,ck1$cluster),digits=3) #  7733.985
-round(calinhara(m1,ck2$cluster),digits=4) #  7985.291 highest
-round(calinhara(m1,ck3$cluster),digits=5) #  6959.628
-round(calinhara(m1,ck4$cluster),digits=6) #  6348.964
+round(calinhara(m1,ck1$cluster),digits=3) #  8741.431
+round(calinhara(m1,ck2$cluster),digits=4) #  11512.06 highest
+round(calinhara(m1,ck3$cluster),digits=5) #  11250.08
+round(calinhara(m1,ck4$cluster),digits=6) #  10526.73
 
 
 #plot of clusters
@@ -948,10 +948,10 @@ ck4<-kmeans(m2, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m2,ck1$cluster),digits=3) #  7703.294
-round(calinhara(m2,ck2$cluster),digits=4) #  8037.741 highest
-round(calinhara(m2,ck3$cluster),digits=5) #  7001.544
-round(calinhara(m2,ck4$cluster),digits=6) #  6370.787
+round(calinhara(m2,ck1$cluster),digits=3) #  8546.184
+round(calinhara(m2,ck2$cluster),digits=4) #  11450.55 highest
+round(calinhara(m2,ck3$cluster),digits=5) #  11128.25
+round(calinhara(m2,ck4$cluster),digits=6) #  10251.21
 
 
 #plot of clusters
@@ -975,10 +975,10 @@ ck4<-kmeans(m3, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m3,ck1$cluster),digits=3) #  7649.803
-round(calinhara(m3,ck2$cluster),digits=4) #  7698.748 
-round(calinhara(m3,ck3$cluster),digits=5) #  7738.866
-round(calinhara(m3,ck4$cluster),digits=6) #  7787.33 highest
+round(calinhara(m3,ck1$cluster),digits=3) #  23574.98
+round(calinhara(m3,ck2$cluster),digits=4) #  30840.21 
+round(calinhara(m3,ck3$cluster),digits=5) #  33727.86
+round(calinhara(m3,ck4$cluster),digits=6) #  33855.41 highest
 
 
 #plot of clusters
@@ -1002,10 +1002,10 @@ ck4<-kmeans(m4, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m4,ck1$cluster),digits=3) #  9030.761
-round(calinhara(m4,ck2$cluster),digits=4) #  10646.54 highest
-round(calinhara(m4,ck3$cluster),digits=5) #  9468.393
-round(calinhara(m4,ck4$cluster),digits=6) #  8854.677
+round(calinhara(m4,ck1$cluster),digits=3) #  6816.694
+round(calinhara(m4,ck2$cluster),digits=4) #  7576.262 highest
+round(calinhara(m4,ck3$cluster),digits=5) #  7481.811
+round(calinhara(m4,ck4$cluster),digits=6) #  7201.203
 
 
 #plot of clusters
@@ -1029,10 +1029,10 @@ ck4<-kmeans(m5, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m5,ck1$cluster),digits=3) #  8841.458
-round(calinhara(m5,ck2$cluster),digits=4) #  9615.578 highest
-round(calinhara(m5,ck3$cluster),digits=5) #  8563.109
-round(calinhara(m5,ck4$cluster),digits=6) #  7967.682
+round(calinhara(m5,ck1$cluster),digits=3) #  7372.249
+round(calinhara(m5,ck2$cluster),digits=4) #  8713.962 highest
+round(calinhara(m5,ck3$cluster),digits=5) #  8447.682
+round(calinhara(m5,ck4$cluster),digits=6) #  7930.962
 
 
 #plot of clusters
@@ -1056,10 +1056,10 @@ ck4<-kmeans(m6, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m6,ck1$cluster),digits=3) #  16450.43 highest
-round(calinhara(m6,ck2$cluster),digits=4) #  14770.27 
-round(calinhara(m6,ck3$cluster),digits=5) #  14848.32
-round(calinhara(m6,ck4$cluster),digits=6) #  14466.01
+round(calinhara(m6,ck1$cluster),digits=3) #  21602.11 
+round(calinhara(m6,ck2$cluster),digits=4) #  20815.63 
+round(calinhara(m6,ck3$cluster),digits=5) #  22084.75
+round(calinhara(m6,ck4$cluster),digits=6) #  22331.73 highest
 
 
 #plot of clusters
@@ -1083,10 +1083,10 @@ ck4<-kmeans(m7, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m7,ck1$cluster),digits=3) #  8412.904 
-round(calinhara(m7,ck2$cluster),digits=4) #  8478.609 highest
-round(calinhara(m7,ck3$cluster),digits=5) #  7935.222
-round(calinhara(m7,ck4$cluster),digits=6) #  8114.244
+round(calinhara(m7,ck1$cluster),digits=3) #  26010.03 
+round(calinhara(m7,ck2$cluster),digits=4) #  30859.53 
+round(calinhara(m7,ck3$cluster),digits=5) #  31704.7
+round(calinhara(m7,ck4$cluster),digits=6) #  31923.31 highest
 
 
 #plot of clusters
@@ -1110,10 +1110,10 @@ ck4<-kmeans(m8, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m8,ck1$cluster),digits=3) #  18717.68 highest
-round(calinhara(m8,ck2$cluster),digits=4) #  17385.23 
-round(calinhara(m8,ck3$cluster),digits=5) #  16981.55
-round(calinhara(m8,ck4$cluster),digits=6) #  16352.07
+round(calinhara(m8,ck1$cluster),digits=3) #  14236.11 
+round(calinhara(m8,ck2$cluster),digits=4) #  18732.65 
+round(calinhara(m8,ck3$cluster),digits=5) #  19383.82 highest
+round(calinhara(m8,ck4$cluster),digits=6) #  18896.45
 
 
 #plot of clusters
@@ -1137,10 +1137,10 @@ ck4<-kmeans(m9, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m9,ck1$cluster),digits=3) #  14642.38 highest
-round(calinhara(m9,ck2$cluster),digits=4) #  12906.56 
-round(calinhara(m9,ck3$cluster),digits=5) #  11824.88
-round(calinhara(m9,ck4$cluster),digits=6) #  11635.55
+round(calinhara(m9,ck1$cluster),digits=3) #  14578.77 
+round(calinhara(m9,ck2$cluster),digits=4) #  17397.5 highest
+round(calinhara(m9,ck3$cluster),digits=5) #  16612.09
+round(calinhara(m9,ck4$cluster),digits=6) #  16289.42
 
 
 #plot of clusters
@@ -1158,6 +1158,9 @@ c_ncentrality<-kmeans(ncentrality, 4, iter.max = 20, nstart = 25,
                       algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 bmp("kmeans_ncentrality_k4.bmp", width = 1920, height = 1280)
+plot(ncentrality, col = c_ncentrality$cluster)
+points(c_ncentrality$centers, col = 1:8, pch = 8)
+dev.off()
 
 rm(ck1,ck2,ck3,ck4,p1,p2,p3,p4)
 
@@ -1171,13 +1174,13 @@ ckm4<-kmeans(m4, 4, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 ckm5<-kmeans(m5, 4, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm6<-kmeans(m6, 3, iter.max = 20, nstart = 25,
+ckm6<-kmeans(m6, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm7<-kmeans(m7, 4, iter.max = 20, nstart = 25,
+ckm7<-kmeans(m7, 6, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm8<-kmeans(m8, 3, iter.max = 20, nstart = 25,
+ckm8<-kmeans(m8, 5, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm9<-kmeans(m9, 3, iter.max = 20, nstart = 25,
+ckm9<-kmeans(m9, 4, iter.max = 20, nstart = 25,
             algorithm = c("Hartigan-Wong"), trace=FALSE)
 
 #-------------kmeans on dataset and cluster onto TSNE start-------------------------------------------------#
