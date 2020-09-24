@@ -60,6 +60,7 @@ infc<-calculate_centralities(cmp[[1]], include = "Information Centrality") #  ta
 rm(i,tmp,t)
 t<-infc[-1]
 tmp<-infc[1]
+length(tmp)
 
 lbc<-local_bridging_centrality(g)
 
