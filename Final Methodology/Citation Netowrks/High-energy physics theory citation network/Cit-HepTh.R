@@ -46,7 +46,7 @@ cmp<-decompose.graph(g)
 #infc[-1]
 infc<-calculate_centralities(cmp[[1]], include = "Information Centrality") #  takes a long time
 
-for (i in 2:length(cmp)) {
+  for (i in 2:length(cmp)) {
   t<-cmp[[i]]
   if((calculate_centralities(cmp[[i]], include = "Information Centrality")=="NULL")){
     infc[(length(infc) + 1):(length(infc) + length(1))]<-0
@@ -59,7 +59,7 @@ for (i in 2:length(cmp)) {
 #chk<-calculate_centralities(cmp[[2]], include = "Information Centrality") #  takes a long time
 rm(i,tmp,t)
 t<-infc[-1]
-tmp<-unlist(t)
+tmp<-infc[1]
 
 lbc<-local_bridging_centrality(g)
 
