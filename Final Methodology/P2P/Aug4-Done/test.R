@@ -245,15 +245,15 @@ rm(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities
 
 #principal component analysis
 
-res.m1<-prcomp(scale(m1_all_var13),center=TRUE) 
-res.m2<-prcomp(scale(m2_without_dg_var12),center=TRUE) 
-res.m3<-prcomp(scale(m3_without_comm_var7),center=TRUE) 
-res.m4<-prcomp(scale(m4_without_nodes_var6),center=TRUE) 
-res.m5<-prcomp(scale(m5_without_ranks_var9),center=TRUE) 
-res.m6<-prcomp(scale(m6_without_dist_var9),center=TRUE) 
-res.m7<-prcomp(scale(m7_mix_match1_var6),center=TRUE) 
-res.m8<-prcomp(scale(m8_mix_match2_var6),center=TRUE) 
-res.m9<-prcomp(scale(m9_mix_match3_var6),center=TRUE) 
+res.m1<-prcomp(scale(m1),center=TRUE) 
+res.m2<-prcomp(scale(m2),center=TRUE) 
+res.m3<-prcomp(scale(m3),center=TRUE) 
+res.m4<-prcomp(scale(m4),center=TRUE) 
+res.m5<-prcomp(scale(m5),center=TRUE) 
+res.m6<-prcomp(scale(m6),center=TRUE) 
+res.m7<-prcomp(scale(m7),center=TRUE) 
+res.m8<-prcomp(scale(m8),center=TRUE) 
+res.m9<-prcomp(scale(m9),center=TRUE) 
 
 #show pca values
 print(res.m1)
@@ -1568,6 +1568,15 @@ bmp("tsne_model4_m9_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
+
+tc1<-kmeans(as.data.frame(tsne_model_1_m1$Y), 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+fviz_cluster(tc1, geom = "point", data = as.data.frame(tsne_model_1_m1$Y))
+
+tc7<-kmeans(as.data.frame(tsne_model_1_m7$Y), 4, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE)
+fviz_cluster(tc7, geom = "point", data = as.data.frame(tsne_model_1_m7$Y))
+
 #-----------------------kmeans on dataset and cluster onto TSNE end------------------------------------------------------#
 
 #-------------------------------------------dbscan start-----------------------------------------------------------------#
@@ -1700,8 +1709,8 @@ plot(xyMclust1, what=c("classification"))
 plot(xyMclust1, "density")
 plot(xyMclust1, what=c("uncertainty"))
 
-c1<-ckm1
-c1$cluster<-xyMclust1$classification
+cc<-ckm1
+cc$cluster<-xyMclust1$classification
 
 p1<-fviz_mclust(xyMclust1,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
 p2<-fviz_mclust(xyMclust1,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
@@ -1922,213 +1931,6 @@ dev.off()
 p1<-fviz_cluster(c1, geom = "point",  data = m1) + ggtitle("k = 9 m1")
 #------------------GMM-----------------------------#
 
-#----------------UMAP----------------------------#
-
-#  parameters
-
-ngb<-90
-lr<-1.1
-
-#  Umap m1
-umap_calc <- umap(m1, n_neighbors = ngb, n_components = 2,metric = "cosine",
-                  learning_rate = lr, scale = T, init = "spectral",
-                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
-                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
-                  grain_size = 5,  min_dist = 10, spread = 50 )
-
-umap_m1 <- data.frame(
-  UMAP1 = umap_calc$embedding[, 1],
-  UMAP2 = umap_calc$embedding[, 2]
-)
-
-#  Umap plot
-
-ggplot(umap_m1, aes(
-  x = UMAP1, y = UMAP2,
-  col = UMAP1
-)) +
-  geom_point()
-
-bmp("umap_m1.bmp", width = 1920, height = 1280)
-plot(umap_m1$UMAP1,umap_m1$UMAP2, col=factor(umap_m1$UMAP1))
-dev.off()
-
-bmp("umap_m1_km.bmp", width = 1920, height = 1280)
-fviz_cluster(ckm1, geom = "point",  data = umap_m1) 
-dev.off()
-
-#  Umap m2
-umap_calc <- umap(m2, n_neighbors = ngb, n_components = 2,metric = "cosine",
-                  learning_rate = lr, scale = T, init = "spectral",
-                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
-                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
-                  grain_size = 5,  min_dist = 10, spread = 50 )
-
-umap_m2 <- data.frame(
-  UMAP1 = umap_calc$embedding[, 1],
-  UMAP2 = umap_calc$embedding[, 2]
-)
-
-bmp("umap_m2.bmp", width = 1920, height = 1280)
-plot(umap_m2$UMAP1,umap_m2$UMAP2, col=factor(umap_m2$UMAP1))
-dev.off()
-
-bmp("umap_m2_km.bmp", width = 1920, height = 1280)
-fviz_cluster(ckm2, geom = "point",  data = umap_m2) 
-dev.off()
-
-#  Umap m3
-umap_calc <- umap(m3, n_neighbors = ngb, n_components = 2,metric = "cosine",
-                  learning_rate = lr, scale = T, init = "spectral",
-                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
-                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
-                  grain_size = 5,  min_dist = 10, spread = 50 )
-
-umap_m3 <- data.frame(
-  UMAP1 = umap_calc$embedding[, 1],
-  UMAP2 = umap_calc$embedding[, 2]
-)
-
-bmp("umap_m3.bmp", width = 1920, height = 1280)
-plot(umap_m3$UMAP1,umap_m3$UMAP2, col=factor(umap_m3$UMAP1))
-dev.off()
-
-bmp("umap_m3_km.bmp", width = 1920, height = 1280)
-fviz_cluster(ckm3, geom = "point",  data = umap_m3) 
-dev.off()
-
-#  Umap m4
-umap_calc <- umap(m4, n_neighbors = ngb, n_components = 2,metric = "cosine",
-                  learning_rate = lr, scale = T, init = "spectral",
-                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
-                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
-                  grain_size = 5,  min_dist = 10, spread = 50 )
-
-umap_m4 <- data.frame(
-  UMAP1 = umap_calc$embedding[, 1],
-  UMAP2 = umap_calc$embedding[, 2]
-)
-
-bmp("umap_m4.bmp", width = 1920, height = 1280)
-plot(umap_m4$UMAP1,umap_m4$UMAP2, col=factor(umap_m4$UMAP1))
-dev.off()
-
-bmp("umap_m4_km.bmp", width = 1920, height = 1280)
-fviz_cluster(ckm4, geom = "point",  data = umap_m4) 
-dev.off()
-
-#  Umap m5
-umap_calc <- umap(m5, n_neighbors = ngb, n_components = 2,metric = "cosine",
-                  learning_rate = lr, scale = T, init = "spectral",
-                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
-                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
-                  grain_size = 5,  min_dist = 10, spread = 50 )
-
-umap_m5 <- data.frame(
-  UMAP1 = umap_calc$embedding[, 1],
-  UMAP2 = umap_calc$embedding[, 2]
-)
-
-bmp("umap_m5.bmp", width = 1920, height = 1280)
-plot(umap_m5$UMAP1,umap_m5$UMAP2, col=factor(umap_m5$UMAP1))
-dev.off()
-
-bmp("umap_m5_km.bmp", width = 1920, height = 1280)
-fviz_cluster(ckm5, geom = "point",  data = umap_m5) 
-dev.off()
-
-#  Umap m6
-umap_calc <- umap(m6, n_neighbors = ngb, n_components = 2,metric = "cosine",
-                  learning_rate = lr, scale = T, init = "spectral",
-                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
-                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
-                  grain_size = 5,  min_dist = 10, spread = 50 )
-
-umap_m6 <- data.frame(
-  UMAP1 = umap_calc$embedding[, 1],
-  UMAP2 = umap_calc$embedding[, 2]
-)
-
-bmp("umap_m6.bmp", width = 1920, height = 1280)
-plot(umap_m6$UMAP1,umap_m6$UMAP2, col=factor(umap_m6$UMAP1))
-dev.off()
-
-bmp("umap_m6_km.bmp", width = 1920, height = 1280)
-fviz_cluster(ckm6, geom = "point",  data = umap_m6) 
-dev.off()
-
-#  Umap m7
-umap_calc <- umap(m7, n_neighbors = ngb, n_components = 2,metric = "cosine",
-                  learning_rate = lr, scale = T, init = "spectral",
-                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
-                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
-                  grain_size = 5,  min_dist = 10, spread = 50 )
-
-umap_m7 <- data.frame(
-  UMAP1 = umap_calc$embedding[, 1],
-  UMAP2 = umap_calc$embedding[, 2]
-)
-
-bmp("umap_m7.bmp", width = 1920, height = 1280)
-plot(umap_m7$UMAP1,umap_m7$UMAP2, col=factor(umap_m7$UMAP1))
-dev.off()
-
-bmp("umap_m7_km.bmp", width = 1920, height = 1280)
-fviz_cluster(ckm7, geom = "point",  data = umap_m7) 
-dev.off()
-
-#  Umap m8
-umap_calc <- umap(m8, n_neighbors = ngb, n_components = 2,metric = "cosine",
-                  learning_rate = lr, scale = T, init = "spectral",
-                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
-                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
-                  grain_size = 5,  min_dist = 10, spread = 50 )
-
-umap_m8 <- data.frame(
-  UMAP1 = umap_calc$embedding[, 1],
-  UMAP2 = umap_calc$embedding[, 2]
-)
-
-bmp("umap_m8.bmp", width = 1920, height = 1280)
-plot(umap_m8$UMAP1,umap_m8$UMAP2, col=factor(umap_m8$UMAP1))
-dev.off()
-
-bmp("umap_m8_km.bmp", width = 1920, height = 1280)
-fviz_cluster(ckm8, geom = "point",  data = umap_m8) 
-dev.off()
-
-#  Umap m9
-umap_calc <- umap(m9, n_neighbors = ngb, n_components = 2,metric = "cosine",
-                  learning_rate = lr, scale = T, init = "spectral",
-                  bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
-                  search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
-                  ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
-                  grain_size = 5,  min_dist = 10, spread = 50 )
-
-umap_m9 <- data.frame(
-  UMAP1 = umap_calc$embedding[, 1],
-  UMAP2 = umap_calc$embedding[, 2]
-)
-
-bmp("umap_m9.bmp", width = 1920, height = 1280)
-plot(umap_m9$UMAP1,umap_m9$UMAP2, col=factor(umap_m9$UMAP1))
-dev.off()
-
-bmp("umap_m9_km.bmp", width = 1920, height = 1280)
-fviz_cluster(ckm9, geom = "point",  data = umap_m9) 
-dev.off()
-
-rm(umap_calc)
-#----------------Umap---------------------------#
-
 #------------Sammon's map----------------#
 
 x<-as.matrix(m1) 
@@ -2224,3 +2026,282 @@ dev.off()
 rm(x,opar)
 
 #------------Sammon's map----------------#
+
+set.seed(32)  
+tsne_model_1_m1_3d = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=3, max_iter = mit1,
+                           verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
+set.seed(32)  
+tsne_model_1_m9_3d = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=3, max_iter = mit1,
+                           verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
+plot(tsne_model_1_m1_3d$Y,col=ckm1$cluster, asp=1)
+
+plot(tsne_model_1_m1$Y,col=cc$cluster,asp=1)
+
+tempo<-as.data.frame(res.m9$x)
+
+plot(tempo$PC1,tempo$PC2,col=ckm1$cluster, asp=1)
+
+plot3d(x=tsne_model_1_m1_3d$Y[,1],y=tsne_model_1_m1_3d$Y[,2],z=tsne_model_1_m1_3d$Y[,3],
+       col=cc$cluster,
+       type="s",radius=0.5)
+
+plot3d(x=tempo$PC1,y=tempo$PC2,z=tempo$PC3,
+       col=1:10876,
+       type="s",radius=0.1)
+
+plot3d(x=tsne_model_1_m9_3d$Y[,1],y=tsne_model_1_m9_3d$Y[,2],z=tsne_model_1_m9_3d$Y[,3],
+       col=ckm1$cluster,
+       type="s",radius=0.5)
+
+fit<-glm(m1$degree~.,family=gaussian,data=m1)
+summary(fit)
+plot(fit)
+
+library(clusternor)
+
+km<-Skmeans(
+  data=as.matrix(m1),
+  centers=4,
+  iter.max = 25,
+  nthread = 5,
+  init = c("random"),
+  tolerance = 0.0005
+)
+
+plot(tsne_model_1_m1$Y,col=km$cluster,asp=1)
+
+cc$cluster<-km$cluster
+cc$centers<-km$centers
+
+fviz_cluster(cc, geom = "point",  data = as.data.frame(tsne_model_1_m1$Y)) 
+
+library(sparcl)
+
+kout <- KMeansSparseCluster(as.matrix(m1),K=4,wbounds=seq(1.3,4,len=8))
+print(kout)
+ks<-KMeansSparseCluster(as.matrix(m1), K=4, wbounds = kout$bestw, nstart = 20, silent =
+                      TRUE, maxiter=25, centers=NULL)
+
+print(ks)
+plot(ks)
+
+library(RSKC)
+rkm<-RSKC(as.matrix(m1), ncl=4, alpha=0.5, L1 = 1.5, nstart = 25, 
+     silent=FALSE, scaling = FALSE, correlation = FALSE)
+
+plot(tsne_model_1_m1$Y,col=rkm$labels,asp=1)
+
+cc$cluster<-rkm$labels
+
+fviz_cluster(cc, geom = "point",  data = as.data.frame(tsne_model_1_m1$Y), asp=1.5) 
+
+#------------------------------------------Old code-------------------------------------------------------------#
+
+#----------------UMAP----------------------------#
+
+#  parameters
+
+# ngb<-90
+# lr<-1.1
+# 
+# #  Umap m1
+# umap_calc <- umap(m1, n_neighbors = ngb, n_components = 2,metric = "cosine",
+#                   learning_rate = lr, scale = T, init = "spectral",
+#                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+#                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+#                   ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+#                   grain_size = 5,  min_dist = 10, spread = 50 )
+# 
+# umap_m1 <- data.frame(
+#   UMAP1 = umap_calc$embedding[, 1],
+#   UMAP2 = umap_calc$embedding[, 2]
+# )
+# 
+# #  Umap plot
+# 
+# ggplot(umap_m1, aes(
+#   x = UMAP1, y = UMAP2,
+#   col = UMAP1
+# )) +
+#   geom_point()
+# 
+# bmp("umap_m1.bmp", width = 1920, height = 1280)
+# plot(umap_m1$UMAP1,umap_m1$UMAP2, col=factor(umap_m1$UMAP1))
+# dev.off()
+# 
+# bmp("umap_m1_km.bmp", width = 1920, height = 1280)
+# fviz_cluster(ckm1, geom = "point",  data = umap_m1) 
+# dev.off()
+# 
+# #  Umap m2
+# umap_calc <- umap(m2, n_neighbors = ngb, n_components = 2,metric = "cosine",
+#                   learning_rate = lr, scale = T, init = "spectral",
+#                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+#                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+#                   ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+#                   grain_size = 5,  min_dist = 10, spread = 50 )
+# 
+# umap_m2 <- data.frame(
+#   UMAP1 = umap_calc$embedding[, 1],
+#   UMAP2 = umap_calc$embedding[, 2]
+# )
+# 
+# bmp("umap_m2.bmp", width = 1920, height = 1280)
+# plot(umap_m2$UMAP1,umap_m2$UMAP2, col=factor(umap_m2$UMAP1))
+# dev.off()
+# 
+# bmp("umap_m2_km.bmp", width = 1920, height = 1280)
+# fviz_cluster(ckm2, geom = "point",  data = umap_m2) 
+# dev.off()
+# 
+# #  Umap m3
+# umap_calc <- umap(m3, n_neighbors = ngb, n_components = 2,metric = "cosine",
+#                   learning_rate = lr, scale = T, init = "spectral",
+#                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+#                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+#                   ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+#                   grain_size = 5,  min_dist = 10, spread = 50 )
+# 
+# umap_m3 <- data.frame(
+#   UMAP1 = umap_calc$embedding[, 1],
+#   UMAP2 = umap_calc$embedding[, 2]
+# )
+# 
+# bmp("umap_m3.bmp", width = 1920, height = 1280)
+# plot(umap_m3$UMAP1,umap_m3$UMAP2, col=factor(umap_m3$UMAP1))
+# dev.off()
+# 
+# bmp("umap_m3_km.bmp", width = 1920, height = 1280)
+# fviz_cluster(ckm3, geom = "point",  data = umap_m3) 
+# dev.off()
+# 
+# #  Umap m4
+# umap_calc <- umap(m4, n_neighbors = ngb, n_components = 2,metric = "cosine",
+#                   learning_rate = lr, scale = T, init = "spectral",
+#                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+#                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+#                   ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+#                   grain_size = 5,  min_dist = 10, spread = 50 )
+# 
+# umap_m4 <- data.frame(
+#   UMAP1 = umap_calc$embedding[, 1],
+#   UMAP2 = umap_calc$embedding[, 2]
+# )
+# 
+# bmp("umap_m4.bmp", width = 1920, height = 1280)
+# plot(umap_m4$UMAP1,umap_m4$UMAP2, col=factor(umap_m4$UMAP1))
+# dev.off()
+# 
+# bmp("umap_m4_km.bmp", width = 1920, height = 1280)
+# fviz_cluster(ckm4, geom = "point",  data = umap_m4) 
+# dev.off()
+# 
+# #  Umap m5
+# umap_calc <- umap(m5, n_neighbors = ngb, n_components = 2,metric = "cosine",
+#                   learning_rate = lr, scale = T, init = "spectral",
+#                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+#                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+#                   ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+#                   grain_size = 5,  min_dist = 10, spread = 50 )
+# 
+# umap_m5 <- data.frame(
+#   UMAP1 = umap_calc$embedding[, 1],
+#   UMAP2 = umap_calc$embedding[, 2]
+# )
+# 
+# bmp("umap_m5.bmp", width = 1920, height = 1280)
+# plot(umap_m5$UMAP1,umap_m5$UMAP2, col=factor(umap_m5$UMAP1))
+# dev.off()
+# 
+# bmp("umap_m5_km.bmp", width = 1920, height = 1280)
+# fviz_cluster(ckm5, geom = "point",  data = umap_m5) 
+# dev.off()
+# 
+# #  Umap m6
+# umap_calc <- umap(m6, n_neighbors = ngb, n_components = 2,metric = "cosine",
+#                   learning_rate = lr, scale = T, init = "spectral",
+#                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+#                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+#                   ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+#                   grain_size = 5,  min_dist = 10, spread = 50 )
+# 
+# umap_m6 <- data.frame(
+#   UMAP1 = umap_calc$embedding[, 1],
+#   UMAP2 = umap_calc$embedding[, 2]
+# )
+# 
+# bmp("umap_m6.bmp", width = 1920, height = 1280)
+# plot(umap_m6$UMAP1,umap_m6$UMAP2, col=factor(umap_m6$UMAP1))
+# dev.off()
+# 
+# bmp("umap_m6_km.bmp", width = 1920, height = 1280)
+# fviz_cluster(ckm6, geom = "point",  data = umap_m6) 
+# dev.off()
+# 
+# #  Umap m7
+# umap_calc <- umap(m7, n_neighbors = ngb, n_components = 2,metric = "cosine",
+#                   learning_rate = lr, scale = T, init = "spectral",
+#                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+#                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+#                   ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+#                   grain_size = 5,  min_dist = 10, spread = 50 )
+# 
+# umap_m7 <- data.frame(
+#   UMAP1 = umap_calc$embedding[, 1],
+#   UMAP2 = umap_calc$embedding[, 2]
+# )
+# 
+# bmp("umap_m7.bmp", width = 1920, height = 1280)
+# plot(umap_m7$UMAP1,umap_m7$UMAP2, col=factor(umap_m7$UMAP1))
+# dev.off()
+# 
+# bmp("umap_m7_km.bmp", width = 1920, height = 1280)
+# fviz_cluster(ckm7, geom = "point",  data = umap_m7) 
+# dev.off()
+# 
+# #  Umap m8
+# umap_calc <- umap(m8, n_neighbors = ngb, n_components = 2,metric = "cosine",
+#                   learning_rate = lr, scale = T, init = "spectral",
+#                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+#                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+#                   ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+#                   grain_size = 5,  min_dist = 10, spread = 50 )
+# 
+# umap_m8 <- data.frame(
+#   UMAP1 = umap_calc$embedding[, 1],
+#   UMAP2 = umap_calc$embedding[, 2]
+# )
+# 
+# bmp("umap_m8.bmp", width = 1920, height = 1280)
+# plot(umap_m8$UMAP1,umap_m8$UMAP2, col=factor(umap_m8$UMAP1))
+# dev.off()
+# 
+# bmp("umap_m8_km.bmp", width = 1920, height = 1280)
+# fviz_cluster(ckm8, geom = "point",  data = umap_m8) 
+# dev.off()
+# 
+# #  Umap m9
+# umap_calc <- umap(m9, n_neighbors = ngb, n_components = 2,metric = "cosine",
+#                   learning_rate = lr, scale = T, init = "spectral",
+#                   bandwidth = 30, negative_sample_rate = 20, n_trees = 50,
+#                   search_k = 2*90*50, pca_center = T, pcg_rand = T, ret_model = T,
+#                   ret_nn = T, n_threads = nthr, verbose = getOption("verbose",TRUE),
+#                   grain_size = 5,  min_dist = 10, spread = 50 )
+# 
+# umap_m9 <- data.frame(
+#   UMAP1 = umap_calc$embedding[, 1],
+#   UMAP2 = umap_calc$embedding[, 2]
+# )
+# 
+# bmp("umap_m9.bmp", width = 1920, height = 1280)
+# plot(umap_m9$UMAP1,umap_m9$UMAP2, col=factor(umap_m9$UMAP1))
+# dev.off()
+# 
+# bmp("umap_m9_km.bmp", width = 1920, height = 1280)
+# fviz_cluster(ckm9, geom = "point",  data = umap_m9) 
+# dev.off()
+# 
+# rm(umap_calc)
+#----------------Umap---------------------------#
