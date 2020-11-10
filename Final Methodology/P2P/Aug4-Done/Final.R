@@ -1769,14 +1769,40 @@ round(calinhara(m1,km$cluster),digits=4)
 round(calinhara(m1,km4$cluster),digits=5)
 round(calinhara(m1,km6$cluster),digits=6)
 
-plot(tsne_model_1_m1$Y,col=km$cluster,asp=1)
+plot(tsne_model_1_m1$Y,col=km2$cluster,asp=1)
 
-cc$cluster<-km2$cluster
-cc$centers<-km2$centers
+cc$cluster<-as.data.frame(spc@.Data)
+cc$centers<-as.data.frame(spc@centers)
 
 fviz_cluster(cc, geom = "point",  data = as.data.frame(tsne_model_1_m1$Y)) 
 
+plot(tsne_model_1_m1$Y, col = spc@.Data)
 
+x1<-as.matrix(m1)
+
+kmat<-kernelMatrix(rbfdot(sigma = 0.75), x1)
+
+spc<-specc(x1, centers=3,
+           kernel = "rbfdot", kpar = "automatic", 
+           nystrom.red = TRUE, nystrom.sample = dim(x1)[1]/6,
+           iterations = 50, mod.sample = 0.75, na.action = na.omit)
+
+library(HDclassif)
+
+hdgmm<-hddc(m1, K = 1:10, model = c("ALL"), threshold = 0.45,
+            criterion = "bic", com_dim = 2, itermax = 50, eps = 0.001,
+            algo = "EM", d_select = "Cattell", init = "param", show = getHDclassif.show(),scaling = TRUE,
+            min.individuals = 10, noise.ctrl = 1e-08, mc.cores = 5,
+            nb.rep = 2, keepAllRes = FALSE, d_max = 50, subset = Inf)
+
+hdgmmc<-hdgmm$class
+
+plot(tsne_model_1_m1$Y, col = hdgmm$class)
+
+table(hdgmm$class)
+
+plot(hdgmm, method = "BIC")
+plot(tsne_model_1_m1$Y, col = xyMclust1$classification)
 #------------------------------------------Old code-------------------------------------------------------------#
 
 #-------------------------3d plotting-------------------------------------#
