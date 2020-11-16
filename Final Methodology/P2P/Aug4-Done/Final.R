@@ -1803,6 +1803,14 @@ table(hdgmm$class)
 
 plot(hdgmm, method = "BIC")
 plot(tsne_model_1_m1$Y, col = xyMclust1$classification)
+
+m1tr<-transpose(m1)
+label<-names(m1)
+
+tsne_model_1_m1_3d = Rtsne(m1tr, check_duplicates=FALSE, pca=TRUE, perplexity=4, theta=th1, dims=2, max_iter = mit1,
+                            verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
+plot(tsne_model_1_m1_3d$Y,col=factor(label),asp=1)
 #------------------------------------------Old code-------------------------------------------------------------#
 
 #-------------------------3d plotting-------------------------------------#
