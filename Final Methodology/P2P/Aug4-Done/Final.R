@@ -180,7 +180,7 @@ ncentrality  <- data.frame(degree      = ndegree,              #  1
                            lobby       = nlobby,               #  11
                            leverage    = nleverage,            #  12
                            localbridge = nlocalbridge          #  13
-) #  normalized values 8 variables
+) #  normalized values 13 variables
 
 #------------------------------------------Datasets-----------------------------------------------------------------------#
 
@@ -267,6 +267,33 @@ print(res.m7)
 print(res.m8)
 print(res.m9)
 
+#  Results for Variables of m1
+res.var <- get_pca_var(res.m1)#  13 variables 
+res.var$coord          #  Coordinates
+res.var$contrib        #  Contributions to the PCs
+res.var$cos2           #  Quality of representation 
+
+eig.m1 <- get_eigenvalue(res.m1) 
+eig.m1
+eig.m2 <- get_eigenvalue(res.m2) 
+eig.m2
+eig.m3 <- get_eigenvalue(res.m3) 
+eig.m3
+eig.m4 <- get_eigenvalue(res.m4) 
+eig.m4
+eig.m5 <- get_eigenvalue(res.m5) 
+eig.m5
+eig.m6 <- get_eigenvalue(res.m6) 
+eig.m6
+eig.m7 <- get_eigenvalue(res.m7) 
+eig.m7
+eig.m8 <- get_eigenvalue(res.m8) 
+eig.m8
+eig.m9 <- get_eigenvalue(res.m9) 
+eig.m9
+
+#-----------------------------------------------------PCA plots start-------------------------------------------------#
+
 #  screeplot
 p1<-fviz_eig(res.m1,addlabels = TRUE)
 p2<-fviz_eig(res.m2,addlabels = TRUE)
@@ -294,12 +321,12 @@ p7<-fviz_pca_biplot(res.m7, label ="var")
 p8<-fviz_pca_biplot(res.m8, label ="var")
 p9<-fviz_pca_biplot(res.m9, label ="var")
 
-#plot biplot
+#  plot biplot
 bmp("biplot.bmp", width = 1920, height = 1080)
 grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9, nrow = 3, ncol=3)
 dev.off()
 
-#plot contribution to dimensions
+#  plot contribution to dimensions
 
 p1d1<-fviz_contrib(res.m1, choice = "var", axes = 1)
 p1d2<-fviz_contrib(res.m1, choice = "var", axes = 2)
@@ -389,39 +416,16 @@ bmp("cos2 contribution.bmp", width = 1920, height = 1080)
 grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9, nrow = 3, ncol=3)
 dev.off()
 
-eig.m1 <- get_eigenvalue(res.m1) 
-eig.m1
-eig.m2 <- get_eigenvalue(res.m2) 
-eig.m2
-eig.m3 <- get_eigenvalue(res.m3) 
-eig.m3
-eig.m4 <- get_eigenvalue(res.m4) 
-eig.m4
-eig.m5 <- get_eigenvalue(res.m5) 
-eig.m5
-eig.m6 <- get_eigenvalue(res.m6) 
-eig.m6
-eig.m7 <- get_eigenvalue(res.m7) 
-eig.m7
-eig.m8 <- get_eigenvalue(res.m8) 
-eig.m8
-eig.m9 <- get_eigenvalue(res.m9) 
-eig.m9
-
 rm(eig.m1,eig.m2,eig.m3,eig.m4,eig.m5,eig.m6,eig.m7,eig.m8,eig.m9)
-
-#  Results for Variables
-res.var <- get_pca_var(res.m1)#  8 variables 
-res.var$coord          #  Coordinates
-res.var$contrib        #  Contributions to the PCs
-res.var$cos2           #  Quality of representation 
 
 rm(p1,p2,p3,p4,p5,p6,p7,p8,p9)
 rm(res.m1,res.m2,res.m3,res.m4,res.m5,res.m6,res.m7,res.m8,res.m9)
 
+#-----------------------------------------------------PCA plots ends-------------------------------------------------#
+
 #------------------------------------------PCA end-------------------------------------#
 
-#------------------------------------------------Custom tsne---------------------------------------------------#
+#------------------------------------------------Tsne---------------------------------------------------#
 
 ncen_tr<-transpose(ncentrality) #  transpose ncentrality for tsne colors
 ncen_tr<-data.frame(names = c("degree", "eigenvector","pagerank","authorities","hubscore","betweenness","closeness",
@@ -445,65 +449,85 @@ nthr<-7
 
 #-------------------------------------------------------tsne model 1 start--------------------------------------------#
 
+#  m1
 set.seed(32)  
 tsne_model_1_m1 = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
                           verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m2
+set.seed(32)  
+tsne_model_1_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m3
+set.seed(32)  
+tsne_model_1_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m3
+set.seed(32)  
+tsne_model_1_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m5
+set.seed(32)  
+tsne_model_1_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m6
+set.seed(32)  
+tsne_model_1_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m7
+set.seed(32)  
+tsne_model_1_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m8
+set.seed(32)  
+tsne_model_1_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m9
+set.seed(32)  
+tsne_model_1_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
+#------------------------------------------------TSNE model 1 plots------------------------------------------------#
+
 bmp("tsne_model_1_m1.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_m1$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(32)  
-tsne_model_1_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_1_m2.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_m2$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(32)  
-tsne_model_1_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_1_m3.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_m3$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(32)  
-tsne_model_1_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_1_m4.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_m4$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(32)  
-tsne_model_1_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_1_m5.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_m5$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(32)  
-tsne_model_1_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_1_m6.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_m6$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(32)  
-tsne_model_1_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_1_m7.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_m7$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(32)  
-tsne_model_1_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_1_m8.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_m8$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(32)  
-tsne_model_1_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_1_m9.bmp", width = 1920, height = 1080)
 plot(tsne_model_1_m9$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
@@ -514,65 +538,87 @@ save.image(".Rdata",safe = TRUE)
 
 #-------------------------------------------------------tsne model 2 start--------------------------------------------#
 
+#  m1
 set.seed(31)  
 tsne_model_2_m1 = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
                         verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m2
+set.seed(31)  
+tsne_model_2_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m3
+set.seed(31)  
+tsne_model_2_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m4
+set.seed(31)  
+tsne_model_2_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m5
+set.seed(31)  
+tsne_model_2_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m6
+set.seed(31)  
+tsne_model_2_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m7
+set.seed(31)  
+tsne_model_2_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
+#  m8
+set.seed(31)  
+tsne_model_2_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
+#  m9
+set.seed(31)  
+tsne_model_2_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
+#------------------------------------------------TSNE model 2 plots------------------------------------------------#
+
 bmp("tsne_model_2_m1.bmp", width = 1920, height = 1080)
 plot(tsne_model_2_m1$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(31)  
-tsne_model_2_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_2_m2.bmp", width = 1920, height = 1080)
 plot(tsne_model_2_m2$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(31)  
-tsne_model_2_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_2_m3.bmp", width = 1920, height = 1080)
 plot(tsne_model_2_m3$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(31)  
-tsne_model_2_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_2_m4.bmp", width = 1920, height = 1080)
 plot(tsne_model_2_m4$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(31)  
-tsne_model_2_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_2_m5.bmp", width = 1920, height = 1080)
 plot(tsne_model_2_m5$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(31)  
-tsne_model_2_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_2_m6.bmp", width = 1920, height = 1080)
 plot(tsne_model_2_m6$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(31)  
-tsne_model_2_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_2_m7.bmp", width = 1920, height = 1080)
 plot(tsne_model_2_m7$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(31)  
-tsne_model_2_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_2_m8.bmp", width = 1920, height = 1080)
 plot(tsne_model_2_m8$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(31)  
-tsne_model_2_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx2, theta=th2, dims=2, max_iter = mit2,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_2_m9.bmp", width = 1920, height = 1080)
 plot(tsne_model_2_m9$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
@@ -583,65 +629,85 @@ save.image(".Rdata",safe = TRUE)
 
 #-------------------------------------------------------tsne model 3 start--------------------------------------------#
 
+#  m1
 set.seed(30)  
 tsne_model_3_m1 = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
                         verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m2
+set.seed(30)  
+tsne_model_3_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m3
+set.seed(30)  
+tsne_model_3_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m4
+set.seed(30)  
+tsne_model_3_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m5
+set.seed(30)  
+tsne_model_3_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m6
+set.seed(30)  
+tsne_model_3_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m7
+set.seed(30)  
+tsne_model_3_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m8
+set.seed(30)  
+tsne_model_3_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m9
+set.seed(30)  
+tsne_model_3_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
+#------------------------------------------------TSNE model 3 plots------------------------------------------------#
+
 bmp("tsne_model_3_m1.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_m1$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(30)  
-tsne_model_3_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_3_m2.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_m2$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(30)  
-tsne_model_3_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_3_m3.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_m3$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(30)  
-tsne_model_3_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_3_m4.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_m4$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(30)  
-tsne_model_3_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_3_m5.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_m5$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(30)  
-tsne_model_3_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_3_m6.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_m6$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(30)  
-tsne_model_3_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_3_m7.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_m7$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(30)  
-tsne_model_3_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_3_m8.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_m8$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(30)  
-tsne_model_3_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx3, theta=th3, dims=2, max_iter = mit3,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_3_m9.bmp", width = 1920, height = 1080)
 plot(tsne_model_3_m9$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
@@ -652,154 +718,213 @@ save.image(".Rdata",safe = TRUE)
 
 #-------------------------------------------------------tsne model 4 start--------------------------------------------#
 
+#  m1
 set.seed(29)  
 tsne_model_4_m1 = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
                         verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m2
+set.seed(29)  
+tsne_model_4_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m3
+set.seed(29)  
+tsne_model_4_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m4
+set.seed(29)  
+tsne_model_4_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m5
+set.seed(29)  
+tsne_model_4_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m6
+set.seed(29)  
+tsne_model_4_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m7
+set.seed(29)  
+tsne_model_4_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m8
+set.seed(29)  
+tsne_model_4_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+#  m9
+set.seed(29)  
+tsne_model_4_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
+#------------------------------------------------TSNE model 4 plots------------------------------------------------#
+
 bmp("tsne_model_4_m1.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_m1$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(29)  
-tsne_model_4_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_4_m2.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_m2$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(29)  
-tsne_model_4_m3 = Rtsne(m3, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_4_m3.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_m3$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(29)  
-tsne_model_4_m4 = Rtsne(m4, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_4_m4.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_m4$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(29)  
-tsne_model_4_m5 = Rtsne(m5, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+
 bmp("tsne_model_4_m5.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_m5$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(29)  
-tsne_model_4_m6 = Rtsne(m6, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
 bmp("tsne_model_4_m6.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_m6$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(29)  
-tsne_model_4_m7 = Rtsne(m7, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
 bmp("tsne_model_4_m7.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_m7$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(29)  
-tsne_model_4_m8 = Rtsne(m8, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
 bmp("tsne_model_4_m8.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_m8$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
-set.seed(29)  
-tsne_model_4_m9 = Rtsne(m9, check_duplicates=FALSE, pca=TRUE, perplexity=prx4, theta=th4, dims=2, max_iter = mit4,
-                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
 bmp("tsne_model_4_m9.bmp", width = 1920, height = 1080)
 plot(tsne_model_4_m9$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
 #-------------------------------------------------------tsne model 4 end--------------------------------------------#
 
-#---------------------------------------------kmeans start------------------------------------------------------#
+#---------------------------------------------Spherical kmeans start------------------------------------------------------#
 
 #---------------------------------------------------------clusters--------------------------------------#
 #--------------clusters using different k values m1
-ck1<-kmeans(m1, 3, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck2<-kmeans(m1, 4, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck3<-kmeans(m1, 5, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck4<-kmeans(m1, 6, iter.max = 20, nstart = 25,
-           algorithm = c("Hartigan-Wong"), trace=FALSE)
+ck2<-Skmeans(data=as.matrix(m1),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m1),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m1),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m1),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m1,ck1$cluster),digits=3) #  7733.985
-round(calinhara(m1,ck2$cluster),digits=4) #  7985.291 highest
-round(calinhara(m1,ck3$cluster),digits=5) #  6959.628
-round(calinhara(m1,ck4$cluster),digits=6) #  6348.964
+round(calinhara(m1,ck2$cluster),digits=2) #  
+round(calinhara(m1,ck3$cluster),digits=3) #  
+round(calinhara(m1,ck4$cluster),digits=4) #  
+round(calinhara(m1,ck5$cluster),digits=5) #  
+round(calinhara(m1,ck6$cluster),digits=6) #  
 
 
-#plot of clusters
-p1 <- fviz_cluster(ck1, geom = "point", data = m1) + ggtitle("k = 3")
-p2 <- fviz_cluster(ck2, geom = "point", data = m1) + ggtitle("k = 4")
-p3 <- fviz_cluster(ck3, geom = "point", data = m1) + ggtitle("k = 5")
-p4 <- fviz_cluster(ck4, geom = "point", data = m1) + ggtitle("k = 6")
-
-bmp("kmeans_pca_m1.bmp", width = 1920, height = 1280)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-dev.off()
+# ck1<-kmeans(m1, 3, iter.max = 20, nstart = 25,
+#            algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# ck2<-kmeans(m1, 4, iter.max = 20, nstart = 25,
+#            algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m1, 5, iter.max = 20, nstart = 25,
+#            algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m1, 6, iter.max = 20, nstart = 25,
+#            algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m1,ck1$cluster),digits=3) #  7733.985
+# round(calinhara(m1,ck2$cluster),digits=4) #  7985.291 highest
+# round(calinhara(m1,ck3$cluster),digits=5) #  6959.628
+# round(calinhara(m1,ck4$cluster),digits=6) #  6348.964
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m1) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m1) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m1) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m1) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m1.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
 
 #--------------clusters using different k values m2
-ck1<-kmeans(m2, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck2<-kmeans(m2, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck3<-kmeans(m2, 5, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck4<-kmeans(m2, 6, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+ck2<-Skmeans(data=as.matrix(m2),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m2),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m2),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m2),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m2),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m2,ck1$cluster),digits=3) #  7703.294
-round(calinhara(m2,ck2$cluster),digits=4) #  8037.741 highest
-round(calinhara(m2,ck3$cluster),digits=5) #  7001.544
-round(calinhara(m2,ck4$cluster),digits=6) #  6370.787
+round(calinhara(m2,ck2$cluster),digits=2) #  
+round(calinhara(m2,ck3$cluster),digits=3) #  
+round(calinhara(m2,ck4$cluster),digits=4) #  
+round(calinhara(m2,ck5$cluster),digits=5) #  
+round(calinhara(m2,ck6$cluster),digits=6) #  
 
-
-#plot of clusters
-p1 <- fviz_cluster(ck1, geom = "point", data = m2) + ggtitle("k = 3")
-p2 <- fviz_cluster(ck2, geom = "point", data = m2) + ggtitle("k = 4")
-p3 <- fviz_cluster(ck3, geom = "point", data = m2) + ggtitle("k = 5")
-p4 <- fviz_cluster(ck4, geom = "point", data = m2) + ggtitle("k = 6")
-
-bmp("kmeans_pca_m2.bmp", width = 1920, height = 1280)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-dev.off()
+# ck1<-kmeans(m2, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m2, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m2, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m2, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m2,ck1$cluster),digits=3) #  7703.294
+# round(calinhara(m2,ck2$cluster),digits=4) #  8037.741 highest
+# round(calinhara(m2,ck3$cluster),digits=5) #  7001.544
+# round(calinhara(m2,ck4$cluster),digits=6) #  6370.787
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m2) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m2) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m2) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m2) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m2.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
 
 #--------------clusters using different k values m3
-ck1<-kmeans(m3, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck2<-kmeans(m3, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck3<-kmeans(m3, 5, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck4<-kmeans(m3, 6, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+ck2<-Skmeans(data=as.matrix(m3),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m3),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m3),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m3),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m3),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m3,ck1$cluster),digits=3) #  7649.803
-round(calinhara(m3,ck2$cluster),digits=4) #  7698.748 
-round(calinhara(m3,ck3$cluster),digits=5) #  7738.866
-round(calinhara(m3,ck4$cluster),digits=6) #  7787.33 highest
+round(calinhara(m3,ck2$cluster),digits=2) #  
+round(calinhara(m3,ck3$cluster),digits=3) #  
+round(calinhara(m3,ck4$cluster),digits=4) #  
+round(calinhara(m3,ck5$cluster),digits=5) #  
+round(calinhara(m3,ck6$cluster),digits=6) # 
 
-
-#plot of clusters
-p1 <- fviz_cluster(ck1, geom = "point", data = m3) + ggtitle("k = 3")
-p2 <- fviz_cluster(ck2, geom = "point", data = m3) + ggtitle("k = 4")
-p3 <- fviz_cluster(ck3, geom = "point", data = m3) + ggtitle("k = 5")
-p4 <- fviz_cluster(ck4, geom = "point", data = m3) + ggtitle("k = 6")
-
-bmp("kmeans_pca_m3.bmp", width = 1920, height = 1280)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-dev.off()
+# ck1<-kmeans(m3, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m3, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m3, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m3, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m3,ck1$cluster),digits=3) #  7649.803
+# round(calinhara(m3,ck2$cluster),digits=4) #  7698.748 
+# round(calinhara(m3,ck3$cluster),digits=5) #  7738.866
+# round(calinhara(m3,ck4$cluster),digits=6) #  7787.33 highest
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m3) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m3) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m3) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m3) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m3.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
 
 #--------------clusters using different k values m4
 ck1<-kmeans(m4, 3, iter.max = 20, nstart = 25,
