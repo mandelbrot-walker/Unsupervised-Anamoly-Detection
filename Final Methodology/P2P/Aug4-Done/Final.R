@@ -1171,7 +1171,7 @@ bmp("tsne_model2_m1_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_2_m1$Y), col = ckm1$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm1, geom = "point",  data = as.data.frame(tsne_model_2_m1$Y)) 
+p1 <- fviz_cluster(ck1, geom = "point",  data = as.data.frame(tsne_model_2_m1$Y)) 
 
 bmp("tsne_model2_m1_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1182,7 +1182,7 @@ bmp("tsne_model2_m2_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_2_m2$Y), col = ckm2$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm2, geom = "point",  data = as.data.frame(tsne_model_2_m2$Y)) 
+p1 <- fviz_cluster(ck2, geom = "point",  data = as.data.frame(tsne_model_2_m2$Y)) 
 
 bmp("tsne_model2_m2_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1193,7 +1193,7 @@ bmp("tsne_model2_m3_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_2_m3$Y), col = ckm3$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm3, geom = "point",  data = as.data.frame(tsne_model_2_m3$Y)) 
+p1 <- fviz_cluster(ck3, geom = "point",  data = as.data.frame(tsne_model_2_m3$Y)) 
 
 bmp("tsne_model2_m3_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1204,7 +1204,7 @@ bmp("tsne_model2_m4_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_2_m4$Y), col = ckm4$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm4, geom = "point",  data = as.data.frame(tsne_model_2_m4$Y)) 
+p1 <- fviz_cluster(ck4, geom = "point",  data = as.data.frame(tsne_model_2_m4$Y)) 
 
 bmp("tsne_model2_m4_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1215,7 +1215,7 @@ bmp("tsne_model2_m5_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_2_m5$Y), col = ckm5$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm5, geom = "point",  data = as.data.frame(tsne_model_2_m5$Y)) 
+p1 <- fviz_cluster(ck5, geom = "point",  data = as.data.frame(tsne_model_2_m5$Y)) 
 
 bmp("tsne_model2_m5_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1226,7 +1226,7 @@ bmp("tsne_model2_m6_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_2_m6$Y), col = ckm6$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm6, geom = "point",  data = as.data.frame(tsne_model_2_m6$Y)) 
+p1 <- fviz_cluster(ck6, geom = "point",  data = as.data.frame(tsne_model_2_m6$Y)) 
 
 bmp("tsne_model2_m6_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1237,7 +1237,7 @@ bmp("tsne_model2_m7_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_2_m7$Y), col = ckm7$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm7, geom = "point",  data = as.data.frame(tsne_model_2_m7$Y)) 
+p1 <- fviz_cluster(ck7, geom = "point",  data = as.data.frame(tsne_model_2_m7$Y)) 
 
 bmp("tsne_model2_m7_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1248,7 +1248,7 @@ bmp("tsne_model2_m8_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_2_m8$Y), col = ckm8$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm8, geom = "point",  data = as.data.frame(tsne_model_2_m8$Y)) 
+p1 <- fviz_cluster(ck8, geom = "point",  data = as.data.frame(tsne_model_2_m8$Y)) 
 
 bmp("tsne_model2_m8_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1259,7 +1259,7 @@ bmp("tsne_model2_m9_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_2_m9$Y), col = ckm9$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm9, geom = "point",  data = as.data.frame(tsne_model_2_m9$Y)) 
+p1 <- fviz_cluster(ck9, geom = "point",  data = as.data.frame(tsne_model_2_m9$Y)) 
 
 bmp("tsne_model2_m9_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1271,7 +1271,7 @@ bmp("tsne_model3_m1_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_3_m1$Y), col = ckm1$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm1, geom = "point",  data = as.data.frame(tsne_model_3_m1$Y)) 
+p1 <- fviz_cluster(ck1, geom = "point",  data = as.data.frame(tsne_model_3_m1$Y)) 
 
 bmp("tsne_model3_m1_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1282,7 +1282,7 @@ bmp("tsne_model3_m2_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_3_m2$Y), col = ckm2$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm2, geom = "point",  data = as.data.frame(tsne_model_3_m2$Y)) 
+p1 <- fviz_cluster(ck2, geom = "point",  data = as.data.frame(tsne_model_3_m2$Y)) 
 
 bmp("tsne_model3_m2_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1293,7 +1293,7 @@ bmp("tsne_model3_m3_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_3_m3$Y), col = ckm3$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm3, geom = "point",  data = as.data.frame(tsne_model_3_m3$Y)) 
+p1 <- fviz_cluster(ck3, geom = "point",  data = as.data.frame(tsne_model_3_m3$Y)) 
 
 bmp("tsne_model3_m3_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1304,7 +1304,7 @@ bmp("tsne_model3_m4_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_3_m4$Y), col = ckm4$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm4, geom = "point",  data = as.data.frame(tsne_model_3_m4$Y)) 
+p1 <- fviz_cluster(ck4, geom = "point",  data = as.data.frame(tsne_model_3_m4$Y)) 
 
 bmp("tsne_model3_m4_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1315,7 +1315,7 @@ bmp("tsne_model3_m5_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_3_m5$Y), col = ckm5$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm5, geom = "point",  data = as.data.frame(tsne_model_3_m5$Y)) 
+p1 <- fviz_cluster(ck5, geom = "point",  data = as.data.frame(tsne_model_3_m5$Y)) 
 
 bmp("tsne_model3_m5_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1326,7 +1326,7 @@ bmp("tsne_model3_m6_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_3_m6$Y), col = ckm6$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm6, geom = "point",  data = as.data.frame(tsne_model_3_m6$Y)) 
+p1 <- fviz_cluster(ck6, geom = "point",  data = as.data.frame(tsne_model_3_m6$Y)) 
 
 bmp("tsne_model3_m6_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1337,7 +1337,7 @@ bmp("tsne_model3_m7_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_3_m7$Y), col = ckm7$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm7, geom = "point",  data = as.data.frame(tsne_model_3_m7$Y)) 
+p1 <- fviz_cluster(ck7, geom = "point",  data = as.data.frame(tsne_model_3_m7$Y)) 
 
 bmp("tsne_model3_m7_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1348,7 +1348,7 @@ bmp("tsne_model3_m8_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_3_m8$Y), col = ckm8$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm8, geom = "point",  data = as.data.frame(tsne_model_3_m8$Y)) 
+p1 <- fviz_cluster(ck8, geom = "point",  data = as.data.frame(tsne_model_3_m8$Y)) 
 
 bmp("tsne_model3_m8_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1359,7 +1359,7 @@ bmp("tsne_model3_m9_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_3_m9$Y), col = ckm9$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm9, geom = "point",  data = as.data.frame(tsne_model_3_m9$Y)) 
+p1 <- fviz_cluster(ck9, geom = "point",  data = as.data.frame(tsne_model_3_m9$Y)) 
 
 bmp("tsne_model3_m9_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1371,7 +1371,7 @@ bmp("tsne_model4_m1_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_4_m1$Y), col = ckm1$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm1, geom = "point",  data = as.data.frame(tsne_model_4_m1$Y)) 
+p1 <- fviz_cluster(ck1, geom = "point",  data = as.data.frame(tsne_model_4_m1$Y)) 
 
 bmp("tsne_model4_m1_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1382,7 +1382,7 @@ bmp("tsne_model4_m2_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_4_m2$Y), col = ckm2$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm2, geom = "point",  data = as.data.frame(tsne_model_4_m2$Y)) 
+p1 <- fviz_cluster(ck2, geom = "point",  data = as.data.frame(tsne_model_4_m2$Y)) 
 
 bmp("tsne_model4_m2_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1393,7 +1393,7 @@ bmp("tsne_model4_m3_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_4_m3$Y), col = ckm3$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm3, geom = "point",  data = as.data.frame(tsne_model_4_m3$Y)) 
+p1 <- fviz_cluster(ck3, geom = "point",  data = as.data.frame(tsne_model_4_m3$Y)) 
 
 bmp("tsne_model4_m3_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1404,7 +1404,7 @@ bmp("tsne_model4_m4_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_4_m4$Y), col = ckm4$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm4, geom = "point",  data = as.data.frame(tsne_model_4_m4$Y)) 
+p1 <- fviz_cluster(ck4, geom = "point",  data = as.data.frame(tsne_model_4_m4$Y)) 
 
 bmp("tsne_model4_m4_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1415,7 +1415,7 @@ bmp("tsne_model4_m5_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_4_m5$Y), col = ckm5$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm5, geom = "point",  data = as.data.frame(tsne_model_4_m5$Y)) 
+p1 <- fviz_cluster(ck5, geom = "point",  data = as.data.frame(tsne_model_4_m5$Y)) 
 
 bmp("tsne_model4_m5_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1426,7 +1426,7 @@ bmp("tsne_model4_m6_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_4_m6$Y), col = ckm6$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm6, geom = "point",  data = as.data.frame(tsne_model_4_m6$Y)) 
+p1 <- fviz_cluster(ck6, geom = "point",  data = as.data.frame(tsne_model_4_m6$Y)) 
 
 bmp("tsne_model4_m6_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1437,7 +1437,7 @@ bmp("tsne_model4_m7_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_4_m7$Y), col = ckm7$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm7, geom = "point",  data = as.data.frame(tsne_model_4_m7$Y)) 
+p1 <- fviz_cluster(ck7, geom = "point",  data = as.data.frame(tsne_model_4_m7$Y)) 
 
 bmp("tsne_model4_m7_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1448,7 +1448,7 @@ bmp("tsne_model4_m8_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_4_m8$Y), col = ckm8$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm8, geom = "point",  data = as.data.frame(tsne_model_4_m8$Y)) 
+p1 <- fviz_cluster(ck8, geom = "point",  data = as.data.frame(tsne_model_4_m8$Y)) 
 
 bmp("tsne_model4_m8_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1459,20 +1459,11 @@ bmp("tsne_model4_m9_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_4_m9$Y), col = ckm9$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm9, geom = "point",  data = as.data.frame(tsne_model_4_m9$Y)) 
+p1 <- fviz_cluster(ck9, geom = "point",  data = as.data.frame(tsne_model_4_m9$Y)) 
 
 bmp("tsne_model4_m9_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
-
-
-tc1<-kmeans(as.data.frame(tsne_model_1_m1$Y), 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-fviz_cluster(tc1, geom = "point", data = as.data.frame(tsne_model_1_m1$Y))
-
-tc7<-kmeans(as.data.frame(tsne_model_1_m7$Y), 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-fviz_cluster(tc7, geom = "point", data = as.data.frame(tsne_model_1_m7$Y))
 
 #-----------------------kmeans on dataset and cluster onto TSNE end------------------------------------------------------#
 
@@ -2367,6 +2358,15 @@ plot(tsne_model_1_m1_3d$Y,col=factor(label),asp=1)
 # plot(ncentrality, col = c_ncentrality$cluster)
 # points(c_ncentrality$centers, col = 1:8, pch = 8)
 # dev.off()
+
+# tc1<-kmeans(as.data.frame(tsne_model_1_m1$Y), 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# fviz_cluster(tc1, geom = "point", data = as.data.frame(tsne_model_1_m1$Y))
+# 
+# tc7<-kmeans(as.data.frame(tsne_model_1_m7$Y), 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# fviz_cluster(tc7, geom = "point", data = as.data.frame(tsne_model_1_m7$Y))
+
 # #-------------------------------------------dbscan start-----------------------------------------------------------------#
 # 
 # #---------------------------------------calculating h start------------------------------------------#
