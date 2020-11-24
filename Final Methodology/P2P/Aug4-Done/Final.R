@@ -804,330 +804,234 @@ dev.off()
 #---------------------------------------------------------clusters--------------------------------------#
 #--------------clusters using different k values m1
 ck2<-Skmeans(data=as.matrix(m1),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck3<-Skmeans(data=as.matrix(m1),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck4<-Skmeans(data=as.matrix(m1),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck5<-Skmeans(data=as.matrix(m1),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()  # garbage collection is used for stack imbalance warning. run gc() more than once if the warning persists
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m1,ck2$cluster),digits=2) #  
-round(calinhara(m1,ck3$cluster),digits=3) #  
-round(calinhara(m1,ck4$cluster),digits=4) #  
-round(calinhara(m1,ck5$cluster),digits=5) #  
-round(calinhara(m1,ck6$cluster),digits=6) #  
-
-
-# ck1<-kmeans(m1, 3, iter.max = 20, nstart = 25,
-#            algorithm = c("Hartigan-Wong"), trace=FALSE)
-# 
-# ck2<-kmeans(m1, 4, iter.max = 20, nstart = 25,
-#            algorithm = c("Hartigan-Wong"), trace=FALSE)
-# ck3<-kmeans(m1, 5, iter.max = 20, nstart = 25,
-#            algorithm = c("Hartigan-Wong"), trace=FALSE)
-# ck4<-kmeans(m1, 6, iter.max = 20, nstart = 25,
-#            algorithm = c("Hartigan-Wong"), trace=FALSE)
-# 
-# #  Checking for correct no of clusters. Higher the index value better the cluster
-# round(calinhara(m1,ck1$cluster),digits=3) #  7733.985
-# round(calinhara(m1,ck2$cluster),digits=4) #  7985.291 highest
-# round(calinhara(m1,ck3$cluster),digits=5) #  6959.628
-# round(calinhara(m1,ck4$cluster),digits=6) #  6348.964
-# 
-# 
-# #plot of clusters
-# p1 <- fviz_cluster(ck1, geom = "point", data = m1) + ggtitle("k = 3")
-# p2 <- fviz_cluster(ck2, geom = "point", data = m1) + ggtitle("k = 4")
-# p3 <- fviz_cluster(ck3, geom = "point", data = m1) + ggtitle("k = 5")
-# p4 <- fviz_cluster(ck4, geom = "point", data = m1) + ggtitle("k = 6")
-# 
-# bmp("kmeans_pca_m1.bmp", width = 1920, height = 1280)
-# grid.arrange(p1, p2, p3, p4, nrow = 2)
-# dev.off()
+round(calinhara(m1,ck2$cluster),digits=2) #  8267.23  Highest
+round(calinhara(m1,ck3$cluster),digits=3) #  6596.16
+round(calinhara(m1,ck4$cluster),digits=4) #  4592.877
+round(calinhara(m1,ck5$cluster),digits=5) #  6029.368
+round(calinhara(m1,ck6$cluster),digits=6) #  5378.566
 
 #--------------clusters using different k values m2
 
 ck2<-Skmeans(data=as.matrix(m2),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck3<-Skmeans(data=as.matrix(m2),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck4<-Skmeans(data=as.matrix(m2),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck5<-Skmeans(data=as.matrix(m2),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck6<-Skmeans(data=as.matrix(m2),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m2,ck2$cluster),digits=2) #  
-round(calinhara(m2,ck3$cluster),digits=3) #  
-round(calinhara(m2,ck4$cluster),digits=4) #  
-round(calinhara(m2,ck5$cluster),digits=5) #  
-round(calinhara(m2,ck6$cluster),digits=6) #  
-
-# ck1<-kmeans(m2, 3, iter.max = 20, nstart = 25,
-#             algorithm = c("Hartigan-Wong"), trace=FALSE)
-# ck2<-kmeans(m2, 4, iter.max = 20, nstart = 25,
-#             algorithm = c("Hartigan-Wong"), trace=FALSE)
-# ck3<-kmeans(m2, 5, iter.max = 20, nstart = 25,
-#             algorithm = c("Hartigan-Wong"), trace=FALSE)
-# ck4<-kmeans(m2, 6, iter.max = 20, nstart = 25,
-#             algorithm = c("Hartigan-Wong"), trace=FALSE)
-# 
-# #  Checking for correct no of clusters. Higher the index value better the cluster
-# round(calinhara(m2,ck1$cluster),digits=3) #  7703.294
-# round(calinhara(m2,ck2$cluster),digits=4) #  8037.741 highest
-# round(calinhara(m2,ck3$cluster),digits=5) #  7001.544
-# round(calinhara(m2,ck4$cluster),digits=6) #  6370.787
-# 
-# 
-# #plot of clusters
-# p1 <- fviz_cluster(ck1, geom = "point", data = m2) + ggtitle("k = 3")
-# p2 <- fviz_cluster(ck2, geom = "point", data = m2) + ggtitle("k = 4")
-# p3 <- fviz_cluster(ck3, geom = "point", data = m2) + ggtitle("k = 5")
-# p4 <- fviz_cluster(ck4, geom = "point", data = m2) + ggtitle("k = 6")
-# 
-# bmp("kmeans_pca_m2.bmp", width = 1920, height = 1280)
-# grid.arrange(p1, p2, p3, p4, nrow = 2)
-# dev.off()
+round(calinhara(m2,ck2$cluster),digits=2) #  8182.03 Highest
+round(calinhara(m2,ck3$cluster),digits=3) #  6568.329
+round(calinhara(m2,ck4$cluster),digits=4) #  4611.904
+round(calinhara(m2,ck5$cluster),digits=5) #  6069.017
+round(calinhara(m2,ck6$cluster),digits=6) #  5416.49
 
 #--------------clusters using different k values m3
 
 ck2<-Skmeans(data=as.matrix(m3),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck3<-Skmeans(data=as.matrix(m3),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck4<-Skmeans(data=as.matrix(m3),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck5<-Skmeans(data=as.matrix(m3),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 ck6<-Skmeans(data=as.matrix(m3),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck7<-Skmeans(data=as.matrix(m3),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m3,ck2$cluster),digits=2) #  
-round(calinhara(m3,ck3$cluster),digits=3) #  
-round(calinhara(m3,ck4$cluster),digits=4) #  
-round(calinhara(m3,ck5$cluster),digits=5) #  
-round(calinhara(m3,ck6$cluster),digits=6) # 
+round(calinhara(m3,ck2$cluster),digits=2) #  4264.96
+round(calinhara(m3,ck3$cluster),digits=3) #  3440.521
+round(calinhara(m3,ck4$cluster),digits=4) #  4711.368
+round(calinhara(m3,ck5$cluster),digits=5) #  5070.431  Highest
+round(calinhara(m3,ck6$cluster),digits=6) #  4676.349
+round(calinhara(m3,ck7$cluster),digits=7) #  4125.149
 
-# ck1<-kmeans(m3, 3, iter.max = 20, nstart = 25,
-#             algorithm = c("Hartigan-Wong"), trace=FALSE)
-# ck2<-kmeans(m3, 4, iter.max = 20, nstart = 25,
-#             algorithm = c("Hartigan-Wong"), trace=FALSE)
-# ck3<-kmeans(m3, 5, iter.max = 20, nstart = 25,
-#             algorithm = c("Hartigan-Wong"), trace=FALSE)
-# ck4<-kmeans(m3, 6, iter.max = 20, nstart = 25,
-#             algorithm = c("Hartigan-Wong"), trace=FALSE)
-# 
-# #  Checking for correct no of clusters. Higher the index value better the cluster
-# round(calinhara(m3,ck1$cluster),digits=3) #  7649.803
-# round(calinhara(m3,ck2$cluster),digits=4) #  7698.748 
-# round(calinhara(m3,ck3$cluster),digits=5) #  7738.866
-# round(calinhara(m3,ck4$cluster),digits=6) #  7787.33 highest
-# 
-# 
-# #plot of clusters
-# p1 <- fviz_cluster(ck1, geom = "point", data = m3) + ggtitle("k = 3")
-# p2 <- fviz_cluster(ck2, geom = "point", data = m3) + ggtitle("k = 4")
-# p3 <- fviz_cluster(ck3, geom = "point", data = m3) + ggtitle("k = 5")
-# p4 <- fviz_cluster(ck4, geom = "point", data = m3) + ggtitle("k = 6")
-# 
-# bmp("kmeans_pca_m3.bmp", width = 1920, height = 1280)
-# grid.arrange(p1, p2, p3, p4, nrow = 2)
-# dev.off()
 
 #--------------clusters using different k values m4
-ck1<-kmeans(m4, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck2<-kmeans(m4, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck3<-kmeans(m4, 5, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck4<-kmeans(m4, 6, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+ck2<-Skmeans(data=as.matrix(m4),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m4),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m4),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m4),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m4),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m4,ck1$cluster),digits=3) #  9030.761
-round(calinhara(m4,ck2$cluster),digits=4) #  10646.54 highest
-round(calinhara(m4,ck3$cluster),digits=5) #  9468.393
-round(calinhara(m4,ck4$cluster),digits=6) #  8854.677
-
-
-#plot of clusters
-p1 <- fviz_cluster(ck1, geom = "point", data = m4) + ggtitle("k = 3")
-p2 <- fviz_cluster(ck2, geom = "point", data = m4) + ggtitle("k = 4")
-p3 <- fviz_cluster(ck3, geom = "point", data = m4) + ggtitle("k = 5")
-p4 <- fviz_cluster(ck4, geom = "point", data = m4) + ggtitle("k = 6")
-
-bmp("kmeans_pca_m4.bmp", width = 1920, height = 1280)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-dev.off()
+round(calinhara(m4,ck2$cluster),digits=2) #  8753.57
+round(calinhara(m4,ck3$cluster),digits=3) #  7574.379
+round(calinhara(m4,ck4$cluster),digits=4) #  8819.879  Highest
+round(calinhara(m4,ck5$cluster),digits=5) #  7841.011
+round(calinhara(m4,ck6$cluster),digits=6) #  6857.192
 
 #--------------clusters using different k values m5
-ck1<-kmeans(m5, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck2<-kmeans(m5, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck3<-kmeans(m5, 5, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck4<-kmeans(m5, 6, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+ck2<-Skmeans(data=as.matrix(m5),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m5),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m5),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m5),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m5),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m5,ck1$cluster),digits=3) #  8841.458
-round(calinhara(m5,ck2$cluster),digits=4) #  9615.578 highest
-round(calinhara(m5,ck3$cluster),digits=5) #  8563.109
-round(calinhara(m5,ck4$cluster),digits=6) #  7967.682
-
-
-#plot of clusters
-p1 <- fviz_cluster(ck1, geom = "point", data = m5) + ggtitle("k = 3")
-p2 <- fviz_cluster(ck2, geom = "point", data = m5) + ggtitle("k = 4")
-p3 <- fviz_cluster(ck3, geom = "point", data = m5) + ggtitle("k = 5")
-p4 <- fviz_cluster(ck4, geom = "point", data = m5) + ggtitle("k = 6")
-
-bmp("kmeans_pca_m5.bmp", width = 1920, height = 1280)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-dev.off()
+round(calinhara(m5,ck2$cluster),digits=2) #  9042.81  Highest
+round(calinhara(m5,ck3$cluster),digits=3) #  7439.294
+round(calinhara(m5,ck4$cluster),digits=4) #  7920.269
+round(calinhara(m5,ck5$cluster),digits=5) #  7288.814
+round(calinhara(m5,ck6$cluster),digits=6) #  6173.02
 
 #--------------clusters using different k values m6
-ck1<-kmeans(m6, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck2<-kmeans(m6, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck3<-kmeans(m6, 5, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck4<-kmeans(m6, 6, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+ck2<-Skmeans(data=as.matrix(m6),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m6),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m6),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m6),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m6),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m6,ck1$cluster),digits=3) #  16450.43 highest
-round(calinhara(m6,ck2$cluster),digits=4) #  14770.27 
-round(calinhara(m6,ck3$cluster),digits=5) #  14848.32
-round(calinhara(m6,ck4$cluster),digits=6) #  14466.01
-
-
-#plot of clusters
-p1 <- fviz_cluster(ck1, geom = "point", data = m6) + ggtitle("k = 3")
-p2 <- fviz_cluster(ck2, geom = "point", data = m6) + ggtitle("k = 4")
-p3 <- fviz_cluster(ck3, geom = "point", data = m6) + ggtitle("k = 5")
-p4 <- fviz_cluster(ck4, geom = "point", data = m6) + ggtitle("k = 6")
-
-bmp("kmeans_pca_m6.bmp", width = 1920, height = 1280)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-dev.off()
+round(calinhara(m6,ck2$cluster),digits=2) #  5696.55  Highest
+round(calinhara(m6,ck3$cluster),digits=3) #  5200.74
+round(calinhara(m6,ck4$cluster),digits=4) #  4228.594
+round(calinhara(m6,ck5$cluster),digits=5) #  4361.207
+round(calinhara(m6,ck6$cluster),digits=6) #  3800.689 
 
 #--------------clusters using different k values m7
-ck1<-kmeans(m7, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck2<-kmeans(m7, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck3<-kmeans(m7, 5, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck4<-kmeans(m7, 6, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+ck2<-Skmeans(data=as.matrix(m7),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m7),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m7),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m7),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m7),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m7,ck1$cluster),digits=3) #  8412.904 
-round(calinhara(m7,ck2$cluster),digits=4) #  8478.609 highest
-round(calinhara(m7,ck3$cluster),digits=5) #  7935.222
-round(calinhara(m7,ck4$cluster),digits=6) #  8114.244
-
-
-#plot of clusters
-p1 <- fviz_cluster(ck1, geom = "point", data = m7) + ggtitle("k = 3")
-p2 <- fviz_cluster(ck2, geom = "point", data = m7) + ggtitle("k = 4")
-p3 <- fviz_cluster(ck3, geom = "point", data = m7) + ggtitle("k = 5")
-p4 <- fviz_cluster(ck4, geom = "point", data = m7) + ggtitle("k = 6")
-
-bmp("kmeans_pca_m7.bmp", width = 1920, height = 1280)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-dev.off()
+round(calinhara(m7,ck2$cluster),digits=2) #  4246.94
+round(calinhara(m7,ck3$cluster),digits=3) #  3420.427
+round(calinhara(m7,ck4$cluster),digits=4) #  4369.365  Highest
+round(calinhara(m7,ck5$cluster),digits=5) #  3743.047
+round(calinhara(m7,ck6$cluster),digits=6) #  3635.29
 
 #--------------clusters using different k values m8
-ck1<-kmeans(m8, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck2<-kmeans(m8, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck3<-kmeans(m8, 5, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck4<-kmeans(m8, 6, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+ck2<-Skmeans(data=as.matrix(m8),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m8),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m8),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m8),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m8),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m8,ck1$cluster),digits=3) #  18717.68 highest
-round(calinhara(m8,ck2$cluster),digits=4) #  17385.23 
-round(calinhara(m8,ck3$cluster),digits=5) #  16981.55
-round(calinhara(m8,ck4$cluster),digits=6) #  16352.07
-
-
-#plot of clusters
-p1 <- fviz_cluster(ck1, geom = "point", data = m8) + ggtitle("k = 3")
-p2 <- fviz_cluster(ck2, geom = "point", data = m8) + ggtitle("k = 4")
-p3 <- fviz_cluster(ck3, geom = "point", data = m8) + ggtitle("k = 5")
-p4 <- fviz_cluster(ck4, geom = "point", data = m8) + ggtitle("k = 6")
-
-bmp("kmeans_pca_m8.bmp", width = 1920, height = 1280)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-dev.off()
+round(calinhara(m8,ck2$cluster),digits=2) #  18373.12  Highest
+round(calinhara(m8,ck3$cluster),digits=3) #  15258.98
+round(calinhara(m8,ck4$cluster),digits=4) #  15253.42
+round(calinhara(m8,ck5$cluster),digits=5) #  13077.41
+round(calinhara(m8,ck6$cluster),digits=6) #  10217.41
 
 #--------------clusters using different k values m9
-ck1<-kmeans(m9, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck2<-kmeans(m9, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck3<-kmeans(m9, 5, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ck4<-kmeans(m9, 6, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
+
+ck2<-Skmeans(data=as.matrix(m9),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m9),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m9),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m9),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m9),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m9,ck1$cluster),digits=3) #  14642.38 highest
-round(calinhara(m9,ck2$cluster),digits=4) #  12906.56 
-round(calinhara(m9,ck3$cluster),digits=5) #  11824.88
-round(calinhara(m9,ck4$cluster),digits=6) #  11635.55
+round(calinhara(m9,ck2$cluster),digits=2) #  17202.42  Highest
+round(calinhara(m9,ck3$cluster),digits=3) #  12415.04
+round(calinhara(m9,ck4$cluster),digits=4) #  9323.659
+round(calinhara(m9,ck5$cluster),digits=5) #  8433.265
+round(calinhara(m9,ck6$cluster),digits=6) #  7677.063
 
-
-#plot of clusters
-p1 <- fviz_cluster(ck1, geom = "point", data = m9) + ggtitle("k = 3")
-p2 <- fviz_cluster(ck2, geom = "point", data = m9) + ggtitle("k = 4")
-p3 <- fviz_cluster(ck3, geom = "point", data = m9) + ggtitle("k = 5")
-p4 <- fviz_cluster(ck4, geom = "point", data = m9) + ggtitle("k = 6")
-
-bmp("kmeans_pca_m9.bmp", width = 1920, height = 1280)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-dev.off()
-
-#  Full dataset
-c_ncentrality<-kmeans(ncentrality, 4, iter.max = 20, nstart = 25,
-                      algorithm = c("Hartigan-Wong"), trace=FALSE)
-
-bmp("kmeans_ncentrality_k4.bmp", width = 1920, height = 1280)
-plot(ncentrality, col = c_ncentrality$cluster)
-points(c_ncentrality$centers, col = 1:8, pch = 8)
-dev.off()
-
-rm(ck1,ck2,ck3,ck4,p1,p2,p3,p4)
-
-ckm1<-kmeans(m1, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm2<-kmeans(m2, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm3<-kmeans(m3, 6, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm4<-kmeans(m4, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm5<-kmeans(m5, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm6<-kmeans(m6, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm7<-kmeans(m7, 4, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm8<-kmeans(m8, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-ckm9<-kmeans(m9, 3, iter.max = 20, nstart = 25,
-            algorithm = c("Hartigan-Wong"), trace=FALSE)
-
+rm(ck2,ck3,ck4,ck5,ck6,ck7)
 #-------------kmeans on dataset and cluster onto TSNE start-------------------------------------------------#
 
 #-----------------------------------------Kmeans for tsne model 1------------------------------------------#
+
+ckm1<-Skmeans(data=as.matrix(m1),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ckm2<-Skmeans(data=as.matrix(m2),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ckm3<-Skmeans(data=as.matrix(m3),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ckm4<-Skmeans(data=as.matrix(m4),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ckm5<-Skmeans(data=as.matrix(m5),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ckm6<-Skmeans(data=as.matrix(m6),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ckm7<-Skmeans(data=as.matrix(m7),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ckm8<-Skmeans(data=as.matrix(m8),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ckm9<-Skmeans(data=as.matrix(m9),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()  # garbage collection is used for stack imbalance warning. run gc() more than once if the warning persists
+
+ck1<-kmeans(m1, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE) #  dummy kmeans
+ck2<-ck1
+ck3<-ck1
+ck4<-ck1
+ck5<-ck1
+ck6<-ck1
+ck7<-ck1
+ck8<-ck1
+ck9<-ck1
 
 #  m1
 bmp("tsne_model1_m1_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_1_m1$Y), col = ckm1$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm1, geom = "point",  data = as.data.frame(tsne_model_1_m1$Y)) 
+
+ck1$cluster<-ckm1$cluster
+ck1$centers<-ckm1$centers
+ck1$size<-ckm1$size
+ck1$iter<-ckm1$iters
+
+p1 <- fviz_cluster(ck1, geom = "point",  data = as.data.frame(tsne_model_1_m1$Y)) 
 
 bmp("tsne_model1_m1_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1138,7 +1042,12 @@ bmp("tsne_model1_m2_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_1_m2$Y), col = ckm2$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm2, geom = "point",  data = as.data.frame(tsne_model_1_m2$Y)) 
+ck2$cluster<-ckm2$cluster
+ck2$centers<-ckm2$centers
+ck2$size<-ckm2$size
+ck2$iter<-ckm2$iters
+
+p1 <- fviz_cluster(ck2, geom = "point",  data = as.data.frame(tsne_model_1_m2$Y)) 
 
 bmp("tsne_model1_m2_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1149,7 +1058,12 @@ bmp("tsne_model1_m3_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_1_m3$Y), col = ckm3$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm3, geom = "point",  data = as.data.frame(tsne_model_1_m3$Y)) 
+ck3$cluster<-ckm3$cluster
+ck3$centers<-ckm3$centers
+ck3$size<-ckm3$size
+ck3$iter<-ckm3$iters
+
+p1 <- fviz_cluster(ck3, geom = "point",  data = as.data.frame(tsne_model_1_m3$Y)) 
 
 bmp("tsne_model1_m3_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1160,7 +1074,12 @@ bmp("tsne_model1_m4_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_1_m4$Y), col = ckm4$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm4, geom = "point",  data = as.data.frame(tsne_model_1_m4$Y)) 
+ck4$cluster<-ckm4$cluster
+ck4$centers<-ckm4$centers
+ck4$size<-ckm4$size
+ck4$iter<-ckm4$iters
+
+p1 <- fviz_cluster(ck4, geom = "point",  data = as.data.frame(tsne_model_1_m4$Y)) 
 
 bmp("tsne_model1_m4_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1171,7 +1090,12 @@ bmp("tsne_model1_m5_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_1_m5$Y), col = ckm5$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm5, geom = "point",  data = as.data.frame(tsne_model_1_m5$Y)) 
+ck5$cluster<-ckm5$cluster
+ck5$centers<-ckm5$centers
+ck5$size<-ckm5$size
+ck5$iter<-ckm5$iters
+
+p1 <- fviz_cluster(ck5, geom = "point",  data = as.data.frame(tsne_model_1_m5$Y)) 
 
 bmp("tsne_model1_m5_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1182,7 +1106,12 @@ bmp("tsne_model1_m6_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_1_m6$Y), col = ckm6$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm6, geom = "point",  data = as.data.frame(tsne_model_1_m6$Y)) 
+ck6$cluster<-ckm6$cluster
+ck6$centers<-ckm6$centers
+ck6$size<-ckm6$size
+ck6$iter<-ckm6$iters
+
+p1 <- fviz_cluster(ck6, geom = "point",  data = as.data.frame(tsne_model_1_m6$Y)) 
 
 bmp("tsne_model1_m6_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1193,7 +1122,12 @@ bmp("tsne_model1_m7_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_1_m7$Y), col = ckm7$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm7, geom = "point",  data = as.data.frame(tsne_model_1_m7$Y)) 
+ck7$cluster<-ckm7$cluster
+ck7$centers<-ckm7$centers
+ck7$size<-ckm7$size
+ck7$iter<-ckm7$iters
+
+p1 <- fviz_cluster(ck7, geom = "point",  data = as.data.frame(tsne_model_1_m7$Y)) 
 
 bmp("tsne_model1_m7_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1204,7 +1138,12 @@ bmp("tsne_model1_m8_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_1_m8$Y), col = ckm8$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm8, geom = "point",  data = as.data.frame(tsne_model_1_m8$Y)) 
+ck8$cluster<-ckm8$cluster
+ck8$centers<-ckm8$centers
+ck8$size<-ckm8$size
+ck8$iter<-ckm8$iters
+
+p1 <- fviz_cluster(ck8, geom = "point",  data = as.data.frame(tsne_model_1_m8$Y)) 
 
 bmp("tsne_model1_m8_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -1215,7 +1154,12 @@ bmp("tsne_model1_m9_kmeans.bmp", width = 1980, height = 1280)
 plot(as.data.frame(tsne_model_1_m9$Y), col = ckm9$cluster)
 dev.off()
 
-p1 <- fviz_cluster(ckm9, geom = "point",  data = as.data.frame(tsne_model_1_m9$Y)) 
+ck9$cluster<-ckm9$cluster
+ck9$centers<-ckm9$centers
+ck9$size<-ckm9$size
+ck9$iter<-ckm9$iters
+
+p1 <- fviz_cluster(ck9, geom = "point",  data = as.data.frame(tsne_model_1_m9$Y)) 
 
 bmp("tsne_model1_m9_kmeans_ch.bmp", width = 1980, height = 1280)
 grid.arrange(p1, ncol = 1, nrow = 1)
@@ -2170,7 +2114,259 @@ plot(tsne_model_1_m1_3d$Y,col=factor(label),asp=1)
 # dev.off()
 
 #---------------------------------------------kneeplot----------------------------------------------------------#
+#---------------------------------------------kmeans------------------------------------------------------------#
+#  m1
+# ck1<-kmeans(m1, 3, iter.max = 20, nstart = 25,
+#            algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# ck2<-kmeans(m1, 4, iter.max = 20, nstart = 25,
+#            algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m1, 5, iter.max = 20, nstart = 25,
+#            algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m1, 6, iter.max = 20, nstart = 25,
+#            algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m1,ck1$cluster),digits=3) #  7733.985
+# round(calinhara(m1,ck2$cluster),digits=4) #  7985.291 highest
+# round(calinhara(m1,ck3$cluster),digits=5) #  6959.628
+# round(calinhara(m1,ck4$cluster),digits=6) #  6348.964
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m1) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m1) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m1) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m1) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m1.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
 
+#  m2
+# ck1<-kmeans(m2, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m2, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m2, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m2, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m2,ck1$cluster),digits=3) #  7703.294
+# round(calinhara(m2,ck2$cluster),digits=4) #  8037.741 highest
+# round(calinhara(m2,ck3$cluster),digits=5) #  7001.544
+# round(calinhara(m2,ck4$cluster),digits=6) #  6370.787
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m2) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m2) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m2) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m2) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m2.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
+
+#  m3
+# ck1<-kmeans(m3, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m3, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m3, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m3, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m3,ck1$cluster),digits=3) #  7649.803
+# round(calinhara(m3,ck2$cluster),digits=4) #  7698.748 
+# round(calinhara(m3,ck3$cluster),digits=5) #  7738.866
+# round(calinhara(m3,ck4$cluster),digits=6) #  7787.33 highest
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m3) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m3) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m3) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m3) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m3.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
+
+#  m4
+# ck1<-kmeans(m4, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m4, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m4, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m4, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m4,ck1$cluster),digits=3) #  9030.761
+# round(calinhara(m4,ck2$cluster),digits=4) #  10646.54 highest
+# round(calinhara(m4,ck3$cluster),digits=5) #  9468.393
+# round(calinhara(m4,ck4$cluster),digits=6) #  8854.677
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m4) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m4) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m4) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m4) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m4.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
+
+#  m5
+# ck1<-kmeans(m5, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m5, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m5, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m5, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m5,ck1$cluster),digits=3) #  8841.458
+# round(calinhara(m5,ck2$cluster),digits=4) #  9615.578 highest
+# round(calinhara(m5,ck3$cluster),digits=5) #  8563.109
+# round(calinhara(m5,ck4$cluster),digits=6) #  7967.682
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m5) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m5) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m5) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m5) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m5.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
+
+#  m6
+# ck1<-kmeans(m6, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m6, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m6, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m6, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m6,ck1$cluster),digits=3) #  16450.43 highest
+# round(calinhara(m6,ck2$cluster),digits=4) #  14770.27 
+# round(calinhara(m6,ck3$cluster),digits=5) #  14848.32
+# round(calinhara(m6,ck4$cluster),digits=6) #  14466.01
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m6) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m6) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m6) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m6) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m6.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
+
+#  m7
+# ck1<-kmeans(m7, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m7, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m7, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m7, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m7,ck1$cluster),digits=3) #  8412.904 
+# round(calinhara(m7,ck2$cluster),digits=4) #  8478.609 highest
+# round(calinhara(m7,ck3$cluster),digits=5) #  7935.222
+# round(calinhara(m7,ck4$cluster),digits=6) #  8114.244
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m7) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m7) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m7) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m7) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m7.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
+
+#  m8
+# ck1<-kmeans(m8, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m8, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m8, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m8, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m8,ck1$cluster),digits=3) #  18717.68 highest
+# round(calinhara(m8,ck2$cluster),digits=4) #  17385.23 
+# round(calinhara(m8,ck3$cluster),digits=5) #  16981.55
+# round(calinhara(m8,ck4$cluster),digits=6) #  16352.07
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m8) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m8) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m8) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m8) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m8.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
+
+#  m9
+# ck1<-kmeans(m9, 3, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck2<-kmeans(m9, 4, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck3<-kmeans(m9, 5, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# ck4<-kmeans(m9, 6, iter.max = 20, nstart = 25,
+#             algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# #  Checking for correct no of clusters. Higher the index value better the cluster
+# round(calinhara(m9,ck1$cluster),digits=3) #  14642.38 highest
+# round(calinhara(m9,ck2$cluster),digits=4) #  12906.56 
+# round(calinhara(m9,ck3$cluster),digits=5) #  11824.88
+# round(calinhara(m9,ck4$cluster),digits=6) #  11635.55
+# 
+# 
+# #plot of clusters
+# p1 <- fviz_cluster(ck1, geom = "point", data = m9) + ggtitle("k = 3")
+# p2 <- fviz_cluster(ck2, geom = "point", data = m9) + ggtitle("k = 4")
+# p3 <- fviz_cluster(ck3, geom = "point", data = m9) + ggtitle("k = 5")
+# p4 <- fviz_cluster(ck4, geom = "point", data = m9) + ggtitle("k = 6")
+# 
+# bmp("kmeans_pca_m9.bmp", width = 1920, height = 1280)
+# grid.arrange(p1, p2, p3, p4, nrow = 2)
+# dev.off()
+
+#  Full dataset
+# c_ncentrality<-kmeans(ncentrality, 4, iter.max = 20, nstart = 25,
+#                       algorithm = c("Hartigan-Wong"), trace=FALSE)
+# 
+# bmp("kmeans_ncentrality_k4.bmp", width = 1920, height = 1280)
+# plot(ncentrality, col = c_ncentrality$cluster)
+# points(c_ncentrality$centers, col = 1:8, pch = 8)
+# dev.off()
 # #-------------------------------------------dbscan start-----------------------------------------------------------------#
 # 
 # #---------------------------------------calculating h start------------------------------------------#
