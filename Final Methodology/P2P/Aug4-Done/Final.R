@@ -1471,242 +1471,116 @@ dev.off()
 #------------------GMM-----------------------------#
 
 ##  m1
-xyMclust1 <- Mclust(as.matrix(m1), prior = priorControl(), 
+
+set.seed(10)
+subset <- sample(1:nrow(m1), 500)
+
+summary(mclustBIC(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                  initialization=list(subset = subset),
+                  control = emControl(), 
+                  warn = mclust.options("warn"),
+                  verbose = TRUE))
+summary(mclustICL(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                  initialization=list(subset = subset),
+                  control = emControl(), 
+                  warn = mclust.options("warn"),
+                  verbose = TRUE))
+
+xyMclust1 <- Mclust(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                   initialization=list(subset = subset),
                    control = emControl(), 
                    warn = mclust.options("warn"),
                    verbose = TRUE)
+summary(xyMclust1, parameters = F)
 
-summary(xyMclust1, parameters = TRUE)
+# plot(xyMclust1, what=c("classification"))
+# plot(xyMclust1, "density")
+# plot(xyMclust1, what=c("uncertainty"))
+# plot(xyMclust1, what=c("BIC"))
 
-plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
-plot(mclustBIC(faithful))
-plot(mclustBIC(m1))
-
-plot(xyMclust1, what=c("classification"))
-plot(xyMclust1, "density")
-plot(xyMclust1, what=c("uncertainty"))
-
-cc<-ckm1
-cc$cluster<-xyMclust1$classification
-
-p1<-fviz_mclust(xyMclust1,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-p2<-fviz_mclust(xyMclust1,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-
-bmp("GMM_fit.bmp", width = 1440, height = 620)
-grid.arrange(p1,p2, nrow = 1)
-dev.off()
+# p1<-fviz_mclust(xyMclust1,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+# p2<-fviz_mclust(xyMclust1,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+# 
+# bmp("GMM_fit.bmp", width = 1440, height = 620)
+# grid.arrange(p1,p2, nrow = 1)
+# dev.off()
 
 ##  m2
-xyMclust2 <- Mclust(as.matrix(m1), prior = priorControl(), 
+xyMclust2 <- Mclust(as.matrix(m2), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                    initialization=list(subset = subset),
                     control = emControl(), 
                     warn = mclust.options("warn"),
                     verbose = TRUE)
-
-summary(xyMclust2, parameters = TRUE)
-
-plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
-plot(mclustBIC(faithful))
-plot(mclustBIC(m1))
-
-plot(xyMclust2, what=c("classification"))
-plot(xyMclust2, "density")
-plot(xyMclust2, what=c("uncertainty"))
-
-c1<-ckm1
-c1$cluster<-xyMclust2$classification
-
-p1<-fviz_mclust(xyMclust2,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-p2<-fviz_mclust(xyMclust2,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-
-bmp("GMM_fit.bmp", width = 1440, height = 620)
-grid.arrange(p1,p2, nrow = 1)
-dev.off()
+summary(xyMclust2, parameters = F)
 
 ##  m3
-xyMclust3 <- Mclust(as.matrix(m1), prior = priorControl(), 
+xyMclust3 <- Mclust(as.matrix(m3), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                    initialization=list(subset = subset),
                     control = emControl(), 
                     warn = mclust.options("warn"),
                     verbose = TRUE)
-
-summary(xyMclust3, parameters = TRUE)
-
-plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
-plot(mclustBIC(faithful))
-plot(mclustBIC(m1))
-
-plot(xyMclust3, what=c("classification"))
-plot(xyMclust3, "density")
-plot(xyMclust3, what=c("uncertainty"))
-
-c1<-ckm1
-c1$cluster<-xyMclust3$classification
-
-p1<-fviz_mclust(xyMclust3,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-p2<-fviz_mclust(xyMclust3,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-
-bmp("GMM_fit.bmp", width = 1440, height = 620)
-grid.arrange(p1,p2, nrow = 1)
-dev.off()
+summary(xyMclust3, parameters = F)
 
 ##  m4
-xyMclust4 <- Mclust(as.matrix(m1), prior = priorControl(), 
+xyMclust4 <- Mclust(as.matrix(m4), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                    initialization=list(subset = subset),
                     control = emControl(), 
                     warn = mclust.options("warn"),
                     verbose = TRUE)
-
-summary(xyMclust4, parameters = TRUE)
-
-plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
-plot(mclustBIC(faithful))
-plot(mclustBIC(m1))
-
-plot(xyMclust4, what=c("classification"))
-plot(xyMclust4, "density")
-plot(xyMclust4, what=c("uncertainty"))
-
-c1<-ckm1
-c1$cluster<-xyMclust4$classification
-
-p1<-fviz_mclust(xyMclust4,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-p2<-fviz_mclust(xyMclust4,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-
-bmp("GMM_fit.bmp", width = 1440, height = 620)
-grid.arrange(p1,p2, nrow = 1)
-dev.off()
+summary(xyMclust4, parameters = F)
 
 ##  m5
-xyMclust5 <- Mclust(as.matrix(m1), prior = priorControl(), 
+xyMclust5 <- Mclust(as.matrix(m5), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                    initialization=list(subset = subset),
                     control = emControl(), 
                     warn = mclust.options("warn"),
                     verbose = TRUE)
-
-summary(xyMclust5, parameters = TRUE)
-
-plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
-plot(mclustBIC(faithful))
-plot(mclustBIC(m1))
-
-plot(xyMclust5, what=c("classification"))
-plot(xyMclust5, "density")
-plot(xyMclust5, what=c("uncertainty"))
-
-c1<-ckm1
-c1$cluster<-xyMclust5$classification
-
-p1<-fviz_mclust(xyMclust5,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-p2<-fviz_mclust(xyMclust5,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-
-bmp("GMM_fit.bmp", width = 1440, height = 620)
-grid.arrange(p1,p2, nrow = 1)
-dev.off()
+summary(xyMclust5, parameters = F)
 
 ##  m6
-xyMclust6 <- Mclust(as.matrix(m1), prior = priorControl(), 
+xyMclust6 <- Mclust(as.matrix(m6), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                    initialization=list(subset = subset),
                     control = emControl(), 
                     warn = mclust.options("warn"),
                     verbose = TRUE)
-
-summary(xyMclust6, parameters = TRUE)
-
-plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
-plot(mclustBIC(faithful))
-plot(mclustBIC(m1))
-
-plot(xyMclust6, what=c("classification"))
-plot(xyMclust6, "density")
-plot(xyMclust6, what=c("uncertainty"))
-
-c1<-ckm1
-c1$cluster<-xyMclust6$classification
-
-p1<-fviz_mclust(xyMclust6,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-p2<-fviz_mclust(xyMclust6,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-
-bmp("GMM_fit.bmp", width = 1440, height = 620)
-grid.arrange(p1,p2, nrow = 1)
-dev.off()
+summary(xyMclust6, parameters = F)
 
 ##  m7
-xyMclust7 <- Mclust(as.matrix(m1), prior = priorControl(), 
+xyMclust7 <- Mclust(as.matrix(m7), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                    initialization=list(subset = subset),
                     control = emControl(), 
                     warn = mclust.options("warn"),
                     verbose = TRUE)
-
-summary(xyMclust7, parameters = TRUE)
-
-plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
-plot(mclustBIC(faithful))
-plot(mclustBIC(m1))
-
-plot(xyMclust7, what=c("classification"))
-plot(xyMclust7, "density")
-plot(xyMclust7, what=c("uncertainty"))
-
-c1<-ckm1
-c1$cluster<-xyMclust7$classification
-
-p1<-fviz_mclust(xyMclust7,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-p2<-fviz_mclust(xyMclust7,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-
-bmp("GMM_fit.bmp", width = 1440, height = 620)
-grid.arrange(p1,p2, nrow = 1)
-dev.off()
+summary(xyMclust7, parameters = F)
 
 ##  m8
-xyMclust8 <- Mclust(as.matrix(m1), prior = priorControl(), 
+xyMclust8 <- Mclust(as.matrix(m8), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                    initialization=list(subset = subset),
                     control = emControl(), 
                     warn = mclust.options("warn"),
                     verbose = TRUE)
-
-summary(xyMclust8, parameters = TRUE)
-
-plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
-plot(mclustBIC(faithful))
-plot(mclustBIC(m1))
-
-plot(xyMclust8, what=c("classification"))
-plot(xyMclust8, "density")
-plot(xyMclust8, what=c("uncertainty"))
-
-c1<-ckm1
-c1$cluster<-xyMclust8$classification
-
-p1<-fviz_mclust(xyMclust8,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-p2<-fviz_mclust(xyMclust8,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-
-bmp("GMM_fit.bmp", width = 1440, height = 620)
-grid.arrange(p1,p2, nrow = 1)
-dev.off()
+summary(xyMclust8, parameters = F)
 
 ##  m9
-xyMclust9 <- Mclust(as.matrix(m1), prior = priorControl(), 
+xyMclust9 <- Mclust(as.matrix(m9), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                    initialization=list(subset = subset),
                     control = emControl(), 
                     warn = mclust.options("warn"),
                     verbose = TRUE)
-
-summary(xyMclust9, parameters = TRUE)
-
-plot(mclustBIC(precip), legendArgs =  list(x = "bottomleft"))
-plot(mclustBIC(faithful))
-plot(mclustBIC(m1))
-
-plot(xyMclust9, what=c("classification"))
-plot(xyMclust9, "density")
-plot(xyMclust9, what=c("uncertainty"))
-
-c1<-ckm1
-c1$cluster<-xyMclust9$classification
-
-p1<-fviz_mclust(xyMclust9,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-p2<-fviz_mclust(xyMclust9,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-
-bmp("GMM_fit.bmp", width = 1440, height = 620)
-grid.arrange(p1,p2, nrow = 1)
-dev.off()
+summary(xyMclust9, parameters = F)
 
 
-p1<-fviz_cluster(c1, geom = "point",  data = m1) + ggtitle("k = 9 m1")
+xyMclust9 <- Mclust(as.matrix(m9), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+                    initialization=list(subset = subset),
+                    control = emControl(), 
+                    warn = mclust.options("warn"),
+                    verbose = TRUE)
+summary(xyMclust9, parameters = F)
+
 #------------------GMM-----------------------------#
+
+#-----------------------------------------GMM for tsne model 1------------------------------------------#
+
 
 #------------Sammon's map----------------#
 
