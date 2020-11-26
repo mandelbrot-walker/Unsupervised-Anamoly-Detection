@@ -1745,6 +1745,10 @@ tsne_model_1_m1_3d = Rtsne(m1tr, check_duplicates=FALSE, pca=TRUE, perplexity=4,
                             verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
 
 plot(tsne_model_1_m1_3d$Y,col=factor(label),asp=1)
+
+tsne_model_chk = Rtsne(m1[,-7], check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+                       verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+plot(tsne_model_chk$Y,col=factor(ncen_tr$names),asp=1)
 #------------------------------------------Old code-------------------------------------------------------------#
 
 #-------------------------3d plotting-------------------------------------#
