@@ -41,26 +41,12 @@ denmnc<-dmnc(g)
 lby<-lobby(g)
 lvg<-leverage(g)
 ecc<-eccentricity(g)
-#infc<-calculate_centralities(g, include = "Information Centrality") #  takes a long time. 
 lbc<-local_bridging_centrality(g)
 
 cmp<-decompose.graph(g)
 #infc<-c(0)
 #infc[-1]
-infc<-calculate_centralities(cmp[[1]], include = "Information Centrality") #  Use this section when graph is not connected
 
-for (i in 2:length(cmp)) {
-        t<-cmp[[i]]
-        if((calculate_centralities(cmp[[i]], include = "Information Centrality")=="NULL")){
-                infc[(length(infc) + 1):(length(infc) + length(1))]<-0
-        } else{
-                tmp<-calculate_centralities(as.directed(t), include = "Information Centrality")
-                infc[(length(infc) + 1):(length(infc) + length(unlist(tmp)))]<-unlist(tmp)
-        }
-        print(i)
-}
-#chk<-calculate_centralities(cmp[[2]], include = "Information Centrality") #  takes a long time
-rm(i,tmp,t)
 
 #cent<-proper_centralities(g)
 # 
@@ -141,7 +127,6 @@ V(gr)$authorities <- auth                        #  Authority centrality
 V(gr)$hubs <- hubs                               #  Hub centrality
 V(gr)$betweenness <- btn                         #  Vertex betweenness centrality
 V(gr)$closeness <- clsn                          #  Closeness centrality
-V(gr)$informationcent<-unlist(infc)
 V(gr)$eccentricity<-ecc
 V(gr)$dmnc<-denmnc
 V(gr)$lobby<-lby
@@ -157,7 +142,6 @@ centrality <- data.frame(row.names   = V(gr)$name,
                          hubscore    = V(gr)$hubs,
                          betweenness = V(gr)$betweenness,
                          closeness   = V(gr)$closeness,
-                         informationcent = V(gr)$informationcent,
                          eccentricity = V(gr)$eccentricity,
                          densitymnc  = V(gr)$dmnc,
                          lobby       = V(gr)$lobby,
@@ -177,7 +161,6 @@ nauthorities = normalize(auth)
 nhubscore    = normalize(hubs)
 nbetweenness = normalize(btn)
 ncloseness   = normalize(clsn)
-ninformationcent = normalize(unlist(infc))
 neccentricity = normalize(ecc)
 ndmnc        = normalize(denmnc)
 nlobby       = normalize(lby)
@@ -192,25 +175,24 @@ ncentrality  <- data.frame(degree      = ndegree,              #  1
                            hubscore    = nhubscore,            #  5
                            betweenness = nbetweenness,         #  6
                            closeness   = ncloseness,           #  7
-                           informationcent = ninformationcent, #  8
-                           eccentricity = neccentricity,       #  9
-                           dmnc        = ndmnc,                #  10
-                           lobby       = nlobby,               #  11
-                           leverage    = nleverage,            #  12
-                           localbridge = nlocalbridge          #  13
-) #  normalized values 13 variables
+                           eccentricity = neccentricity,       #  8
+                           dmnc        = ndmnc,                #  9
+                           lobby       = nlobby,               #  10
+                           leverage    = nleverage,            #  11
+                           localbridge = nlocalbridge          #  12
+) #  normalized values 12 variables
 
 #------------------------------------------Datasets-----------------------------------------------------------------------#
 
 m1_all_var13<-ncentrality
 m2_without_dg_var12<-within(ncentrality, rm(degree))
-m3_without_comm_var7<-within(ncentrality, rm(informationcent,eccentricity,dmnc,lobby,leverage,localbridge))
+m3_without_comm_var7<-within(ncentrality, rm(eccentricity,dmnc,lobby,leverage,localbridge))
 m4_without_nodes_var6<-within(ncentrality, rm(degree,eigenvector,pagerank,authorities,hubscore,betweenness,closeness))
 m5_without_ranks_var9<-within(ncentrality, rm(eigenvector,pagerank,authorities,hubscore))
-m6_without_dist_var9<-within(ncentrality, rm(betweenness,closeness,informationcent,eccentricity))
-m7_mix_match1_var6<-within(ncentrality, rm(eigenvector,closeness,informationcent,dmnc,lobby,leverage,localbridge))
-m8_mix_match2_var6<-within(ncentrality, rm(degree,authorities,hubscore,betweenness,informationcent,eccentricity,leverage))
-m9_mix_match3_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage,informationcent))
+m6_without_dist_var9<-within(ncentrality, rm(betweenness,closeness,eccentricity))
+m7_mix_match1_var6<-within(ncentrality, rm(eigenvector,closeness,dmnc,lobby,leverage,localbridge))
+m8_mix_match2_var6<-within(ncentrality, rm(degree,authorities,hubscore,betweenness,eccentricity,leverage))
+m9_mix_match3_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage,))
 
 m1<-m1_all_var13
 m2<-m2_without_dg_var12
@@ -242,11 +224,11 @@ dev.off()
 
 #plot boxplot
 bmp("boxplot.bmp", width = 1280, height = 720)
-boxplot(ndegree,neigenvector,npagerank,nauthorities,nhubscore,nbetweenness,ncloseness,ninformationcent,neccentricity,
+boxplot(ndegree,neigenvector,npagerank,nauthorities,nhubscore,nbetweenness,ncloseness,neccentricity,
         ndmnc,nlobby,nleverage,nlocalbridge,
         main = "Multiple boxplots for comparision",
         at = c(1,2,3,4,5,6,7,8,9,10,11,12,13),
-        names = c("degree","eigenvector","pagerank","authorities","hubscore","betweenness","closeness","informationcent",
+        names = c("degree","eigenvector","pagerank","authorities","hubscore","betweenness","closeness",
                   "eccentricity","dmnc","lobby","leverage","localbridge"),
         las = 2,
         col = c("orange","black"),
@@ -257,7 +239,7 @@ boxplot(ndegree,neigenvector,npagerank,nauthorities,nhubscore,nbetweenness,nclos
 dev.off()
 
 rm(ndegree,neigenvector,ncloseness,npagerank,nbetweenness,nhubscore,nauthorities,ndmnc,
-   nlobby,nleverage,neccentricity,ninformationcent,nlocalbridge)
+   nlobby,nleverage,neccentricity,nlocalbridge)
 #------------------------------------------Boxplot and corelation matrix end-------------------------------------#
 
 #------------------------------------------PCA start-------------------------------------#
@@ -447,7 +429,7 @@ rm(res.m1,res.m2,res.m3,res.m4,res.m5,res.m6,res.m7,res.m8,res.m9)
 
 ncen_tr<-transpose(ncentrality) #  transpose ncentrality for tsne colors
 ncen_tr<-data.frame(names = c("degree", "eigenvector","pagerank","authorities","hubscore","betweenness","closeness",
-                              "informationcent","eccentricity","dmnc","lobby","leverage","localbridge"),ncen_tr) #y label
+                              "eccentricity","dmnc","lobby","leverage","localbridge"),ncen_tr) #y label
 
 #-------------------------------tsne parameters----------------------------#
 
