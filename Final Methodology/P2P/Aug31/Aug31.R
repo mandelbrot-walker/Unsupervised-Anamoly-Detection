@@ -33,7 +33,7 @@ transitivity(g) #  Check for cross clique calculation
 dg<-degree(g) # Calculation of Degree centrality
 btn<-betweenness(g) # Calculation of Betweenness centrality
 eig<-evcent(g)$vector # Calculation of Eigenvector centrality
-clsn<-closeness.latora(g) # Calculation of Closeness centrality
+clsn<-closeness(g) # Calculation of Closeness centrality
 pgr<-page_rank(g)$vector #  Calculation of Page Rank centrality
 auth<-authority.score(g)$vector 
 hubs<-hub.score(g)$vector              #  Hub centrality
