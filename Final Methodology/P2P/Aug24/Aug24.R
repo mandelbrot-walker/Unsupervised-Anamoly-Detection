@@ -24,7 +24,7 @@ library(uwot)
 library(clusternor)
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
-edges<-read.delim("p2p-Gnutella08.txt",header = TRUE, sep = "\t")
+edges<-read.delim("p2p-Gnutella24.txt",header = TRUE, sep = "\t")
 
 g<-graph.data.frame(edges) #graph data frame for igraph
 
@@ -41,13 +41,13 @@ denmnc<-dmnc(g)
 lby<-lobby(g)
 lvg<-leverage(g)
 ecc<-eccentricity(g)
-#infc<-calculate_centralities(g, include = "Information Centrality") #  takes a long time
+#infc<-calculate_centralities(g, include = "Information Centrality") #  takes a long time. 
 lbc<-local_bridging_centrality(g)
 
 cmp<-decompose.graph(g)
 #infc<-c(0)
 #infc[-1]
-infc<-calculate_centralities(cmp[[1]], include = "Information Centrality") #  takes a long time
+infc<-calculate_centralities(cmp[[1]], include = "Information Centrality") #  Use this section when graph is not connected
 
 for (i in 2:length(cmp)) {
         t<-cmp[[i]]
