@@ -192,7 +192,7 @@ m5_without_ranks_var9<-within(ncentrality, rm(eigenvector,pagerank,authorities,h
 m6_without_dist_var9<-within(ncentrality, rm(betweenness,closeness,eccentricity))
 m7_mix_match1_var6<-within(ncentrality, rm(eigenvector,closeness,dmnc,lobby,leverage,localbridge))
 m8_mix_match2_var6<-within(ncentrality, rm(degree,authorities,hubscore,betweenness,eccentricity,leverage))
-m9_mix_match3_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage,))
+m9_mix_match3_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage))
 
 m1<-m1_all_var13
 m2<-m2_without_dg_var12
@@ -227,7 +227,7 @@ bmp("boxplot.bmp", width = 1280, height = 720)
 boxplot(ndegree,neigenvector,npagerank,nauthorities,nhubscore,nbetweenness,ncloseness,neccentricity,
         ndmnc,nlobby,nleverage,nlocalbridge,
         main = "Multiple boxplots for comparision",
-        at = c(1,2,3,4,5,6,7,8,9,10,11,12,13),
+        at = c(1,2,3,4,5,6,7,8,9,10,11,12),
         names = c("degree","eigenvector","pagerank","authorities","hubscore","betweenness","closeness",
                   "eccentricity","dmnc","lobby","leverage","localbridge"),
         las = 2,
@@ -445,7 +445,7 @@ mit1<-2000
 mit2<-1500
 mit3<-1000
 mit4<-1500
-nthr<-7
+nthr<-11
 
 #-------------------------------------------------------tsne model 1 start--------------------------------------------#
 
