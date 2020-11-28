@@ -24,7 +24,7 @@ library(uwot)
 library(clusternor)
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
-edges<-read.delim("Email-Enron.txt",header = TRUE, sep = "\t")
+edges<-read.delim("Email-EuAll.txt",header = TRUE, sep = "\t")
 
 
 g<-graph.data.frame(edges) #graph data frame for igraph
