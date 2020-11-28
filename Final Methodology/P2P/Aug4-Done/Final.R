@@ -1,27 +1,27 @@
-library(igraph)
-library(centiserve)
-library(tidyverse)
-library(factoextra)
-library(Rtsne)
-library(Plasmidprofiler)
-library(MASS)
-library(data.table)
-library(corrplot)
-library(tibble)
-library(caret)
-library(plyr)
-library(gridExtra) 
-library(CINNA)
-library(ClusterR)
-library(mclust)
-library(kohonen)
-library(kernlab)
-library(Rdimtools)
-library(scatterplot3d)
-library(rgl)
-library(fpc)
-library(uwot)
-library(clusternor)
+library(igraph) #  centralities
+library(centiserve) #  centralities
+library(factoextra)  # fviz_cluster()
+library(Rtsne) #  TSNE
+library(Plasmidprofiler) #  normalize()
+library(data.table) #  transpose()
+library(corrplot) #  correlation plot
+library(gridExtra) #  multiplot
+library(CINNA) #  centralities
+library(mclust) #  gmm
+library(Rdimtools) #  sammon's map
+library(fpc) #  calinhara()
+library(clusternor) # gmm  
+# library(scatterplot3d) #  3D plot
+# library(rgl) #  3D plot
+# library(kohonen) #  SOM
+# library(kernlab) # kpca
+# library(ClusterR) # GMM check later
+# library(tidyverse)
+# library(MASS)
+# library(tibble)
+# library(caret)
+# library(plyr)
+# library(uwot) #  UMAP
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("p2p-Gnutella04.txt",header = TRUE, sep = "\t")
@@ -192,7 +192,7 @@ m5_without_ranks_var9<-within(ncentrality, rm(eigenvector,pagerank,authorities,h
 m6_without_dist_var9<-within(ncentrality, rm(betweenness,closeness,eccentricity))
 m7_mix_match1_var6<-within(ncentrality, rm(eigenvector,closeness,dmnc,lobby,leverage,localbridge))
 m8_mix_match2_var6<-within(ncentrality, rm(degree,authorities,hubscore,betweenness,eccentricity,leverage))
-m9_mix_match3_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage,informationcent))
+m9_mix_match3_var6<-within(ncentrality, rm(closeness,eigenvector,authorities,hubscore,betweenness,leverage))
 
 m1<-m1_all_var13
 m2<-m2_without_dg_var12
@@ -227,7 +227,7 @@ bmp("boxplot.bmp", width = 1280, height = 720)
 boxplot(ndegree,neigenvector,npagerank,nauthorities,nhubscore,nbetweenness,ncloseness,neccentricity,
         ndmnc,nlobby,nleverage,nlocalbridge,
         main = "Multiple boxplots for comparision",
-        at = c(1,2,3,4,5,6,7,8,9,10,11,12,13),
+        at = c(1,2,3,4,5,6,7,8,9,10,11,12),
         names = c("degree","eigenvector","pagerank","authorities","hubscore","betweenness","closeness",
                   "eccentricity","dmnc","lobby","leverage","localbridge"),
         las = 2,
@@ -813,13 +813,16 @@ ck5<-Skmeans(data=as.matrix(m1),centers=5,iter.max = 25,nthread = 5,init = c("ra
 gc()
 ck6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()  # garbage collection is used for stack imbalance warning. run gc() more than once if the warning persists
+ck7<-Skmeans(data=as.matrix(m1),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m1,ck2$cluster),digits=2) #  8267.23  Highest
-round(calinhara(m1,ck3$cluster),digits=3) #  6596.16
-round(calinhara(m1,ck4$cluster),digits=4) #  4592.877
-round(calinhara(m1,ck5$cluster),digits=5) #  6029.368
-round(calinhara(m1,ck6$cluster),digits=6) #  5378.566
+round(calinhara(m1,ck2$cluster),digits=2) #  15207.12  Highest
+round(calinhara(m1,ck3$cluster),digits=3) #  12284.31
+round(calinhara(m1,ck4$cluster),digits=4) #  10072.45
+round(calinhara(m1,ck5$cluster),digits=5) #  8552.013
+round(calinhara(m1,ck6$cluster),digits=6) #  8881.88
+round(calinhara(m1,ck7$cluster),digits=7) #  6353.192
 
 #--------------clusters using different k values m2
 
@@ -833,13 +836,16 @@ ck5<-Skmeans(data=as.matrix(m2),centers=5,iter.max = 25,nthread = 5,init = c("ra
 gc()
 ck6<-Skmeans(data=as.matrix(m2),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
+ck7<-Skmeans(data=as.matrix(m2),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m2,ck2$cluster),digits=2) #  8182.03 Highest
-round(calinhara(m2,ck3$cluster),digits=3) #  6568.329
-round(calinhara(m2,ck4$cluster),digits=4) #  4611.904
-round(calinhara(m2,ck5$cluster),digits=5) #  6069.017
-round(calinhara(m2,ck6$cluster),digits=6) #  5416.49
+round(calinhara(m2,ck2$cluster),digits=2) #  15275.51 Highest
+round(calinhara(m2,ck3$cluster),digits=3) #  12260.35
+round(calinhara(m2,ck4$cluster),digits=4) #  10124.96
+round(calinhara(m2,ck5$cluster),digits=5) #  8631.582
+round(calinhara(m2,ck6$cluster),digits=6) #  8490.307
+round(calinhara(m2,ck7$cluster),digits=7) #  6480.262
 
 #--------------clusters using different k values m3
 
@@ -879,11 +885,11 @@ ck6<-Skmeans(data=as.matrix(m4),centers=6,iter.max = 25,nthread = 5,init = c("ra
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m4,ck2$cluster),digits=2) #  8753.57
-round(calinhara(m4,ck3$cluster),digits=3) #  7574.379
-round(calinhara(m4,ck4$cluster),digits=4) #  8819.879  Highest
-round(calinhara(m4,ck5$cluster),digits=5) #  7841.011
-round(calinhara(m4,ck6$cluster),digits=6) #  6857.192
+round(calinhara(m4,ck2$cluster),digits=2) #  21664.47  Highest
+round(calinhara(m4,ck3$cluster),digits=3) #  16182.43
+round(calinhara(m4,ck4$cluster),digits=4) #  11528.85  
+round(calinhara(m4,ck5$cluster),digits=5) #  10972.61
+round(calinhara(m4,ck6$cluster),digits=6) #  8779.979
 
 #--------------clusters using different k values m5
 
@@ -897,13 +903,19 @@ ck5<-Skmeans(data=as.matrix(m5),centers=5,iter.max = 25,nthread = 5,init = c("ra
 gc()
 ck6<-Skmeans(data=as.matrix(m5),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
+ck7<-Skmeans(data=as.matrix(m5),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m5),centers=8,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m5,ck2$cluster),digits=2) #  9042.81  Highest
-round(calinhara(m5,ck3$cluster),digits=3) #  7439.294
-round(calinhara(m5,ck4$cluster),digits=4) #  7920.269
-round(calinhara(m5,ck5$cluster),digits=5) #  7288.814
-round(calinhara(m5,ck6$cluster),digits=6) #  6173.02
+round(calinhara(m5,ck2$cluster),digits=2) #  18489.77  Highest
+round(calinhara(m5,ck3$cluster),digits=3) #  16119.35
+round(calinhara(m5,ck4$cluster),digits=4) #  11424.43
+round(calinhara(m5,ck5$cluster),digits=5) #  10788.54
+round(calinhara(m5,ck6$cluster),digits=6) #  10997.75
+round(calinhara(m5,ck7$cluster),digits=7) #  4004.513
+round(calinhara(m5,ck8$cluster),digits=8) #  5454.995
 
 #--------------clusters using different k values m6
 
@@ -985,7 +997,7 @@ round(calinhara(m9,ck4$cluster),digits=4) #  9323.659
 round(calinhara(m9,ck5$cluster),digits=5) #  8433.265
 round(calinhara(m9,ck6$cluster),digits=6) #  7677.063
 
-rm(ck2,ck3,ck4,ck5,ck6,ck7)
+rm(ck2,ck3,ck4,ck5,ck6,ck7,ck8,ck9)
 #-------------kmeans on dataset and cluster onto TSNE start-------------------------------------------------#
 
 #-----------------------------------------Kmeans for tsne model 1------------------------------------------#
@@ -996,7 +1008,7 @@ ckm2<-Skmeans(data=as.matrix(m2),centers=2,iter.max = 25,nthread = 5,init = c("r
 gc()
 ckm3<-Skmeans(data=as.matrix(m3),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
-ckm4<-Skmeans(data=as.matrix(m4),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm4<-Skmeans(data=as.matrix(m4),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
 ckm5<-Skmeans(data=as.matrix(m5),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
@@ -1678,77 +1690,91 @@ rm(x,opar)
 
 #------------Sammon's map----------------#
 
+#----------------------------------------Tests----------------------------------------------------------------------#
 
-fit<-glm(m1$degree~.,family=gaussian,data=m1)
-summary(fit)
-par(mfrow = c(2, 2), oma = c(0, 0, 2, 0))
-plot(fit)
+# fit<-glm(m1$degree~.,family=gaussian,data=m1)
+# summary(fit)
+# par(mfrow = c(2, 2), oma = c(0, 0, 2, 0))
+# plot(fit)
+# 
+# fit<-glm(m2$degree~.,family=gaussian,data=m1)
+# summary(fit)
+# par(mfrow = c(2, 2), oma = c(0, 0, 2, 0))
+# plot(fit)
+# 
+# fviz_cluster(cc, geom = "point",  data = as.data.frame(m1)) 
+# 
+# km2<-Skmeans(data=as.matrix(m1),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+# km3<-Skmeans(data=as.matrix(m1),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+# km<-Skmeans(data=as.matrix(m1),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+# km4<-Skmeans(data=as.matrix(m1),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+# km6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+# 
+# round(calinhara(m1,km2$cluster),digits=2)
+# round(calinhara(m1,km3$cluster),digits=3)
+# round(calinhara(m1,km$cluster),digits=4)
+# round(calinhara(m1,km4$cluster),digits=5)
+# round(calinhara(m1,km6$cluster),digits=6)
+# 
+# plot(tsne_model_1_m1$Y,col=km2$cluster,asp=1)
+# 
+# cc$cluster<-as.data.frame(spc@.Data)
+# cc$centers<-as.data.frame(spc@centers)
+# 
+# fviz_cluster(cc, geom = "point",  data = as.data.frame(tsne_model_1_m1$Y)) 
+# 
+# plot(tsne_model_1_m1$Y, col = spc@.Data)
+# 
+# x1<-as.matrix(m1)
+# 
+# kmat<-kernelMatrix(rbfdot(sigma = 0.75), x1)
+# 
+# spc<-specc(x1, centers=3,
+#            kernel = "rbfdot", kpar = "automatic", 
+#            nystrom.red = TRUE, nystrom.sample = dim(x1)[1]/6,
+#            iterations = 50, mod.sample = 0.75, na.action = na.omit)
+# 
+# library(HDclassif)
+# 
+# hdgmm<-hddc(m1, K = 1:10, model = c("ALL"), threshold = 0.45,
+#             criterion = "bic", com_dim = 2, itermax = 50, eps = 0.001,
+#             algo = "EM", d_select = "Cattell", init = "param", show = getHDclassif.show(),scaling = TRUE,
+#             min.individuals = 10, noise.ctrl = 1e-08, mc.cores = 5,
+#             nb.rep = 2, keepAllRes = FALSE, d_max = 50, subset = Inf)
+# 
+# hdgmmc<-hdgmm$class
+# 
+# plot(tsne_model_1_m1$Y, col = hdgmm$class)
+# 
+# table(hdgmm$class)
+# 
+# plot(hdgmm, method = "BIC")
+# plot(tsne_model_1_m1$Y, col = xyMclust1$classification)
+# 
+# m1tr<-transpose(m1)
+# label<-names(m1)
+# 
+# tsne_model_1_m1_3d = Rtsne(m1tr, check_duplicates=FALSE, pca=TRUE, perplexity=4, theta=th1, dims=2, max_iter = mit1,
+#                             verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+# 
+# plot(tsne_model_1_m1_3d$Y,col=factor(label),asp=1)
+# 
+# tsne_model_chk = Rtsne(m1[,-7], check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
+#                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+# plot(tsne_model_chk$Y,col=factor(ncen_tr$names),asp=1)
+# 
+# library(ClusterR)
+# 
+# opt_gmm = Optimal_Clusters_GMM(m1, max_clusters = 13, criterion = "BIC", 
+#                                
+#                                dist_mode = "eucl_dist", seed_mode = "random_subset",
+#                                
+#                                km_iter = 10, em_iter = 10, var_floor = 1e-10, 
+#                                
+#                                plot_data = T)
 
-fit<-glm(m2$degree~.,family=gaussian,data=m1)
-summary(fit)
-par(mfrow = c(2, 2), oma = c(0, 0, 2, 0))
-plot(fit)
+#----------------------------------------Tests----------------------------------------------------------------------#
 
-fviz_cluster(cc, geom = "point",  data = as.data.frame(m1)) 
-
-km2<-Skmeans(data=as.matrix(m1),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
-km3<-Skmeans(data=as.matrix(m1),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
-km<-Skmeans(data=as.matrix(m1),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
-km4<-Skmeans(data=as.matrix(m1),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
-km6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
-
-round(calinhara(m1,km2$cluster),digits=2)
-round(calinhara(m1,km3$cluster),digits=3)
-round(calinhara(m1,km$cluster),digits=4)
-round(calinhara(m1,km4$cluster),digits=5)
-round(calinhara(m1,km6$cluster),digits=6)
-
-plot(tsne_model_1_m1$Y,col=km2$cluster,asp=1)
-
-cc$cluster<-as.data.frame(spc@.Data)
-cc$centers<-as.data.frame(spc@centers)
-
-fviz_cluster(cc, geom = "point",  data = as.data.frame(tsne_model_1_m1$Y)) 
-
-plot(tsne_model_1_m1$Y, col = spc@.Data)
-
-x1<-as.matrix(m1)
-
-kmat<-kernelMatrix(rbfdot(sigma = 0.75), x1)
-
-spc<-specc(x1, centers=3,
-           kernel = "rbfdot", kpar = "automatic", 
-           nystrom.red = TRUE, nystrom.sample = dim(x1)[1]/6,
-           iterations = 50, mod.sample = 0.75, na.action = na.omit)
-
-library(HDclassif)
-
-hdgmm<-hddc(m1, K = 1:10, model = c("ALL"), threshold = 0.45,
-            criterion = "bic", com_dim = 2, itermax = 50, eps = 0.001,
-            algo = "EM", d_select = "Cattell", init = "param", show = getHDclassif.show(),scaling = TRUE,
-            min.individuals = 10, noise.ctrl = 1e-08, mc.cores = 5,
-            nb.rep = 2, keepAllRes = FALSE, d_max = 50, subset = Inf)
-
-hdgmmc<-hdgmm$class
-
-plot(tsne_model_1_m1$Y, col = hdgmm$class)
-
-table(hdgmm$class)
-
-plot(hdgmm, method = "BIC")
-plot(tsne_model_1_m1$Y, col = xyMclust1$classification)
-
-m1tr<-transpose(m1)
-label<-names(m1)
-
-tsne_model_1_m1_3d = Rtsne(m1tr, check_duplicates=FALSE, pca=TRUE, perplexity=4, theta=th1, dims=2, max_iter = mit1,
-                            verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
-
-plot(tsne_model_1_m1_3d$Y,col=factor(label),asp=1)
-
-tsne_model_chk = Rtsne(m1[,-7], check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                       verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
-plot(tsne_model_chk$Y,col=factor(ncen_tr$names),asp=1)
 #------------------------------------------Old code-------------------------------------------------------------#
 
 #-------------------------3d plotting-------------------------------------#
