@@ -1,3 +1,39 @@
+#--------------index-------------------------#
+
+#Lines       Code segment
+# 64-198     Centrality calculation
+# 171-250    dataset preparation
+# 255-280    Correlation matrix and boxplot
+# 282        PCA start 
+# 284-330    PCA calculation
+# 334-364    screeplot and biplot
+# 368-461    contribution plot
+# 463        PCA end
+# 465        TSNE start 
+# 473-485    tsne parameter macros
+# 487-525    tsne model 1
+# 526-72    tsne model 1 plots
+# 576-616    tsne model 2
+# 617-663    tsne model 2 plots
+# 667-705    tsne model 3
+# 708-750    tsne model 3 plots
+# 756-794    tsne model 4
+# 795-835    tsne model 4 plots
+# 837        TSNE end
+# 839        Spherical kmeans start
+# 842-1037   cluster calculation
+# 1040-1215  tsne m1 and kmeans
+# 1217-1315  tsne m2 and kmeans
+# 1317-1415  tsne m3 and kmeans
+# 1417-1515  tsne m4 and kmeans
+# 1517       tsne and kmeans end 
+# 1519       Sammon's map
+# 1521-1611  Sammon's map on models 
+# 1613       Sammon's map End
+# 1614       End of code
+#--------------index-------------------------#
+
+#--------------libraries--------------------#
 library(igraph) #  centralities
 library(centiserve) #  centralities
 library(factoextra)  # fviz_cluster()
@@ -22,6 +58,7 @@ library(clusternor) # gmm
 # library(caret)
 # library(plyr)
 # library(uwot) #  UMAP
+#--------------libraries--------------------#
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("p2p-Gnutella04.txt",header = TRUE, sep = "\t")
@@ -1479,121 +1516,6 @@ dev.off()
 
 #-----------------------kmeans on dataset and cluster onto TSNE end------------------------------------------------------#
 
-
-#------------------GMM-----------------------------#
-
-##  m1
-
-set.seed(10)
-subset <- sample(1:nrow(m1), 500)
-
-summary(mclustBIC(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                  initialization=list(subset = subset),
-                  control = emControl(), 
-                  warn = mclust.options("warn"),
-                  verbose = TRUE))
-summary(mclustICL(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                  initialization=list(subset = subset),
-                  control = emControl(), 
-                  warn = mclust.options("warn"),
-                  verbose = TRUE))
-
-xyMclust1 <- Mclust(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                   initialization=list(subset = subset),
-                   control = emControl(), 
-                   warn = mclust.options("warn"),
-                   verbose = TRUE)
-summary(xyMclust1, parameters = F)
-
-# plot(xyMclust1, what=c("classification"))
-# plot(xyMclust1, "density")
-# plot(xyMclust1, what=c("uncertainty"))
-# plot(xyMclust1, what=c("BIC"))
-
-# p1<-fviz_mclust(xyMclust1,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-# p2<-fviz_mclust(xyMclust1,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-# 
-# bmp("GMM_fit.bmp", width = 1440, height = 620)
-# grid.arrange(p1,p2, nrow = 1)
-# dev.off()
-
-##  m2
-xyMclust2 <- Mclust(as.matrix(m2), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust2, parameters = F)
-
-##  m3
-xyMclust3 <- Mclust(as.matrix(m3), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust3, parameters = F)
-
-##  m4
-xyMclust4 <- Mclust(as.matrix(m4), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust4, parameters = F)
-
-##  m5
-xyMclust5 <- Mclust(as.matrix(m5), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust5, parameters = F)
-
-##  m6
-xyMclust6 <- Mclust(as.matrix(m6), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust6, parameters = F)
-
-##  m7
-xyMclust7 <- Mclust(as.matrix(m7), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust7, parameters = F)
-
-##  m8
-xyMclust8 <- Mclust(as.matrix(m8), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust8, parameters = F)
-
-##  m9
-xyMclust9 <- Mclust(as.matrix(m9), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust9, parameters = F)
-
-
-xyMclust9 <- Mclust(as.matrix(m9), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust9, parameters = F)
-
-#------------------GMM-----------------------------#
-
-#-----------------------------------------GMM for tsne model 1------------------------------------------#
-
-
 #------------Sammon's map----------------#
 
 x<-as.matrix(m1) 
@@ -1776,6 +1698,118 @@ rm(x,opar)
 #----------------------------------------Tests----------------------------------------------------------------------#
 
 #------------------------------------------Old code-------------------------------------------------------------#
+
+#------------------GMM-----------------------------#
+
+##  m1
+
+# set.seed(10)
+# subset <- sample(1:nrow(m1), 500)
+# 
+# summary(mclustBIC(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                   initialization=list(subset = subset),
+#                   control = emControl(), 
+#                   warn = mclust.options("warn"),
+#                   verbose = TRUE))
+# summary(mclustICL(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                   initialization=list(subset = subset),
+#                   control = emControl(), 
+#                   warn = mclust.options("warn"),
+#                   verbose = TRUE))
+# 
+# xyMclust1 <- Mclust(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust1, parameters = F)
+
+# plot(xyMclust1, what=c("classification"))
+# plot(xyMclust1, "density")
+# plot(xyMclust1, what=c("uncertainty"))
+# plot(xyMclust1, what=c("BIC"))
+
+# p1<-fviz_mclust(xyMclust1,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
+# p2<-fviz_mclust(xyMclust1,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
+# 
+# bmp("GMM_fit.bmp", width = 1440, height = 620)
+# grid.arrange(p1,p2, nrow = 1)
+# dev.off()
+
+##  m2
+# xyMclust2 <- Mclust(as.matrix(m2), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust2, parameters = F)
+# 
+# ##  m3
+# xyMclust3 <- Mclust(as.matrix(m3), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust3, parameters = F)
+# 
+# ##  m4
+# xyMclust4 <- Mclust(as.matrix(m4), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust4, parameters = F)
+# 
+# ##  m5
+# xyMclust5 <- Mclust(as.matrix(m5), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust5, parameters = F)
+# 
+# ##  m6
+# xyMclust6 <- Mclust(as.matrix(m6), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust6, parameters = F)
+# 
+# ##  m7
+# xyMclust7 <- Mclust(as.matrix(m7), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust7, parameters = F)
+# 
+# ##  m8
+# xyMclust8 <- Mclust(as.matrix(m8), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust8, parameters = F)
+# 
+# ##  m9
+# xyMclust9 <- Mclust(as.matrix(m9), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust9, parameters = F)
+# 
+# 
+# xyMclust9 <- Mclust(as.matrix(m9), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
+#                     initialization=list(subset = subset),
+#                     control = emControl(), 
+#                     warn = mclust.options("warn"),
+#                     verbose = TRUE)
+# summary(xyMclust9, parameters = F)
+
+#------------------GMM-----------------------------#
+
 
 #-------------------------3d plotting-------------------------------------#
 # set.seed(32)  
