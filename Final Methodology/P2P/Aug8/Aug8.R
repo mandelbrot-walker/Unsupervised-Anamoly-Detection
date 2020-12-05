@@ -43,10 +43,8 @@ library(data.table) #  transpose()
 library(corrplot) #  correlation plot
 library(gridExtra) #  multiplot
 library(CINNA) #  centralities
-library(mclust) #  gmm
 library(Rdimtools) #  sammon's map
 library(fpc) #  calinhara()
-library(clusternor) # gmm  
 #--------------libraries--------------------#
 
 
@@ -388,7 +386,7 @@ ncen_tr<-data.frame(names = c("degree", "eigenvector","pagerank","authorities","
 prx1<-50
 prx2<-100
 prx3<-30
-prx4<-43
+prx4<-71
 th1<-0.20
 th2<-0.10
 th3<-0.50

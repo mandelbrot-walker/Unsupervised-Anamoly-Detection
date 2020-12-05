@@ -1,27 +1,54 @@
-library(igraph)
-library(centiserve)
-library(tidyverse)
-library(factoextra)
-library(Rtsne)
-library(Plasmidprofiler)
-library(MASS)
-library(data.table)
-library(corrplot)
-library(tibble)
-library(caret)
-library(plyr)
-library(gridExtra) 
-library(CINNA)
-library(ClusterR)
-library(mclust)
-library(kohonen)
-library(kernlab)
-library(Rdimtools)
-library(scatterplot3d)
-library(rgl)
-library(fpc)
-library(uwot)
-library(clusternor)
+#--------------index-------------------------#
+
+#Lines       Code segment
+# 54-135     Centrality calculation
+# 137-167    dataset preparation
+# 169-195    Correlation matrix and boxplot
+# 197        PCA start 
+# 199-245    PCA calculation
+# 250-279    screeplot and biplot
+# 283-374    contribution plot
+# 378        PCA end
+# 380        TSNE start 
+# 388-400    tsne parameter macros
+# 402-441    tsne model 1
+# 443-485    tsne model 1 plots
+# 491-531    tsne model 2
+# 534-576    tsne model 2 plots
+# 582-620    tsne model 3
+# 621-665    tsne model 3 plots
+# 671-709    tsne model 4
+# 712-750    tsne model 4 plots
+# 752        TSNE end
+# 754        Spherical kmeans start
+# 756-952    cluster calculation
+# 955-1130   tsne m1 and kmeans
+# 1132-1230  tsne m2 and kmeans
+# 1232-1330  tsne m3 and kmeans
+# 1332-1430  tsne m4 and kmeans
+# 1432       tsne and kmeans end 
+# 1434       Sammon's map
+# 1436-1526  Sammon's map on models 
+# 1528       Sammon's map End
+# 1529       End of code
+#--------------index-------------------------#
+
+#--------------libraries--------------------#
+library(igraph) #  centralities
+library(centiserve) #  centralities
+library(factoextra)  # fviz_cluster()
+library(Rtsne) #  TSNE
+library(Plasmidprofiler) #  normalize()
+library(data.table) #  transpose()
+library(corrplot) #  correlation plot
+library(gridExtra) #  multiplot
+library(CINNA) #  centralities
+library(mclust) #  gmm
+library(Rdimtools) #  sammon's map
+library(fpc) #  calinhara()
+library(clusternor) # gmm  
+#--------------libraries--------------------#
+
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("p2p-Gnutella25.txt",header = TRUE, sep = "\t")
@@ -43,81 +70,6 @@ lvg<-leverage(g)
 ecc<-eccentricity(g)
 lbc<-local_bridging_centrality(g)
 
-cmp<-decompose.graph(g)
-#infc<-c(0)
-#infc[-1]
-
-
-#cent<-proper_centralities(g)
-# 
-# calculate_centralities(g, include = cent[1:50])%>%
-#   pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
-
-#c<-c("Page Rank","Closeness centrality (Latora)","Degree Centrality","eigenvector centralities",
-# "Kleinberg's authority centrality scores", "Kleinberg's hub centrality scores","Shortest-Paths Betweenness Centrality", 
-# "DMNC - Density of Maximum Neighborhood Component","Lobby Index (Centrality)", "Leverage Centrality",
-# "Eccentricity Centrality", "Information Centrality","Local Bridging Centrality")
-#cent[3,29,11,16,20,21,27,7,26,9,24,31,36,43,12,14,18,42,45,25,33,49])
-
-#calculate_centralities(g, include = c)%>%
-#  pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
-
-#katz<-katzcent(g) # Error in alpha >= maxEigenvalue : invalid comparison with complex values
-#crsc<-crossclique(g) # Calculation of Cross-Clique centrality
-#cntr<-centroid(g) #  Error: Graph is not strongly connected.
-#radial<-radiality(g) #  takes awhile
-#clstrnk<-clusterrank(g)
-#library(linkcomm)
-#comm<-communitycent(g) #  takes too long therefore stopped
-#subg<-subgraph.centrality(g) #  takes a long time
-#topol<-topocoefficient(as.undirected(g))
-#gkp<-geokpath(g)
-#library(sna)
-#str<-calculate_centralities(g, include = "Stress Centrality") #  takes a lot of memory 
-#mkc<-markovcent(g) #  takes a lot of memory and time therefore stopped
-#entc<-entropy(g) #  takes too long therefore stopped
-#frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
-#write.csv(dg, "dg_p2p_Gnutella04.csv")
-#write.csv(btn, "btn_p2p_Gnutella04.csv")
-#write.csv(eig, "eig_p2p_Gnutella04.csv")
-#write.csv(clsn, "clsn_p2p_Gnutella04.csv")
-#write.csv(pgr, "pgr_p2p_Gnutella04.csv")
-#write.csv(crsc, "crsc_p2p_Gnutella04.csv")
-
-#edge_connectivity(g) # Outputs 0
-#clstrnk[is.na(clstrnk)] <- 0
-
-#V(gr)$crossclique <- crsc                       #  Crossclique centrality
-#V(gr)$radial<-radial
-#V(gr)$clusterrank<-clstrnk
-#V(gr)$subgraph<-subg
-#V(gr)$topologicalcoeff<-topol
-#V(gr)$gdkpath<-gkp
-#V(gr)$stress<-unlist(str)
-
-#radiality   = V(gr)$radial,
-#clusterrank = V(gr)$clusterrank,
-#subgraph    = V(gr)$subgraph,
-#topologicalcoeff = V(gr)$topologicalcoeff,
-#geodkpath   = V(gr)$gdkpath,
-#stress      = V(gr)$stress,
-
-#ncrossclique = normalize(crsc)
-#nradiality   = normalize(radial)
-#nclusterrank = normalize(clstrnk)
-#nsubgraph    = normalize(abs(subg))
-#ntopologicalcoeff = normalize(topol)
-#ngeodkpath   = normalize(gkp)
-#nstress      = normalize(unlist(str))
-
-#crossclique = ncrossclique,
-#radiality   = nradiality,
-#clusterrank = nclusterrank,
-#subgraph    = nsubgraph,
-#topologicalcoeff = ntopologicalcoeff,
-#geodkpath   = ngeodkpath,
-#stress      = nstress,
-
 gr<-g # temporary variable gr
 
 V(gr)$degree <- dg                               #  Degree centrality
@@ -127,11 +79,11 @@ V(gr)$authorities <- auth                        #  Authority centrality
 V(gr)$hubs <- hubs                               #  Hub centrality
 V(gr)$betweenness <- btn                         #  Vertex betweenness centrality
 V(gr)$closeness <- clsn                          #  Closeness centrality
-V(gr)$eccentricity<-ecc
-V(gr)$dmnc<-denmnc
-V(gr)$lobby<-lby
-V(gr)$leverage<-lvg
-V(gr)$localbrigdecent<-lbc
+V(gr)$eccentricity<-ecc                          #  Eccentricity centrality  
+V(gr)$dmnc<-denmnc                               #  Density of Maximum Neighborhood Component Centrality  
+V(gr)$lobby<-lby                                 #  Lobby Centrality 
+V(gr)$leverage<-lvg                              #  Leverage Centrality  
+V(gr)$localbrigdecent<-lbc                       #  Local Bridging Centrality
 
 
 centrality <- data.frame(row.names   = V(gr)$name,
@@ -445,14 +397,14 @@ mit1<-2000
 mit2<-1500
 mit3<-1000
 mit4<-1500
-nthr<-11
+nthr<-7
 
 #-------------------------------------------------------tsne model 1 start--------------------------------------------#
 
 #  m1
 set.seed(32)  
 tsne_model_1_m1 = Rtsne(m1, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
-                          verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
+                        verbose = TRUE, is_distance = FALSE, pca_center = TRUE, pca_scale = TRUE, num_threads = nthr)
 #  m2
 set.seed(32)  
 tsne_model_1_m2 = Rtsne(m2, check_duplicates=FALSE, pca=TRUE, perplexity=prx1, theta=th1, dims=2, max_iter = mit1,
@@ -813,13 +765,16 @@ ck5<-Skmeans(data=as.matrix(m1),centers=5,iter.max = 25,nthread = 5,init = c("ra
 gc()
 ck6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()  # garbage collection is used for stack imbalance warning. run gc() more than once if the warning persists
+ck7<-Skmeans(data=as.matrix(m1),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m1,ck2$cluster),digits=2) #  8267.23  Highest
-round(calinhara(m1,ck3$cluster),digits=3) #  6596.16
-round(calinhara(m1,ck4$cluster),digits=4) #  4592.877
-round(calinhara(m1,ck5$cluster),digits=5) #  6029.368
-round(calinhara(m1,ck6$cluster),digits=6) #  5378.566
+round(calinhara(m1,ck2$cluster),digits=2) #  15207.12  Highest
+round(calinhara(m1,ck3$cluster),digits=3) #  12284.31
+round(calinhara(m1,ck4$cluster),digits=4) #  10072.45
+round(calinhara(m1,ck5$cluster),digits=5) #  8552.013
+round(calinhara(m1,ck6$cluster),digits=6) #  8881.88
+round(calinhara(m1,ck7$cluster),digits=7) #  6353.192
 
 #--------------clusters using different k values m2
 
@@ -833,13 +788,16 @@ ck5<-Skmeans(data=as.matrix(m2),centers=5,iter.max = 25,nthread = 5,init = c("ra
 gc()
 ck6<-Skmeans(data=as.matrix(m2),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
+ck7<-Skmeans(data=as.matrix(m2),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m2,ck2$cluster),digits=2) #  8182.03 Highest
-round(calinhara(m2,ck3$cluster),digits=3) #  6568.329
-round(calinhara(m2,ck4$cluster),digits=4) #  4611.904
-round(calinhara(m2,ck5$cluster),digits=5) #  6069.017
-round(calinhara(m2,ck6$cluster),digits=6) #  5416.49
+round(calinhara(m2,ck2$cluster),digits=2) #  15275.51 Highest
+round(calinhara(m2,ck3$cluster),digits=3) #  12260.35
+round(calinhara(m2,ck4$cluster),digits=4) #  10124.96
+round(calinhara(m2,ck5$cluster),digits=5) #  8631.582
+round(calinhara(m2,ck6$cluster),digits=6) #  8490.307
+round(calinhara(m2,ck7$cluster),digits=7) #  6480.262
 
 #--------------clusters using different k values m3
 
@@ -879,11 +837,11 @@ ck6<-Skmeans(data=as.matrix(m4),centers=6,iter.max = 25,nthread = 5,init = c("ra
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m4,ck2$cluster),digits=2) #  8753.57
-round(calinhara(m4,ck3$cluster),digits=3) #  7574.379
-round(calinhara(m4,ck4$cluster),digits=4) #  8819.879  Highest
-round(calinhara(m4,ck5$cluster),digits=5) #  7841.011
-round(calinhara(m4,ck6$cluster),digits=6) #  6857.192
+round(calinhara(m4,ck2$cluster),digits=2) #  21664.47  Highest
+round(calinhara(m4,ck3$cluster),digits=3) #  16182.43
+round(calinhara(m4,ck4$cluster),digits=4) #  11528.85  
+round(calinhara(m4,ck5$cluster),digits=5) #  10972.61
+round(calinhara(m4,ck6$cluster),digits=6) #  8779.979
 
 #--------------clusters using different k values m5
 
@@ -897,13 +855,19 @@ ck5<-Skmeans(data=as.matrix(m5),centers=5,iter.max = 25,nthread = 5,init = c("ra
 gc()
 ck6<-Skmeans(data=as.matrix(m5),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
+ck7<-Skmeans(data=as.matrix(m5),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m5),centers=8,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m5,ck2$cluster),digits=2) #  9042.81  Highest
-round(calinhara(m5,ck3$cluster),digits=3) #  7439.294
-round(calinhara(m5,ck4$cluster),digits=4) #  7920.269
-round(calinhara(m5,ck5$cluster),digits=5) #  7288.814
-round(calinhara(m5,ck6$cluster),digits=6) #  6173.02
+round(calinhara(m5,ck2$cluster),digits=2) #  18489.77  Highest
+round(calinhara(m5,ck3$cluster),digits=3) #  16119.35
+round(calinhara(m5,ck4$cluster),digits=4) #  11424.43
+round(calinhara(m5,ck5$cluster),digits=5) #  10788.54
+round(calinhara(m5,ck6$cluster),digits=6) #  10997.75
+round(calinhara(m5,ck7$cluster),digits=7) #  4004.513
+round(calinhara(m5,ck8$cluster),digits=8) #  5454.995
 
 #--------------clusters using different k values m6
 
@@ -985,7 +949,7 @@ round(calinhara(m9,ck4$cluster),digits=4) #  9323.659
 round(calinhara(m9,ck5$cluster),digits=5) #  8433.265
 round(calinhara(m9,ck6$cluster),digits=6) #  7677.063
 
-rm(ck2,ck3,ck4,ck5,ck6,ck7)
+rm(ck2,ck3,ck4,ck5,ck6,ck7,ck8,ck9)
 #-------------kmeans on dataset and cluster onto TSNE start-------------------------------------------------#
 
 #-----------------------------------------Kmeans for tsne model 1------------------------------------------#
@@ -996,7 +960,7 @@ ckm2<-Skmeans(data=as.matrix(m2),centers=2,iter.max = 25,nthread = 5,init = c("r
 gc()
 ckm3<-Skmeans(data=as.matrix(m3),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
-ckm4<-Skmeans(data=as.matrix(m4),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm4<-Skmeans(data=as.matrix(m4),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
 ckm5<-Skmeans(data=as.matrix(m5),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
@@ -1466,121 +1430,6 @@ grid.arrange(p1, ncol = 1, nrow = 1)
 dev.off()
 
 #-----------------------kmeans on dataset and cluster onto TSNE end------------------------------------------------------#
-
-
-#------------------GMM-----------------------------#
-
-##  m1
-
-set.seed(10)
-subset <- sample(1:nrow(m1), 500)
-
-summary(mclustBIC(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                  initialization=list(subset = subset),
-                  control = emControl(), 
-                  warn = mclust.options("warn"),
-                  verbose = TRUE))
-summary(mclustICL(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                  initialization=list(subset = subset),
-                  control = emControl(), 
-                  warn = mclust.options("warn"),
-                  verbose = TRUE))
-
-xyMclust1 <- Mclust(as.matrix(m1), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                   initialization=list(subset = subset),
-                   control = emControl(), 
-                   warn = mclust.options("warn"),
-                   verbose = TRUE)
-summary(xyMclust1, parameters = F)
-
-# plot(xyMclust1, what=c("classification"))
-# plot(xyMclust1, "density")
-# plot(xyMclust1, what=c("uncertainty"))
-# plot(xyMclust1, what=c("BIC"))
-
-# p1<-fviz_mclust(xyMclust1,what = c("classification"), geom = "point",ellipse.type = "norm",palette = "jco" )
-# p2<-fviz_mclust(xyMclust1,what = c("uncertainty"),ellipse.type = "norm",palette = "jco" )
-# 
-# bmp("GMM_fit.bmp", width = 1440, height = 620)
-# grid.arrange(p1,p2, nrow = 1)
-# dev.off()
-
-##  m2
-xyMclust2 <- Mclust(as.matrix(m2), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust2, parameters = F)
-
-##  m3
-xyMclust3 <- Mclust(as.matrix(m3), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust3, parameters = F)
-
-##  m4
-xyMclust4 <- Mclust(as.matrix(m4), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust4, parameters = F)
-
-##  m5
-xyMclust5 <- Mclust(as.matrix(m5), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust5, parameters = F)
-
-##  m6
-xyMclust6 <- Mclust(as.matrix(m6), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust6, parameters = F)
-
-##  m7
-xyMclust7 <- Mclust(as.matrix(m7), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust7, parameters = F)
-
-##  m8
-xyMclust8 <- Mclust(as.matrix(m8), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust8, parameters = F)
-
-##  m9
-xyMclust9 <- Mclust(as.matrix(m9), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust9, parameters = F)
-
-
-xyMclust9 <- Mclust(as.matrix(m9), prior = priorControl(functionName="defaultPrior", shrinkage=0.1),
-                    initialization=list(subset = subset),
-                    control = emControl(), 
-                    warn = mclust.options("warn"),
-                    verbose = TRUE)
-summary(xyMclust9, parameters = F)
-
-#------------------GMM-----------------------------#
-
-#-----------------------------------------GMM for tsne model 1------------------------------------------#
-
 
 #------------Sammon's map----------------#
 
