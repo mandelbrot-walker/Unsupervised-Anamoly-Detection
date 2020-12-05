@@ -12,7 +12,7 @@
 # 465        TSNE start 
 # 473-485    tsne parameter macros
 # 487-525    tsne model 1
-# 526-72    tsne model 1 plots
+# 526-572    tsne model 1 plots
 # 576-616    tsne model 2
 # 617-663    tsne model 2 plots
 # 667-705    tsne model 3
@@ -161,11 +161,11 @@ V(gr)$hubs <- hubs                               #  Hub centrality
 V(gr)$betweenness <- btn                         #  Vertex betweenness centrality
 V(gr)$closeness <- clsn                          #  Closeness centrality
 #V(gr)$informationcent<-unlist(infc)
-V(gr)$eccentricity<-ecc
-V(gr)$dmnc<-denmnc
-V(gr)$lobby<-lby
-V(gr)$leverage<-lvg
-V(gr)$localbrigdecent<-lbc
+V(gr)$eccentricity<-ecc                          #  Eccentricity centrality  
+V(gr)$dmnc<-denmnc                               #  Density of Maximum Neighborhood Component Centrality  
+V(gr)$lobby<-lby                                 #  Lobby Centrality 
+V(gr)$leverage<-lvg                              #  Leverage Centrality  
+V(gr)$localbrigdecent<-lbc                       #  Local Bridging Centrality
 
 
 centrality <- data.frame(row.names   = V(gr)$name,
