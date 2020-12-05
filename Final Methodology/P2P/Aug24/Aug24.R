@@ -43,11 +43,11 @@ library(data.table) #  transpose()
 library(corrplot) #  correlation plot
 library(gridExtra) #  multiplot
 library(CINNA) #  centralities
-library(mclust) #  gmm
 library(Rdimtools) #  sammon's map
 library(fpc) #  calinhara()
 library(clusternor) # skmeans  
 #--------------libraries--------------------#
+
 
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
