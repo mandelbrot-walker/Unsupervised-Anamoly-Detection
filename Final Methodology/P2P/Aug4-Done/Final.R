@@ -46,7 +46,7 @@ library(CINNA) #  centralities
 #library(mclust) #  gmm
 library(Rdimtools) #  sammon's map
 library(fpc) #  calinhara()
-#library(clusternor) # gmm  
+library(clusternor) # skmeans  
 # library(scatterplot3d) #  3D plot
 # library(rgl) #  3D plot
 # library(kohonen) #  SOM
