@@ -1049,7 +1049,7 @@ round(calinhara(m9,ck4$cluster),digits=4) #  9323.659
 round(calinhara(m9,ck5$cluster),digits=5) #  8433.265
 round(calinhara(m9,ck6$cluster),digits=6) #  7677.063
 
-rm(ck2,ck3,ck4,ck5,ck6,ck7,ck8,ck9)
+rm(ck2,ck3,ck4,ck5,ck6,ck7,ck8,ck9,ck10)
 #-------------kmeans on dataset and cluster onto TSNE start-------------------------------------------------#
 
 #-----------------------------------------Kmeans for tsne model 1------------------------------------------#

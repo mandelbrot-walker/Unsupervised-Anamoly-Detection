@@ -1,27 +1,15 @@
-library(igraph)
-library(centiserve)
-library(tidyverse)
-library(factoextra)
-library(Rtsne)
-library(Plasmidprofiler)
-library(MASS)
-library(data.table)
-library(corrplot)
-library(tibble)
-library(caret)
-library(plyr)
-library(gridExtra) 
-library(CINNA)
-library(ClusterR)
-library(mclust)
-library(kohonen)
-library(kernlab)
-library(Rdimtools)
-#library(scatterplot3d)
-#library(rgl)
-library(fpc)
-#library(uwot)
-library(clusternor)
+library(igraph) #  centralities
+library(centiserve) #  centralities
+library(factoextra)  # fviz_cluster()
+library(Rtsne) #  TSNE
+library(Plasmidprofiler) #  normalize()
+library(data.table) #  transpose()
+library(corrplot) #  correlation plot
+library(gridExtra) #  multiplot
+library(CINNA) #  centralities
+library(Rdimtools) #  sammon's map
+library(fpc) #  calinhara()
+library(clusternor) # skmeans 
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("Email-Enron.txt",header = TRUE, sep = "\t")
@@ -804,277 +792,310 @@ dev.off()
 
 #---------------------------------------------------------clusters--------------------------------------#
 #--------------clusters using different k values m1
-ck2<-Skmeans(data=as.matrix(m1),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck2<-Skmeans(data=as.matrix(m1),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck3<-Skmeans(data=as.matrix(m1),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m1),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck4<-Skmeans(data=as.matrix(m1),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m1),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck5<-Skmeans(data=as.matrix(m1),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m1),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()  # garbage collection is used for stack imbalance warning. run gc() more than once if the warning persists
+ck7<-Skmeans(data=as.matrix(m1),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m1),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck9<-Skmeans(data=as.matrix(m1),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck10<-Skmeans(data=as.matrix(m1),centers=10,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m1,ck2$cluster),digits=2) #  12522.27  
+round(calinhara(m1,ck2$cluster),digits=2) #  12936.01  
 round(calinhara(m1,ck3$cluster),digits=3) #  34570.29
-round(calinhara(m1,ck4$cluster),digits=4) #  44242.33  Highest
-round(calinhara(m1,ck5$cluster),digits=5) #  43574.56
-round(calinhara(m1,ck6$cluster),digits=6) #  13826.99
+round(calinhara(m1,ck4$cluster),digits=4) #  44222.15  
+round(calinhara(m1,ck5$cluster),digits=5) #  43585.78
+round(calinhara(m1,ck6$cluster),digits=6) #  42654.56
+round(calinhara(m1,ck7$cluster),digits=7) #  42110.6
+round(calinhara(m1,ck8$cluster),digits=8) #  43480.34
+round(calinhara(m1,ck9$cluster),digits=9) #  44695.7  Highest
+round(calinhara(m1,ck10$cluster),digits=10) #  43537.76
 
 #--------------clusters using different k values m2
 
-ck2<-Skmeans(data=as.matrix(m2),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck2<-Skmeans(data=as.matrix(m2),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck3<-Skmeans(data=as.matrix(m2),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m2),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck4<-Skmeans(data=as.matrix(m2),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m2),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck5<-Skmeans(data=as.matrix(m2),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m2),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck6<-Skmeans(data=as.matrix(m2),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m2),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck7<-Skmeans(data=as.matrix(m2),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m2),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck9<-Skmeans(data=as.matrix(m2),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck10<-Skmeans(data=as.matrix(m2),centers=10,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m2,ck2$cluster),digits=2) #  12586.2 
+round(calinhara(m2,ck2$cluster),digits=2) #  12997.19 
 round(calinhara(m2,ck3$cluster),digits=3) #  34960.27
-round(calinhara(m2,ck4$cluster),digits=4) #  44999.63  Highest
-round(calinhara(m2,ck5$cluster),digits=5) #  43092.98
-round(calinhara(m2,ck6$cluster),digits=6) #  13982.97
+round(calinhara(m2,ck4$cluster),digits=4) #  44978.74  
+round(calinhara(m2,ck5$cluster),digits=5) #  44174.32
+round(calinhara(m2,ck6$cluster),digits=6) #  43284.42
+round(calinhara(m2,ck7$cluster),digits=7) #  42648.32
+round(calinhara(m2,ck8$cluster),digits=8) #  44910.6
+round(calinhara(m2,ck9$cluster),digits=9) #  45455.04  Highest
+round(calinhara(m2,ck10$cluster),digits=10) #  44112.46
 
 #--------------clusters using different k values m3
 
-ck2<-Skmeans(data=as.matrix(m3),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck2<-Skmeans(data=as.matrix(m3),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck3<-Skmeans(data=as.matrix(m3),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m3),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck4<-Skmeans(data=as.matrix(m3),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m3),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck5<-Skmeans(data=as.matrix(m3),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m3),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck6<-Skmeans(data=as.matrix(m3),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m3),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck7<-Skmeans(data=as.matrix(m3),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck7<-Skmeans(data=as.matrix(m3),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck8<-Skmeans(data=as.matrix(m3),centers=8,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck8<-Skmeans(data=as.matrix(m3),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck9<-Skmeans(data=as.matrix(m3),centers=9,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck9<-Skmeans(data=as.matrix(m3),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck10<-Skmeans(data=as.matrix(m3),centers=10,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck10<-Skmeans(data=as.matrix(m3),centers=10,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck11<-Skmeans(data=as.matrix(m3),centers=11,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck11<-Skmeans(data=as.matrix(m3),centers=11,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck12<-Skmeans(data=as.matrix(m3),centers=12,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck12<-Skmeans(data=as.matrix(m3),centers=12,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck13<-Skmeans(data=as.matrix(m3),centers=13,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck13<-Skmeans(data=as.matrix(m3),centers=13,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck14<-Skmeans(data=as.matrix(m3),centers=14,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck14<-Skmeans(data=as.matrix(m3),centers=14,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck15<-Skmeans(data=as.matrix(m3),centers=15,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck15<-Skmeans(data=as.matrix(m3),centers=15,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
 
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m3,ck2$cluster),digits=2) #  31779.44
-round(calinhara(m3,ck3$cluster),digits=3) #  36158.88
-round(calinhara(m3,ck4$cluster),digits=4) #  31439.18
-round(calinhara(m3,ck5$cluster),digits=5) #  33797.56  
-round(calinhara(m3,ck6$cluster),digits=6) #  43673.86
-round(calinhara(m3,ck7$cluster),digits=7) #  27916.25
-round(calinhara(m3,ck8$cluster),digits=8) #  32471.31
-round(calinhara(m3,ck9$cluster),digits=9) #  31402.12
-round(calinhara(m3,ck10$cluster),digits=10) #  49263.96
-round(calinhara(m3,ck11$cluster),digits=11) #  45950.03
-round(calinhara(m3,ck12$cluster),digits=12) #  25284.46
-round(calinhara(m3,ck13$cluster),digits=13) #  49379.08  Highest
-round(calinhara(m3,ck14$cluster),digits=15) #  23194.46
-round(calinhara(m3,ck15$cluster),digits=15) #  23809.6
+round(calinhara(m3,ck2$cluster),digits=2) #  31899.08
+round(calinhara(m3,ck3$cluster),digits=3) #  36938.21
+round(calinhara(m3,ck4$cluster),digits=4) #  37607.78
+round(calinhara(m3,ck5$cluster),digits=5) #  59122.76  Highest  
+round(calinhara(m3,ck6$cluster),digits=6) #  52820.22
+round(calinhara(m3,ck7$cluster),digits=7) #  48335.24
+round(calinhara(m3,ck8$cluster),digits=8) #  41940.8
+round(calinhara(m3,ck9$cluster),digits=9) #  37155.67
+round(calinhara(m3,ck10$cluster),digits=10) #  33434.91
+round(calinhara(m3,ck11$cluster),digits=11) #  31363.69
+round(calinhara(m3,ck12$cluster),digits=12) #  31706.2
+round(calinhara(m3,ck13$cluster),digits=13) #  29048.65  
+round(calinhara(m3,ck14$cluster),digits=15) #  27777.12
+round(calinhara(m3,ck15$cluster),digits=15) #  30789.98
 
 #--------------clusters using different k values m4
 
-ck2<-Skmeans(data=as.matrix(m4),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck2<-Skmeans(data=as.matrix(m4),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck3<-Skmeans(data=as.matrix(m4),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m4),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck4<-Skmeans(data=as.matrix(m4),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m4),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck5<-Skmeans(data=as.matrix(m4),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m4),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck6<-Skmeans(data=as.matrix(m4),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m4),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck7<-Skmeans(data=as.matrix(m4),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck7<-Skmeans(data=as.matrix(m4),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck8<-Skmeans(data=as.matrix(m4),centers=8,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck8<-Skmeans(data=as.matrix(m4),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck9<-Skmeans(data=as.matrix(m4),centers=9,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck9<-Skmeans(data=as.matrix(m4),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck10<-Skmeans(data=as.matrix(m4),centers=10,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck10<-Skmeans(data=as.matrix(m4),centers=10,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck11<-Skmeans(data=as.matrix(m4),centers=11,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck11<-Skmeans(data=as.matrix(m4),centers=11,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m4,ck2$cluster),digits=2) #  21443.88
-round(calinhara(m4,ck3$cluster),digits=3) #  29880.67
-round(calinhara(m4,ck4$cluster),digits=4) #  47091.77  Highest
-round(calinhara(m4,ck5$cluster),digits=5) #  20043.71
-round(calinhara(m4,ck6$cluster),digits=6) #  9012.33
-round(calinhara(m4,ck7$cluster),digits=7) #  33524.8
-round(calinhara(m4,ck8$cluster),digits=8) #  19981.15
-round(calinhara(m4,ck9$cluster),digits=9) #  30400.5
-round(calinhara(m4,ck10$cluster),digits=10) #  20484.42
-round(calinhara(m4,ck11$cluster),digits=11) #  8654.15
+round(calinhara(m4,ck2$cluster),digits=2) #  18016.54
+round(calinhara(m4,ck3$cluster),digits=3) #  30123.89
+round(calinhara(m4,ck4$cluster),digits=4) #  46641.11  
+round(calinhara(m4,ck5$cluster),digits=5) #  45708.24
+round(calinhara(m4,ck6$cluster),digits=6) #  44403.59
+round(calinhara(m4,ck7$cluster),digits=7) #  54236.1  Highest
+round(calinhara(m4,ck8$cluster),digits=8) #  51224.19
+round(calinhara(m4,ck9$cluster),digits=9) #  47669.8
+round(calinhara(m4,ck10$cluster),digits=10) #  45405.62
+round(calinhara(m4,ck11$cluster),digits=11) #  42463.55
 
 #--------------clusters using different k values m5
 
-ck2<-Skmeans(data=as.matrix(m5),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck2<-Skmeans(data=as.matrix(m5),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck3<-Skmeans(data=as.matrix(m5),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m5),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck4<-Skmeans(data=as.matrix(m5),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m5),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck5<-Skmeans(data=as.matrix(m5),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m5),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck6<-Skmeans(data=as.matrix(m5),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m5),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck7<-Skmeans(data=as.matrix(m5),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck7<-Skmeans(data=as.matrix(m5),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m5),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck9<-Skmeans(data=as.matrix(m5),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck10<-Skmeans(data=as.matrix(m5),centers=10,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m5,ck2$cluster),digits=2) #  12850.18  
+round(calinhara(m5,ck2$cluster),digits=2) #  13265.42  
 round(calinhara(m5,ck3$cluster),digits=3) #  36626.3
-round(calinhara(m5,ck4$cluster),digits=4) #  48429.99  Highest
-round(calinhara(m5,ck5$cluster),digits=5) #  47072.32
-round(calinhara(m5,ck6$cluster),digits=6) #  14649.32
-round(calinhara(m5,ck7$cluster),digits=7) #  14649.32
+round(calinhara(m5,ck4$cluster),digits=4) #  48404.81  Highest
+round(calinhara(m5,ck5$cluster),digits=5) #  46690.67
+round(calinhara(m5,ck6$cluster),digits=6) #  45826.62
+round(calinhara(m5,ck7$cluster),digits=7) #  45826.62
+round(calinhara(m5,ck7$cluster),digits=8) #  45826.62
+round(calinhara(m5,ck7$cluster),digits=9) #  45826.62
+round(calinhara(m5,ck7$cluster),digits=10) #  45826.62
 
 #--------------clusters using different k values m6
 
-ck2<-Skmeans(data=as.matrix(m6),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck2<-Skmeans(data=as.matrix(m6),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck3<-Skmeans(data=as.matrix(m6),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m6),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck4<-Skmeans(data=as.matrix(m6),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m6),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck5<-Skmeans(data=as.matrix(m6),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m6),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck6<-Skmeans(data=as.matrix(m6),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m6),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck7<-Skmeans(data=as.matrix(m6),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck7<-Skmeans(data=as.matrix(m6),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
 round(calinhara(m6,ck2$cluster),digits=2) #  26209.5  Highest
-round(calinhara(m6,ck3$cluster),digits=3) #  14362.41
-round(calinhara(m6,ck4$cluster),digits=4) #  11341.19
-round(calinhara(m6,ck5$cluster),digits=5) #  8763.63
-round(calinhara(m6,ck6$cluster),digits=6) #  7010.713 
-round(calinhara(m6,ck7$cluster),digits=7) #  7010.713 
+round(calinhara(m6,ck3$cluster),digits=3) #  14362.43
+round(calinhara(m6,ck4$cluster),digits=4) #  9886.359
+round(calinhara(m6,ck5$cluster),digits=5) #  7736.287
+round(calinhara(m6,ck6$cluster),digits=6) #  6307.078 
+round(calinhara(m6,ck7$cluster),digits=7) #  6307.078 
 
 #--------------clusters using different k values m7
 
-ck2<-Skmeans(data=as.matrix(m7),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck2<-Skmeans(data=as.matrix(m7),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck3<-Skmeans(data=as.matrix(m7),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m7),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck4<-Skmeans(data=as.matrix(m7),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m7),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck5<-Skmeans(data=as.matrix(m7),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m7),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck6<-Skmeans(data=as.matrix(m7),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m7),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck7<-Skmeans(data=as.matrix(m7),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck7<-Skmeans(data=as.matrix(m7),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m7,ck2$cluster),digits=2) #  45716.64  Highest
-round(calinhara(m7,ck3$cluster),digits=3) #  33277.4
-round(calinhara(m7,ck4$cluster),digits=4) #  25630.05  
-round(calinhara(m7,ck5$cluster),digits=5) #  21485.9
-round(calinhara(m7,ck6$cluster),digits=6) #  18608.65
-round(calinhara(m7,ck7$cluster),digits=7) #  17271.18
+round(calinhara(m7,ck2$cluster),digits=2) #  45689.63  Highest
+round(calinhara(m7,ck3$cluster),digits=3) #  33279
+round(calinhara(m7,ck4$cluster),digits=4) #  26569.88  
+round(calinhara(m7,ck5$cluster),digits=5) #  23089.9
+round(calinhara(m7,ck6$cluster),digits=6) #  18624.55
+round(calinhara(m7,ck7$cluster),digits=7) #  18553.56
 
 #--------------clusters using different k values m8
 
-ck2<-Skmeans(data=as.matrix(m8),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck2<-Skmeans(data=as.matrix(m8),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck3<-Skmeans(data=as.matrix(m8),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m8),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck4<-Skmeans(data=as.matrix(m8),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m8),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck5<-Skmeans(data=as.matrix(m8),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m8),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck6<-Skmeans(data=as.matrix(m8),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m8),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck7<-Skmeans(data=as.matrix(m8),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck7<-Skmeans(data=as.matrix(m8),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck8<-Skmeans(data=as.matrix(m8),centers=8,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck8<-Skmeans(data=as.matrix(m8),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck9<-Skmeans(data=as.matrix(m8),centers=9,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck9<-Skmeans(data=as.matrix(m8),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck10<-Skmeans(data=as.matrix(m8),centers=10,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck10<-Skmeans(data=as.matrix(m8),centers=10,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck11<-Skmeans(data=as.matrix(m8),centers=11,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck11<-Skmeans(data=as.matrix(m8),centers=11,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck12<-Skmeans(data=as.matrix(m8),centers=12,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck12<-Skmeans(data=as.matrix(m8),centers=12,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck13<-Skmeans(data=as.matrix(m8),centers=13,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck13<-Skmeans(data=as.matrix(m8),centers=13,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck14<-Skmeans(data=as.matrix(m8),centers=14,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck14<-Skmeans(data=as.matrix(m8),centers=14,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck15<-Skmeans(data=as.matrix(m8),centers=15,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck15<-Skmeans(data=as.matrix(m8),centers=15,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m8,ck2$cluster),digits=2) #  17915.95  
-round(calinhara(m8,ck3$cluster),digits=3) #  10646.27
-round(calinhara(m8,ck4$cluster),digits=4) #  8347.888
-round(calinhara(m8,ck5$cluster),digits=5) #  6792.035
-round(calinhara(m8,ck6$cluster),digits=6) #  7374.408
-round(calinhara(m8,ck7$cluster),digits=7) #  20465.38
-round(calinhara(m8,ck8$cluster),digits=8) #  3577.276
-round(calinhara(m8,ck9$cluster),digits=9) #  24277.39  Highest
-round(calinhara(m8,ck10$cluster),digits=10) #  5333.766
-round(calinhara(m8,ck11$cluster),digits=11) #  5103.492
-round(calinhara(m8,ck12$cluster),digits=12) #  17126.75
-round(calinhara(m8,ck13$cluster),digits=13) #  2414.648
-round(calinhara(m8,ck14$cluster),digits=14) #  10406.77
-round(calinhara(m8,ck15$cluster),digits=15) #  13902.34
+round(calinhara(m8,ck2$cluster),digits=2) #  17915.95  Highest  
+round(calinhara(m8,ck3$cluster),digits=3) #  10564.62
+round(calinhara(m8,ck4$cluster),digits=4) #  9003.982
+round(calinhara(m8,ck5$cluster),digits=5) #  7950.469
+round(calinhara(m8,ck6$cluster),digits=6) #  7501.928
+round(calinhara(m8,ck7$cluster),digits=7) #  8069.734
+round(calinhara(m8,ck8$cluster),digits=8) #  7145.015
+round(calinhara(m8,ck9$cluster),digits=9) #  6575.735  
+round(calinhara(m8,ck10$cluster),digits=10) #  5896.039
+round(calinhara(m8,ck11$cluster),digits=11) #  5326.471
+round(calinhara(m8,ck12$cluster),digits=12) #  4858.539
+round(calinhara(m8,ck13$cluster),digits=13) #  4453.02
+round(calinhara(m8,ck14$cluster),digits=14) #  4117.116
+round(calinhara(m8,ck15$cluster),digits=15) #  3832.258
 
 #--------------clusters using different k values m9
 
-ck2<-Skmeans(data=as.matrix(m9),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck2<-Skmeans(data=as.matrix(m9),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck3<-Skmeans(data=as.matrix(m9),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck3<-Skmeans(data=as.matrix(m9),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck4<-Skmeans(data=as.matrix(m9),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck4<-Skmeans(data=as.matrix(m9),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck5<-Skmeans(data=as.matrix(m9),centers=5,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck5<-Skmeans(data=as.matrix(m9),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck6<-Skmeans(data=as.matrix(m9),centers=6,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck6<-Skmeans(data=as.matrix(m9),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck7<-Skmeans(data=as.matrix(m8),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck7<-Skmeans(data=as.matrix(m8),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck8<-Skmeans(data=as.matrix(m4),centers=8,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck8<-Skmeans(data=as.matrix(m4),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck9<-Skmeans(data=as.matrix(m4),centers=9,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck9<-Skmeans(data=as.matrix(m4),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck10<-Skmeans(data=as.matrix(m4),centers=10,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck10<-Skmeans(data=as.matrix(m4),centers=10,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ck11<-Skmeans(data=as.matrix(m4),centers=11,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ck11<-Skmeans(data=as.matrix(m4),centers=11,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m9,ck2$cluster),digits=2) #  19898.14  
-round(calinhara(m9,ck3$cluster),digits=3) #  11922.73
-round(calinhara(m9,ck4$cluster),digits=4) #  10786.46
-round(calinhara(m9,ck5$cluster),digits=5) #  8470.432
-round(calinhara(m9,ck6$cluster),digits=6) #  27624.62
-round(calinhara(m9,ck7$cluster),digits=7) #  29222.08  Highest
-round(calinhara(m9,ck8$cluster),digits=8) #  21388.38
-round(calinhara(m9,ck9$cluster),digits=9) #  28394.08
-round(calinhara(m9,ck10$cluster),digits=10) #  18826.03
-round(calinhara(m9,ck11$cluster),digits=11) #  12832.49
+round(calinhara(m9,ck2$cluster),digits=2) #  2627.33  
+round(calinhara(m9,ck3$cluster),digits=3) #  13716.85
+round(calinhara(m9,ck4$cluster),digits=4) #  10191.85
+round(calinhara(m9,ck5$cluster),digits=5) #  9063.424
+round(calinhara(m9,ck6$cluster),digits=6) #  7812.304
+round(calinhara(m9,ck7$cluster),digits=7) #  8118.445  
+round(calinhara(m9,ck8$cluster),digits=8) #  50158.82  Highest
+round(calinhara(m9,ck9$cluster),digits=9) #  46688.42
+round(calinhara(m9,ck10$cluster),digits=10) #  42286.55
+round(calinhara(m9,ck11$cluster),digits=11) #  40026.56
 
 
 
@@ -1083,23 +1104,23 @@ rm(ck2,ck3,ck4,ck5,ck6,ck7,ck8,ck9,ck10,ck11,ck12,ck13,ck14,ck15)
 
 #-----------------------------------------Kmeans for tsne model 1------------------------------------------#
 
-ckm1<-Skmeans(data=as.matrix(m1),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm1<-Skmeans(data=as.matrix(m1),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ckm2<-Skmeans(data=as.matrix(m2),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm2<-Skmeans(data=as.matrix(m2),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ckm3<-Skmeans(data=as.matrix(m3),centers=13,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm3<-Skmeans(data=as.matrix(m3),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ckm4<-Skmeans(data=as.matrix(m4),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm4<-Skmeans(data=as.matrix(m4),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ckm5<-Skmeans(data=as.matrix(m5),centers=4,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm5<-Skmeans(data=as.matrix(m5),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ckm6<-Skmeans(data=as.matrix(m6),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm6<-Skmeans(data=as.matrix(m6),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ckm7<-Skmeans(data=as.matrix(m7),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm7<-Skmeans(data=as.matrix(m7),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ckm8<-Skmeans(data=as.matrix(m8),centers=9,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm8<-Skmeans(data=as.matrix(m8),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()
-ckm9<-Skmeans(data=as.matrix(m9),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+ckm9<-Skmeans(data=as.matrix(m9),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
 gc()  # garbage collection is used for stack imbalance warning. run gc() more than once if the warning persists
 
 ck1<-kmeans(m1, 3, iter.max = 20, nstart = 25,
