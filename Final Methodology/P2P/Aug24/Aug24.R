@@ -767,14 +767,23 @@ ck6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("ra
 gc()  # garbage collection is used for stack imbalance warning. run gc() more than once if the warning persists
 ck7<-Skmeans(data=as.matrix(m1),centers=7,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
+ck8<-Skmeans(data=as.matrix(m1),centers=8,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck9<-Skmeans(data=as.matrix(m1),centers=9,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
+ck10<-Skmeans(data=as.matrix(m1),centers=10,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
+gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m1,ck2$cluster),digits=2) #  15207.12  Highest
-round(calinhara(m1,ck3$cluster),digits=3) #  12284.31
-round(calinhara(m1,ck4$cluster),digits=4) #  10072.45
-round(calinhara(m1,ck5$cluster),digits=5) #  8552.013
-round(calinhara(m1,ck6$cluster),digits=6) #  8881.88
-round(calinhara(m1,ck7$cluster),digits=7) #  6353.192
+round(calinhara(m1,ck2$cluster),digits=2) #  53577.51  Highest
+round(calinhara(m1,ck3$cluster),digits=3) #  38977.84
+round(calinhara(m1,ck4$cluster),digits=4) #  30426.05
+round(calinhara(m1,ck5$cluster),digits=5) #  27235.37
+round(calinhara(m1,ck6$cluster),digits=6) #  31523.16
+round(calinhara(m1,ck7$cluster),digits=7) #  43112.76
+round(calinhara(m1,ck7$cluster),digits=8) #  43112.76
+round(calinhara(m1,ck7$cluster),digits=9) #  43112.76
+round(calinhara(m1,ck7$cluster),digits=10)#  43112.76
 
 #--------------clusters using different k values m2
 
@@ -792,15 +801,23 @@ ck7<-Skmeans(data=as.matrix(m2),centers=7,iter.max = 25,nthread = 5,init = c("ra
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m2,ck2$cluster),digits=2) #  15275.51 Highest
-round(calinhara(m2,ck3$cluster),digits=3) #  12260.35
-round(calinhara(m2,ck4$cluster),digits=4) #  10124.96
-round(calinhara(m2,ck5$cluster),digits=5) #  8631.582
-round(calinhara(m2,ck6$cluster),digits=6) #  8490.307
-round(calinhara(m2,ck7$cluster),digits=7) #  6480.262
+round(calinhara(m2,ck2$cluster),digits=2) #  53571.92 Highest
+round(calinhara(m2,ck3$cluster),digits=3) #  38982.03
+round(calinhara(m2,ck4$cluster),digits=4) #  30435.15
+round(calinhara(m2,ck5$cluster),digits=5) #  27250.78
+round(calinhara(m2,ck6$cluster),digits=6) #  31546.54
+round(calinhara(m2,ck7$cluster),digits=7) #  43261.08
 
 #--------------clusters using different k values m3
+library(Spectrum)  # spectral clustering
 
+ck2 <- Spectrum(m3, method = 2, silent = FALSE, showres = TRUE,
+                diffusion = TRUE, kerneltype = c("density", "stsc"), maxk = 5,
+                NN = 25, NN2 = 35, showpca = FALSE, frac = 2, thresh = 7,
+                fontsize = 18, dotsize = 3, tunekernel = T,
+                clusteralg = "GMM", FASP = FALSE, FASPk = NULL, fixk = NULL,
+                krangemax = 10, runrange = FALSE, diffusion_iters = 4,
+                KNNs_p = 50, missing = FALSE)
 ck2<-Skmeans(data=as.matrix(m3),centers=2,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
 gc()
 ck3<-Skmeans(data=as.matrix(m3),centers=3,iter.max = 25,nthread = 5,init = c("random"),tolerance = 0.0005)
@@ -815,7 +832,7 @@ ck7<-Skmeans(data=as.matrix(m3),centers=7,iter.max = 25,nthread = 5,init = c("ra
 gc()
 
 #  Checking for correct no of clusters. Higher the index value better the cluster
-round(calinhara(m3,ck2$cluster),digits=2) #  4264.96
+round(calinhara(m3,ck2$assignments),digits=4) #  4264.96
 round(calinhara(m3,ck3$cluster),digits=3) #  3440.521
 round(calinhara(m3,ck4$cluster),digits=4) #  4711.368
 round(calinhara(m3,ck5$cluster),digits=5) #  5070.431  Highest
