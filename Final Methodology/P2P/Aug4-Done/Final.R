@@ -1628,6 +1628,16 @@ rm(x,opar)
 #------------Sammon's map----------------#
 
 #----------------------------------------Tests----------------------------------------------------------------------#
+# library(MASS)
+# library(plotly)
+# 
+# x <- tsne_model_4_m1$Y[,1]
+# y <- tsne_model_4_m1$Y[,2]
+# den3d <- kde2d(x, y)
+# 
+# plot_ly(x=den3d$x, y=den3d$y, z=den3d$z) %>% add_surface()
+
+
 
 # fit<-glm(m1$degree~.,family=gaussian,data=m1)
 # summary(fit)
