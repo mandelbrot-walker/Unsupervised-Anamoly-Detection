@@ -1627,6 +1627,28 @@ rm(x,opar)
 
 #------------Sammon's map----------------#
 
+cluster1_degree_m1<-as.data.frame(m1$degree[ck1$cluster ==1]) #  Better than subset
+colnames(cluster1_degree_m1)[1] <- "degree"
+
+denseplot <- function(data, p_title) {
+        ggplot(data, aes(x=degree)) + 
+                geom_histogram(aes(y=..density..), colour="black", fill="white",binwidth = .1,size=.1)  + 
+                geom_density(alpha=.2, fill="#FF6666") + 
+                geom_vline(aes(xintercept=mean(degree)), color="blue", linetype="dashed", size=1) +
+                xlim(range(m1$degree)) +
+                ggtitle(p_title) + theme_classic() +
+                theme(plot.title = element_text(hjust = 0.5)) #  histogram of SR with density and mean
+} 
+p1<-denseplot(cluster1_degree_m1, "degree of cluster 1") 
+
+cluster2_degree_m1<-as.data.frame(m1$degree[ck1$cluster ==2]) #  Better than subset
+colnames(cluster2_degree_m1)[1] <- "degree"
+p2<-denseplot(cluster2_degree_m1, "degree of cluster 2")
+
+grid.arrange(p1,p2, nrow = 2, ncol=1)
+rm(p1,p2)
+rm(cluster1_degree_m1,cluster2_degree_m1)
+
 #----------------------------------------Tests----------------------------------------------------------------------#
 # library(MASS)
 # library(plotly)
