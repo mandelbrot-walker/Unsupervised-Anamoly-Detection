@@ -1,27 +1,17 @@
-library(igraph)
-library(centiserve)
-library(tidyverse)
-library(factoextra)
-library(Rtsne)
-library(Plasmidprofiler)
-library(MASS)
-library(data.table)
-library(corrplot)
-library(tibble)
-library(caret)
-library(plyr)
-library(gridExtra) 
-library(CINNA)
-library(ClusterR)
-library(mclust)
-library(kohonen)
-library(kernlab)
-library(Rdimtools)
-library(scatterplot3d)
-library(rgl)
-library(fpc)
-library(uwot)
-library(clusternor)
+#--------------libraries--------------------#
+library(igraph) #  centralities
+library(centiserve) #  centralities
+library(factoextra)  # fviz_cluster()
+library(Rtsne) #  TSNE
+library(Plasmidprofiler) #  normalize()
+library(data.table) #  transpose()
+library(corrplot) #  correlation plot
+library(gridExtra) #  multiplot
+library(CINNA) #  centralities
+library(Rdimtools) #  sammon's map
+library(fpc) #  calinhara()
+library(clusternor) # skmeans
+#--------------libraries--------------------#
 
 #------------------------------------------Data loader and centrality calculation start-------------------------------------# 
 edges<-read.delim("Email-EuAll.txt",header = TRUE, sep = "\t")
@@ -45,79 +35,6 @@ ecc<-eccentricity(g)
 lbc<-local_bridging_centrality(g)
 
 cmp<-decompose.graph(g)
-#infc<-c(0)
-#infc[-1]
-
-
-#cent<-proper_centralities(g)
-# 
-# calculate_centralities(g, include = cent[1:50])%>%
-#   pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
-
-#c<-c("Page Rank","Closeness centrality (Latora)","Degree Centrality","eigenvector centralities",
-# "Kleinberg's authority centrality scores", "Kleinberg's hub centrality scores","Shortest-Paths Betweenness Centrality", 
-# "DMNC - Density of Maximum Neighborhood Component","Lobby Index (Centrality)", "Leverage Centrality",
-# "Eccentricity Centrality", "Information Centrality","Local Bridging Centrality")
-#cent[3,29,11,16,20,21,27,7,26,9,24,31,36,43,12,14,18,42,45,25,33,49])
-
-#calculate_centralities(g, include = c)%>%
-#  pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
-
-#katz<-katzcent(g) # Error in alpha >= maxEigenvalue : invalid comparison with complex values
-#crsc<-crossclique(g) # Calculation of Cross-Clique centrality
-#cntr<-centroid(g) #  Error: Graph is not strongly connected.
-#radial<-radiality(g) #  takes awhile
-#clstrnk<-clusterrank(g)
-#library(linkcomm)
-#comm<-communitycent(g) #  takes too long therefore stopped
-#subg<-subgraph.centrality(g) #  takes a long time
-#topol<-topocoefficient(as.undirected(g))
-#gkp<-geokpath(g)
-#library(sna)
-#str<-calculate_centralities(g, include = "Stress Centrality") #  takes a lot of memory 
-#mkc<-markovcent(g) #  takes a lot of memory and time therefore stopped
-#entc<-entropy(g) #  takes too long therefore stopped
-#frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
-#write.csv(dg, "dg_p2p_Gnutella04.csv")
-#write.csv(btn, "btn_p2p_Gnutella04.csv")
-#write.csv(eig, "eig_p2p_Gnutella04.csv")
-#write.csv(clsn, "clsn_p2p_Gnutella04.csv")
-#write.csv(pgr, "pgr_p2p_Gnutella04.csv")
-#write.csv(crsc, "crsc_p2p_Gnutella04.csv")
-
-#edge_connectivity(g) # Outputs 0
-#clstrnk[is.na(clstrnk)] <- 0
-
-#V(gr)$crossclique <- crsc                       #  Crossclique centrality
-#V(gr)$radial<-radial
-#V(gr)$clusterrank<-clstrnk
-#V(gr)$subgraph<-subg
-#V(gr)$topologicalcoeff<-topol
-#V(gr)$gdkpath<-gkp
-#V(gr)$stress<-unlist(str)
-
-#radiality   = V(gr)$radial,
-#clusterrank = V(gr)$clusterrank,
-#subgraph    = V(gr)$subgraph,
-#topologicalcoeff = V(gr)$topologicalcoeff,
-#geodkpath   = V(gr)$gdkpath,
-#stress      = V(gr)$stress,
-
-#ncrossclique = normalize(crsc)
-#nradiality   = normalize(radial)
-#nclusterrank = normalize(clstrnk)
-#nsubgraph    = normalize(abs(subg))
-#ntopologicalcoeff = normalize(topol)
-#ngeodkpath   = normalize(gkp)
-#nstress      = normalize(unlist(str))
-
-#crossclique = ncrossclique,
-#radiality   = nradiality,
-#clusterrank = nclusterrank,
-#subgraph    = nsubgraph,
-#topologicalcoeff = ntopologicalcoeff,
-#geodkpath   = ngeodkpath,
-#stress      = nstress,
 
 gr<-g # temporary variable gr
 
@@ -799,3 +716,806 @@ plot(tsne_model_4_m9$Y,col=factor(ncen_tr$names), asp=1)
 dev.off()
 
 #-------------------------------------------------------tsne model 4 end--------------------------------------------#
+#---------------------------------------------Spherical kmeans start------------------------------------------------------#
+
+#---------------------------------------------------------clusters--------------------------------------#
+#--------------clusters using different k values m1
+ck2<-Skmeans(data=as.matrix(m1),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m1),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m1),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m1),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m1),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()  # garbage collection is used for stack imbalance warning. run gc() more than once if the warning persists
+ck7<-Skmeans(data=as.matrix(m1),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m1),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m1,ck2$cluster),digits=2) #  183686.5  
+round(calinhara(m1,ck3$cluster),digits=3) #  457080.8  Highest
+round(calinhara(m1,ck4$cluster),digits=4) #  322225  
+round(calinhara(m1,ck5$cluster),digits=5) #  242240.5
+round(calinhara(m1,ck6$cluster),digits=6) #  194111.3
+round(calinhara(m1,ck7$cluster),digits=7) #  280180.6
+round(calinhara(m1,ck8$cluster),digits=8) #  241824.4
+
+#--------------clusters using different k values m2
+
+ck2<-Skmeans(data=as.matrix(m2),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m2),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m2),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m2),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m2),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck7<-Skmeans(data=as.matrix(m2),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m2),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m2,ck2$cluster),digits=2) #  183712.9 
+round(calinhara(m2,ck3$cluster),digits=3) #  457252.7  Highest
+round(calinhara(m2,ck4$cluster),digits=4) #  322315.5
+round(calinhara(m2,ck5$cluster),digits=5) #  242287.7
+round(calinhara(m2,ck6$cluster),digits=6) #  194147.1
+round(calinhara(m2,ck7$cluster),digits=7) #  279637.4
+round(calinhara(m2,ck8$cluster),digits=8) #  241877.9
+
+#--------------clusters using different k values m3
+
+ck2<-Skmeans(data=as.matrix(m3),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m3),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m3),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m3),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m3),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck7<-Skmeans(data=as.matrix(m3),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m3),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck9<-Skmeans(data=as.matrix(m3),centers=9,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck10<-Skmeans(data=as.matrix(m3),centers=10,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m3,ck2$cluster),digits=2) #  358339  Highest
+round(calinhara(m3,ck3$cluster),digits=3) #  210652.2  
+round(calinhara(m3,ck4$cluster),digits=4) #  160791.8  
+round(calinhara(m3,ck5$cluster),digits=5) #  125284.1  
+round(calinhara(m3,ck6$cluster),digits=6) #  102434.5
+round(calinhara(m3,ck7$cluster),digits=7) #  85275.92
+round(calinhara(m3,ck8$cluster),digits=8) #  73710.92
+round(calinhara(m3,ck9$cluster),digits=9) #  64401.06
+round(calinhara(m3,ck10$cluster),digits=10) #  57274.41
+
+
+#--------------clusters using different k values m4
+
+ck2<-Skmeans(data=as.matrix(m4),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m4),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m4),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m4),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m4),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m4,ck2$cluster),digits=2) #  289033.2  
+round(calinhara(m4,ck3$cluster),digits=3) #  153514.6
+round(calinhara(m4,ck4$cluster),digits=4) #  449188.9  Highest  
+round(calinhara(m4,ck5$cluster),digits=5) #  349039.9
+round(calinhara(m4,ck6$cluster),digits=6) #  339585.7
+
+#--------------clusters using different k values m5
+
+ck2<-Skmeans(data=as.matrix(m5),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m5),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m5),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m5),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m5),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck7<-Skmeans(data=as.matrix(m5),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m5),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m5,ck2$cluster),digits=2) #  199710.3  
+round(calinhara(m5,ck3$cluster),digits=3) #  554345.7  Highest
+round(calinhara(m5,ck4$cluster),digits=4) #  392842.3
+round(calinhara(m5,ck5$cluster),digits=5) #  538527.6
+round(calinhara(m5,ck6$cluster),digits=6) #  434563.4
+round(calinhara(m5,ck7$cluster),digits=7) #  333428.1
+round(calinhara(m5,ck8$cluster),digits=8) #  286499.5
+
+#--------------clusters using different k values m6
+
+ck2<-Skmeans(data=as.matrix(m6),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m6),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m6),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m6),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m6),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck7<-Skmeans(data=as.matrix(m6),centers=7,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck8<-Skmeans(data=as.matrix(m6),centers=8,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m6,ck2$cluster),digits=2) #  72393.49  Highest  
+round(calinhara(m6,ck3$cluster),digits=3) #  46262.15
+round(calinhara(m6,ck4$cluster),digits=4) #  32602.92  
+round(calinhara(m6,ck5$cluster),digits=5) #  30263.02
+round(calinhara(m6,ck6$cluster),digits=6) #  24451.8 
+round(calinhara(m6,ck7$cluster),digits=7) #  75733.51
+round(calinhara(m6,ck8$cluster),digits=8) #  65989.93
+
+#--------------clusters using different k values m7
+
+ck2<-Skmeans(data=as.matrix(m7),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m7),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m7),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m7),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m7),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m7,ck2$cluster),digits=2) #  670.26
+round(calinhara(m7,ck3$cluster),digits=3) #  465.59  
+round(calinhara(m7,ck4$cluster),digits=4) #  31654.12  Highest  
+round(calinhara(m7,ck5$cluster),digits=5) #  23782.27
+round(calinhara(m7,ck6$cluster),digits=6) #  19069.22
+
+#--------------clusters using different k values m8
+
+ck2<-Skmeans(data=as.matrix(m8),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m8),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m8),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m8),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m8),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m8,ck2$cluster),digits=2) #  799665.8  Highest
+round(calinhara(m8,ck3$cluster),digits=3) #  706966.9
+round(calinhara(m8,ck4$cluster),digits=4) #  484556.3
+round(calinhara(m8,ck5$cluster),digits=5) #  382244.3
+round(calinhara(m8,ck6$cluster),digits=6) #  333987.5
+
+#--------------clusters using different k values m9
+
+ck2<-Skmeans(data=as.matrix(m9),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck3<-Skmeans(data=as.matrix(m9),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck4<-Skmeans(data=as.matrix(m9),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck5<-Skmeans(data=as.matrix(m9),centers=5,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ck6<-Skmeans(data=as.matrix(m9),centers=6,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+
+#  Checking for correct no of clusters. Higher the index value better the cluster
+round(calinhara(m9,ck2$cluster),digits=2) #  184932  Highest
+round(calinhara(m9,ck3$cluster),digits=3) #  94487.83
+round(calinhara(m9,ck4$cluster),digits=4) #  63487.21
+round(calinhara(m9,ck5$cluster),digits=5) #  60667.93
+round(calinhara(m9,ck6$cluster),digits=6) #  55485.23
+
+rm(ck2,ck3,ck4,ck5,ck6,ck7,ck8,ck9,ck10)
+#-------------kmeans on dataset and cluster onto TSNE start-------------------------------------------------#
+
+#-----------------------------------------Kmeans for tsne model 1------------------------------------------#
+
+ckm1<-Skmeans(data=as.matrix(m1),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ckm2<-Skmeans(data=as.matrix(m2),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ckm3<-Skmeans(data=as.matrix(m3),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ckm4<-Skmeans(data=as.matrix(m4),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ckm5<-Skmeans(data=as.matrix(m5),centers=3,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ckm6<-Skmeans(data=as.matrix(m6),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ckm7<-Skmeans(data=as.matrix(m7),centers=4,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ckm8<-Skmeans(data=as.matrix(m8),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()
+ckm9<-Skmeans(data=as.matrix(m9),centers=2,iter.max = 25,nthread = 5,init = c("kmeanspp"),tolerance = 0.0005)
+gc()  # garbage collection is used for stack imbalance warning. run gc() more than once if the warning persists
+
+ck1<-kmeans(m1, 3, iter.max = 20, nstart = 25,
+            algorithm = c("Hartigan-Wong"), trace=FALSE) #  dummy kmeans
+ck2<-ck1
+ck3<-ck1
+ck4<-ck1
+ck5<-ck1
+ck6<-ck1
+ck7<-ck1
+ck8<-ck1
+ck9<-ck1
+
+#  m1
+bmp("tsne_model1_m1_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m1$Y), col = ckm1$cluster)
+dev.off()
+
+
+ck1$cluster<-ckm1$cluster
+ck1$centers<-ckm1$centers
+ck1$size<-ckm1$size
+ck1$iter<-ckm1$iters
+
+p1 <- fviz_cluster(ck1, geom = "point",  data = as.data.frame(tsne_model_1_m1$Y)) 
+
+bmp("tsne_model1_m1_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m2
+bmp("tsne_model1_m2_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m2$Y), col = ckm2$cluster)
+dev.off()
+
+ck2$cluster<-ckm2$cluster
+ck2$centers<-ckm2$centers
+ck2$size<-ckm2$size
+ck2$iter<-ckm2$iters
+
+p1 <- fviz_cluster(ck2, geom = "point",  data = as.data.frame(tsne_model_1_m2$Y)) 
+
+bmp("tsne_model1_m2_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m3
+bmp("tsne_model1_m3_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m3$Y), col = ckm3$cluster)
+dev.off()
+
+ck3$cluster<-ckm3$cluster
+ck3$centers<-ckm3$centers
+ck3$size<-ckm3$size
+ck3$iter<-ckm3$iters
+
+p1 <- fviz_cluster(ck3, geom = "point",  data = as.data.frame(tsne_model_1_m3$Y)) 
+
+bmp("tsne_model1_m3_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m4
+bmp("tsne_model1_m4_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m4$Y), col = ckm4$cluster)
+dev.off()
+
+ck4$cluster<-ckm4$cluster
+ck4$centers<-ckm4$centers
+ck4$size<-ckm4$size
+ck4$iter<-ckm4$iters
+
+p1 <- fviz_cluster(ck4, geom = "point",  data = as.data.frame(tsne_model_1_m4$Y)) 
+
+bmp("tsne_model1_m4_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m5
+bmp("tsne_model1_m5_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m5$Y), col = ckm5$cluster)
+dev.off()
+
+ck5$cluster<-ckm5$cluster
+ck5$centers<-ckm5$centers
+ck5$size<-ckm5$size
+ck5$iter<-ckm5$iters
+
+p1 <- fviz_cluster(ck5, geom = "point",  data = as.data.frame(tsne_model_1_m5$Y)) 
+
+bmp("tsne_model1_m5_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m6
+bmp("tsne_model1_m6_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m6$Y), col = ckm6$cluster)
+dev.off()
+
+ck6$cluster<-ckm6$cluster
+ck6$centers<-ckm6$centers
+ck6$size<-ckm6$size
+ck6$iter<-ckm6$iters
+
+p1 <- fviz_cluster(ck6, geom = "point",  data = as.data.frame(tsne_model_1_m6$Y)) 
+
+bmp("tsne_model1_m6_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m7
+bmp("tsne_model1_m7_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m7$Y), col = ckm7$cluster)
+dev.off()
+
+ck7$cluster<-ckm7$cluster
+ck7$centers<-ckm7$centers
+ck7$size<-ckm7$size
+ck7$iter<-ckm7$iters
+
+p1 <- fviz_cluster(ck7, geom = "point",  data = as.data.frame(tsne_model_1_m7$Y)) 
+
+bmp("tsne_model1_m7_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m8
+bmp("tsne_model1_m8_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m8$Y), col = ckm8$cluster)
+dev.off()
+
+ck8$cluster<-ckm8$cluster
+ck8$centers<-ckm8$centers
+ck8$size<-ckm8$size
+ck8$iter<-ckm8$iters
+
+p1 <- fviz_cluster(ck8, geom = "point",  data = as.data.frame(tsne_model_1_m8$Y)) 
+
+bmp("tsne_model1_m8_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m9
+bmp("tsne_model1_m9_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_1_m9$Y), col = ckm9$cluster)
+dev.off()
+
+ck9$cluster<-ckm9$cluster
+ck9$centers<-ckm9$centers
+ck9$size<-ckm9$size
+ck9$iter<-ckm9$iters
+
+p1 <- fviz_cluster(ck9, geom = "point",  data = as.data.frame(tsne_model_1_m9$Y)) 
+
+bmp("tsne_model1_m9_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#-------------------------------------------------Kmeans for tsne model 2--------------------------------#
+
+bmp("tsne_model2_m1_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m1$Y), col = ckm1$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck1, geom = "point",  data = as.data.frame(tsne_model_2_m1$Y)) 
+
+bmp("tsne_model2_m1_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m2
+bmp("tsne_model2_m2_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m2$Y), col = ckm2$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck2, geom = "point",  data = as.data.frame(tsne_model_2_m2$Y)) 
+
+bmp("tsne_model2_m2_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m3
+bmp("tsne_model2_m3_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m3$Y), col = ckm3$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck3, geom = "point",  data = as.data.frame(tsne_model_2_m3$Y)) 
+
+bmp("tsne_model2_m3_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m4
+bmp("tsne_model2_m4_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m4$Y), col = ckm4$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck4, geom = "point",  data = as.data.frame(tsne_model_2_m4$Y)) 
+
+bmp("tsne_model2_m4_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m5
+bmp("tsne_model2_m5_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m5$Y), col = ckm5$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck5, geom = "point",  data = as.data.frame(tsne_model_2_m5$Y)) 
+
+bmp("tsne_model2_m5_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m6
+bmp("tsne_model2_m6_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m6$Y), col = ckm6$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck6, geom = "point",  data = as.data.frame(tsne_model_2_m6$Y)) 
+
+bmp("tsne_model2_m6_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m7
+bmp("tsne_model2_m7_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m7$Y), col = ckm7$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck7, geom = "point",  data = as.data.frame(tsne_model_2_m7$Y)) 
+
+bmp("tsne_model2_m7_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m8
+bmp("tsne_model2_m8_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m8$Y), col = ckm8$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck8, geom = "point",  data = as.data.frame(tsne_model_2_m8$Y)) 
+
+bmp("tsne_model2_m8_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m9
+bmp("tsne_model2_m9_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_2_m9$Y), col = ckm9$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck9, geom = "point",  data = as.data.frame(tsne_model_2_m9$Y)) 
+
+bmp("tsne_model2_m9_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#--------------------------------------------------Kmeans for tsne model 3------------------------------#
+
+bmp("tsne_model3_m1_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m1$Y), col = ckm1$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck1, geom = "point",  data = as.data.frame(tsne_model_3_m1$Y)) 
+
+bmp("tsne_model3_m1_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m2
+bmp("tsne_model3_m2_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m2$Y), col = ckm2$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck2, geom = "point",  data = as.data.frame(tsne_model_3_m2$Y)) 
+
+bmp("tsne_model3_m2_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m3
+bmp("tsne_model3_m3_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m3$Y), col = ckm3$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck3, geom = "point",  data = as.data.frame(tsne_model_3_m3$Y)) 
+
+bmp("tsne_model3_m3_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m4
+bmp("tsne_model3_m4_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m4$Y), col = ckm4$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck4, geom = "point",  data = as.data.frame(tsne_model_3_m4$Y)) 
+
+bmp("tsne_model3_m4_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m5
+bmp("tsne_model3_m5_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m5$Y), col = ckm5$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck5, geom = "point",  data = as.data.frame(tsne_model_3_m5$Y)) 
+
+bmp("tsne_model3_m5_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m6
+bmp("tsne_model3_m6_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m6$Y), col = ckm6$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck6, geom = "point",  data = as.data.frame(tsne_model_3_m6$Y)) 
+
+bmp("tsne_model3_m6_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m7
+bmp("tsne_model3_m7_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m7$Y), col = ckm7$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck7, geom = "point",  data = as.data.frame(tsne_model_3_m7$Y)) 
+
+bmp("tsne_model3_m7_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m8
+bmp("tsne_model3_m8_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m8$Y), col = ckm8$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck8, geom = "point",  data = as.data.frame(tsne_model_3_m8$Y)) 
+
+bmp("tsne_model3_m8_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m9
+bmp("tsne_model3_m9_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_3_m9$Y), col = ckm9$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck9, geom = "point",  data = as.data.frame(tsne_model_3_m9$Y)) 
+
+bmp("tsne_model3_m9_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#-------------------------------------------------Kmeans for tsne model 4----------------------------------#
+
+bmp("tsne_model4_m1_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m1$Y), col = ckm1$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck1, geom = "point",  data = as.data.frame(tsne_model_4_m1$Y)) 
+
+bmp("tsne_model4_m1_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m2
+bmp("tsne_model4_m2_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m2$Y), col = ckm2$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck2, geom = "point",  data = as.data.frame(tsne_model_4_m2$Y)) 
+
+bmp("tsne_model4_m2_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m3
+bmp("tsne_model4_m3_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m3$Y), col = ckm3$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck3, geom = "point",  data = as.data.frame(tsne_model_4_m3$Y)) 
+
+bmp("tsne_model4_m3_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m4
+bmp("tsne_model4_m4_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m4$Y), col = ckm4$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck4, geom = "point",  data = as.data.frame(tsne_model_4_m4$Y)) 
+
+bmp("tsne_model4_m4_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m5
+bmp("tsne_model4_m5_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m5$Y), col = ckm5$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck5, geom = "point",  data = as.data.frame(tsne_model_4_m5$Y)) 
+
+bmp("tsne_model4_m5_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m6
+bmp("tsne_model4_m6_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m6$Y), col = ckm6$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck6, geom = "point",  data = as.data.frame(tsne_model_4_m6$Y)) 
+
+bmp("tsne_model4_m6_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m7
+bmp("tsne_model4_m7_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m7$Y), col = ckm7$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck7, geom = "point",  data = as.data.frame(tsne_model_4_m7$Y)) 
+
+bmp("tsne_model4_m7_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m8
+bmp("tsne_model4_m8_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m8$Y), col = ckm8$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck8, geom = "point",  data = as.data.frame(tsne_model_4_m8$Y)) 
+
+bmp("tsne_model4_m8_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+#  m9
+bmp("tsne_model4_m9_kmeans.bmp", width = 1980, height = 1280)
+plot(as.data.frame(tsne_model_4_m9$Y), col = ckm9$cluster)
+dev.off()
+
+p1 <- fviz_cluster(ck9, geom = "point",  data = as.data.frame(tsne_model_4_m9$Y)) 
+
+bmp("tsne_model4_m9_kmeans_ch.bmp", width = 1980, height = 1280)
+grid.arrange(p1, ncol = 1, nrow = 1)
+dev.off()
+
+rm(ck1,ck2,ck3,ck4,ck5,ck6,ck7,ck8,ck9)
+rm(ckm1,ckm2,ckm3,ckm4,ckm5,ckm6,ckm7,ckm8,ckm9)
+#-----------------------kmeans on dataset and cluster onto TSNE end------------------------------------------------------#
+
+#----------------------------------Old code-----------------------------------------------------------#
+
+# library(igraph)
+# library(centiserve)
+# library(tidyverse)
+# library(factoextra)
+# library(Rtsne)
+# library(Plasmidprofiler)
+# library(MASS)
+# library(data.table)
+# library(corrplot)
+# library(tibble)
+# library(caret)
+# library(plyr)
+# library(gridExtra) 
+# library(CINNA)
+# library(ClusterR)
+# library(mclust)
+# library(kohonen)
+# library(kernlab)
+# library(Rdimtools)
+# library(scatterplot3d)
+# library(rgl)
+# library(fpc)
+# library(uwot)
+# library(clusternor)
+
+#infc<-c(0)
+#infc[-1]
+
+
+#cent<-proper_centralities(g)
+# 
+# calculate_centralities(g, include = cent[1:50])%>%
+#   pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
+
+#c<-c("Page Rank","Closeness centrality (Latora)","Degree Centrality","eigenvector centralities",
+# "Kleinberg's authority centrality scores", "Kleinberg's hub centrality scores","Shortest-Paths Betweenness Centrality", 
+# "DMNC - Density of Maximum Neighborhood Component","Lobby Index (Centrality)", "Leverage Centrality",
+# "Eccentricity Centrality", "Information Centrality","Local Bridging Centrality")
+#cent[3,29,11,16,20,21,27,7,26,9,24,31,36,43,12,14,18,42,45,25,33,49])
+
+#calculate_centralities(g, include = c)%>%
+#  pca_centralities(scale.unit = TRUE, ncp = 50) # takes indefinite time
+
+#katz<-katzcent(g) # Error in alpha >= maxEigenvalue : invalid comparison with complex values
+#crsc<-crossclique(g) # Calculation of Cross-Clique centrality
+#cntr<-centroid(g) #  Error: Graph is not strongly connected.
+#radial<-radiality(g) #  takes awhile
+#clstrnk<-clusterrank(g)
+#library(linkcomm)
+#comm<-communitycent(g) #  takes too long therefore stopped
+#subg<-subgraph.centrality(g) #  takes a long time
+#topol<-topocoefficient(as.undirected(g))
+#gkp<-geokpath(g)
+#library(sna)
+#str<-calculate_centralities(g, include = "Stress Centrality") #  takes a lot of memory 
+#mkc<-markovcent(g) #  takes a lot of memory and time therefore stopped
+#entc<-entropy(g) #  takes too long therefore stopped
+#frm<-closeness.freeman(g) # Not calculatable as graphis not strongly connected
+#write.csv(dg, "dg_p2p_Gnutella04.csv")
+#write.csv(btn, "btn_p2p_Gnutella04.csv")
+#write.csv(eig, "eig_p2p_Gnutella04.csv")
+#write.csv(clsn, "clsn_p2p_Gnutella04.csv")
+#write.csv(pgr, "pgr_p2p_Gnutella04.csv")
+#write.csv(crsc, "crsc_p2p_Gnutella04.csv")
+
+#edge_connectivity(g) # Outputs 0
+#clstrnk[is.na(clstrnk)] <- 0
+
+#V(gr)$crossclique <- crsc                       #  Crossclique centrality
+#V(gr)$radial<-radial
+#V(gr)$clusterrank<-clstrnk
+#V(gr)$subgraph<-subg
+#V(gr)$topologicalcoeff<-topol
+#V(gr)$gdkpath<-gkp
+#V(gr)$stress<-unlist(str)
+
+#radiality   = V(gr)$radial,
+#clusterrank = V(gr)$clusterrank,
+#subgraph    = V(gr)$subgraph,
+#topologicalcoeff = V(gr)$topologicalcoeff,
+#geodkpath   = V(gr)$gdkpath,
+#stress      = V(gr)$stress,
+
+#ncrossclique = normalize(crsc)
+#nradiality   = normalize(radial)
+#nclusterrank = normalize(clstrnk)
+#nsubgraph    = normalize(abs(subg))
+#ntopologicalcoeff = normalize(topol)
+#ngeodkpath   = normalize(gkp)
+#nstress      = normalize(unlist(str))
+
+#crossclique = ncrossclique,
+#radiality   = nradiality,
+#clusterrank = nclusterrank,
+#subgraph    = nsubgraph,
+#topologicalcoeff = ntopologicalcoeff,
+#geodkpath   = ngeodkpath,
+#stress      = nstress,
