@@ -126,8 +126,8 @@ rm(m1_all_var13,m2_without_dg_var12,m3_without_comm_var7,m4_without_nodes_var6,m
 #------------------------------------------Data loader and centrality calculation End-------------------------------------#
 
 #------------------------------------------Write data start-------------------------------------#
-write.csv(centrality,"Centrality_p2p_Gnutella04.csv")
-write.csv(ncentrality,"NCentrality_p2p_Gnutella04.csv")
+write.csv(centrality,"Centrality_HepPh.csv")
+write.csv(ncentrality,"NCentrality_HepPh.csv")
 
 #------------------------------------------Write data end-------------------------------------#
 
