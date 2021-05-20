@@ -1567,6 +1567,21 @@ rm(x,opar)
 
 #------------Sammon's map----------------#
 
+tsne_m1_m1<-as.data.frame(tsne_model_1_m1$Y)
+
+tsne_m1_m1$V1<-(tsne_m1_m1$V1-min(tsne_m1_m1$V1))/(max(tsne_m1_m1$V1)-min(tsne_m1_m1$V1))
+tsne_m1_m1$V2<-(tsne_m1_m1$V2-min(tsne_m1_m1$V2))/(max(tsne_m1_m1$V2)-min(tsne_m1_m1$V2))
+
+library(MASS)
+den3d <- kde2d(tsne_m1_m1$V1, tsne_m1_m1$V2)
+
+library(plotly)
+plot_ly(x=den3d$x, y=den3d$y, z=den3d$z) %>% add_surface()
+
+hist(tsne_m1_m1$V1, col=rgb(1,0,0,0.5), main = "axis 1 and 2")
+hist(tsne_m1_m1$V2, col=rgb(0,0,1,0.5), add=T)
+box()
+
 # library(Spectrum)  # spectral clustering
 # 
 # ck2 <- Spectrum(m3, method = 2, silent = FALSE, showres = TRUE,

@@ -1350,3 +1350,17 @@ rm(ck1,ck2,ck3,ck4,ck5,ck6,ck7,ck8,ck9)
 rm(ckm1,ckm2,ckm3,ckm4,ckm5,ckm6,ckm7,ckm8,ckm9)
 #-----------------------kmeans on dataset and cluster onto TSNE end------------------------------------------------------#
 
+tsne_m1_m1<-as.data.frame(tsne_model_1_m1$Y)
+
+tsne_m1_m1$V1<-(tsne_m1_m1$V1-min(tsne_m1_m1$V1))/(max(tsne_m1_m1$V1)-min(tsne_m1_m1$V1))
+tsne_m1_m1$V2<-(tsne_m1_m1$V2-min(tsne_m1_m1$V2))/(max(tsne_m1_m1$V2)-min(tsne_m1_m1$V2))
+
+library(MASS)
+den3d <- kde2d(tsne_m1_m1$V1, tsne_m1_m1$V2)
+
+library(plotly)
+plot_ly(x=den3d$x, y=den3d$y, z=den3d$z) %>% add_surface()
+
+hist(tsne_m1_m1$V1, col=rgb(1,0,0,0.5), main = "axis 1 and 2")
+hist(tsne_m1_m1$V2, col=rgb(0,0,1,0.5), add=T)
+box()
