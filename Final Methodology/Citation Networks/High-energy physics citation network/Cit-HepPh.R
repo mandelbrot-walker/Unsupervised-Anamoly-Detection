@@ -1456,6 +1456,19 @@ box()
 write.table(tsne_model_1_m1$Y, file = "tsne_model1_m1.csv",sep = ",", dec = ".",
             row.names = F, col.names = T)
 
+s <- subplot(
+        plot_ly(x = tsne_m1_m1$V1, color = I("black"), type = 'histogram'), 
+        plotly_empty(), 
+        plot_ly(x = tsne_m1_m1$V1, y = tsne_m1_m1$V2, type = 'histogram2dcontour', showscale = F), 
+        plot_ly(y = tsne_m1_m1$V2, color = I("black"), type = 'histogram'),
+        nrows = 2, heights = c(0.2, 0.8), widths = c(0.8, 0.2), 
+        shareX = TRUE, shareY = TRUE, titleX = FALSE, titleY = FALSE
+)
+
+fig <- layout(s, showlegend = FALSE)
+
+fig
+
 #-----------------------------------Old Code-----------------------------#
 # cmp<-decompose.graph(g)
 #infc<-c(0)

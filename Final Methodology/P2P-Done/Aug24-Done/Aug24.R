@@ -1582,6 +1582,20 @@ hist(tsne_m1_m1$V1, col=rgb(1,0,0,0.5), main = "axis 1 and 2")
 hist(tsne_m1_m1$V2, col=rgb(0,0,1,0.5), add=T)
 box()
 
+s <- subplot(
+        plot_ly(x = tsne_m1_m1$V1, color = I("black"), type = 'histogram'), 
+        plotly_empty(), 
+        plot_ly(x = tsne_m1_m1$V1, y = tsne_m1_m1$V2, type = 'histogram2dcontour', showscale = F), 
+        plot_ly(y = tsne_m1_m1$V2, color = I("black"), type = 'histogram'),
+        nrows = 2, heights = c(0.2, 0.8), widths = c(0.8, 0.2), 
+        shareX = TRUE, shareY = TRUE, titleX = FALSE, titleY = FALSE
+)
+
+fig <- layout(s, showlegend = FALSE)
+
+fig
+
+
 # library(Spectrum)  # spectral clustering
 # 
 # ck2 <- Spectrum(m3, method = 2, silent = FALSE, showres = TRUE,
